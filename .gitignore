@@ -5,6 +5,7 @@ bin/
 *.settings
 
 # NetBeans specific #
+libraries/hibernate/javadocs
 nbproject/private/
 build/
 nbbuild/
