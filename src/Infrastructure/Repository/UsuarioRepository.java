@@ -1,13 +1,13 @@
 package Infrastructure.Repository;
 
+import Domain.Data.IDatabaseFactory;
 import Domain.Models.Usuario;
 import Domain.Repository.IUsuarioRepository;
-import org.hibernate.Session;
 
 public class UsuarioRepository extends BaseRepository<Usuario> implements IUsuarioRepository {
     
-    public UsuarioRepository(Session session){
-         super(session);
+    public UsuarioRepository(IDatabaseFactory databaseFactory){
+         super(databaseFactory);
     }
 
     @Override
