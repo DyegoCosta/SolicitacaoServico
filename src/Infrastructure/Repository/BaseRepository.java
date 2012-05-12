@@ -1,5 +1,6 @@
 package Infrastructure.Repository;
 
+import Domain.Data.IDatabaseFactory;
 import Domain.Repository.IBaseRepository;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
@@ -11,9 +12,9 @@ public abstract class BaseRepository<TEntity>
     protected Session session;
     private Class<TEntity> classePersistente;
 
-    public BaseRepository(Session session) {
+    public BaseRepository(IDatabaseFactory databaseFactory) {
         this.classePersistente = (Class<TEntity>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-        this.session = session;
+        this.session = databaseFactory.getSession();
     }
 
     @Override
