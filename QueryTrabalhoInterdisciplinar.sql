@@ -25,13 +25,6 @@ CREATE TABLE Clientes
 	Email VARCHAR(100),
 )
 
---CREATE TABLE [Status]
---(
---	StatusId INT PRIMARY KEY IDENTITY,
---	Titulo VARCHAR(30),
---	Descricao VARCHAR(200)
---)
-
 CREATE TABLE OrdemServicos
 (
 	OrdemServicoId INT PRIMARY KEY IDENTITY,
