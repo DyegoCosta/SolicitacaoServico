@@ -25,7 +25,7 @@ public class ConexaoTeste {
     @Before
     public void setUp() {
         
-        session = new Configuration().configure().buildSessionFactory().openSession();
+        session = new Configuration().configure("Infrastructure/Configuration/hibernate.cfg.xml").buildSessionFactory().openSession();
     }
     
     @Test
