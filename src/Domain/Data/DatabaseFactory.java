@@ -16,7 +16,7 @@ public class DatabaseFactory implements IDatabaseFactory {
 
     @Override
     public Session getSession() {
-        return configuration.buildSessionFactory(getServiceRegistry()).getCurrentSession();
+        return configuration.buildSessionFactory(getServiceRegistry()).openSession();
     }
 
     private ServiceRegistry getServiceRegistry() {
