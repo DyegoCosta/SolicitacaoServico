@@ -6,32 +6,24 @@
 
 <hibernate-mapping>
     <class name="Domain.Models.Apontamento" table="Apontamentos">
-        <id name="ApontamentoId" type="int">            
+        <id name="apontamentoId" type="int" column="ApontamentoId">            
         </id>
-        <property name="detalhes"/>
-        <property name="dataInicio"
-                    type="date"
-                    not-null="true"
-                    update="false"/>
-        <many-to-one name="ordemServico"
-                    column="OrdemServicoId"
-                    not-null="true"/>
-        <many-to-one name="usuario"
-                    column="UsuarioId"
-                    not-null="true"/>
-        <property name="dataTermino"
+        <property name="detalhes" column="Detalhes"/>
+        <property name="dataInicio" column="DataInicio"
+                    type="date"/>
+        <property name="dataTermino" column="DataTermino"
                     type="date"/>
     </class>
     <class name="Domain.Models.Cliente" table="Clientes">
-        <id name="clienteId" type="int">            
+        <id name="clienteId" type="int" column="ClienteId">            
         </id>
     </class>
     <class name="Domain.Models.OrdemServico" table="OrdemServicos">
-        <id name="ordemServicoId" type="int">            
+        <id name="ordemServicoId" type="int" column="OrdemServicoId">            
         </id>
     </class>
     <class name="Domain.Models.Usuario" table="Usuarios">
-        <id name="usuarioId" type="int">            
+        <id name="usuarioId" type="int" column="UsuarioId">            
         </id>
     </class>
 </hibernate-mapping>
