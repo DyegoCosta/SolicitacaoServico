@@ -6,16 +6,25 @@
 
 <hibernate-mapping>
     <class name="Domain.Models.Apontamento" table="Apontamentos">
-        <id name="apontamentoId" type="int" column="ApontamentoId"/>            
-        <property name="detalhes" column="Detalhes"/>
+        <id name="apontamentoId" type="int" column="ApontamentoId" unsaved-value="0" >
+            <generator class="identity"/>
+        </id>
+        <property name="detalhes" column="Detalhes" type="string"/>
         <property name="dataInicio" column="DataInicio" type="date"/>
         <property name="dataTermino" column="DataTermino" type="date"/>
         <property name="ordemServicoId" column="OrdemServicoId" type="int"/>            
-        <property name="usuarioId" column="UsuarioId" type="int"/>            
+        <property name="usuarioId" column="UsuarioId" type="int"/>
     </class>
     <class name="Domain.Models.Cliente" table="Clientes">
-        <id name="clienteId" type="int" column="ClienteId">            
+        <id name="clienteId" type="int" column="ClienteId" unsaved-value="0">
+            <generator class="identity"/>
         </id>
+        <property name="razaoSocial" column="RazaoSocial" type="string"/>
+        <property name="CNPJ" column="CNPJ" type="int"/>
+        <property name="nomeResponsavel" column="NomeResponsavel" type="string"/>
+        <property name="telefone" column="Telefone" type="string"/>            
+        <property name="endereco" column="Endereco" type="string"/>
+        <property name="email" column="Email" type="string"/>
     </class>
     <class name="Domain.Models.OrdemServico" table="OrdemServicos">
         <id name="ordemServicoId" type="int" column="OrdemServicoId">            
