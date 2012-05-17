@@ -25,7 +25,7 @@ public class ConexaoTeste {
     public void hello() {
         // Arrange
         IApontamentoRepository apontamentoRepository = new ApontamentoRepository(databaseFactory);
-        int id = 1;
+        int id = 2;
 
         // Act
         Apontamento apontamento = apontamentoRepository.obterPorId(id);
