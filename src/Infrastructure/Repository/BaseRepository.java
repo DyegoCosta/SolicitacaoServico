@@ -29,8 +29,9 @@ public abstract class BaseRepository<TEntity>
 
     @Override
     public TEntity salvar(TEntity entidade) {
+        Transaction trans = session.beginTransaction();
         session.saveOrUpdate(entidade);
-        
+        trans.commit(); //UNDONE: criar unit of work?
         return entidade;
     }
 
