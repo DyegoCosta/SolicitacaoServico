@@ -8,6 +8,7 @@ import org.hibernate.service.ServiceRegistryBuilder;
 public class DatabaseFactory implements IDatabaseFactory {
 
     private Configuration configuration;
+    private Session currentSession;
 
     public DatabaseFactory(String configurationPath) {
         configuration = new Configuration();
@@ -16,7 +17,14 @@ public class DatabaseFactory implements IDatabaseFactory {
 
     @Override
     public Session getSession() {
-        return configuration.buildSessionFactory(getServiceRegistry()).openSession();
+        return getCurrentSession();
+    }
+
+    private Session getCurrentSession() {
+        if (currentSession == null)
+            currentSession = configuration.buildSessionFactory(getServiceRegistry()).openSession();
+
+        return currentSession;
     }
 
     private ServiceRegistry getServiceRegistry() {

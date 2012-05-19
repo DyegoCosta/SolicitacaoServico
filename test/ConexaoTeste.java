@@ -1,6 +1,8 @@
 
 import Domain.Data.DatabaseFactory;
 import Domain.Data.IDatabaseFactory;
+import Domain.Data.IUnitOfWork;
+import Domain.Data.UnitOfWork;
 import Domain.Repository.IApontamentoRepository;
 import Domain.Models.Apontamento;
 import Domain.Models.Cliente;
@@ -40,6 +42,7 @@ public class ConexaoTeste {
     @Test
     public void insert() {
         // Arrange
+        IUnitOfWork unitOfWork = new UnitOfWork(databaseFactory);
         IClienteRepository clienteRepository = new ClienteRepository(databaseFactory);
         Cliente cliente = new Cliente();
         cliente.setCNPJ(2322323);
@@ -51,6 +54,7 @@ public class ConexaoTeste {
 
         // Act
         clienteRepository.salvar(cliente);
+        unitOfWork.commit();
 
         // Assert
         assertTrue(cliente.getClienteId() != 0);
