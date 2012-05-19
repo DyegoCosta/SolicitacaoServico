@@ -14,12 +14,14 @@ public class UnitOfWork implements IUnitOfWork {
 
     @Override
     public void commit() {
-        currentTransaction.commit();
+        if (currentTransaction != null)
+            currentTransaction.commit();
     }
 
     @Override
     public void rollback() {
-        currentTransaction.rollback();
+        if (currentTransaction != null)
+            currentTransaction.rollback();
     }
 
     private void begginTransaction() {
