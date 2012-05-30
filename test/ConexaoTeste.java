@@ -27,7 +27,20 @@ public class ConexaoTeste {
     }
     
     @Test
-    public void obter() {
+    public void obterApontamentoPorId() {
+        // Arrange
+        //IApontamentoRepository apontamentoRepository = new ApontamentoRepository(databaseFactory);
+        //int id = 2;
+
+        // Act
+        //Apontamento apontamento = apontamentoRepository.obterPorId(id);
+
+        // Assert
+        //assertNotNull(apontamento);
+    }
+    
+    @Test
+    public void obterApontamentoPorIdComUsuarioPreenchido() {
         // Arrange
         IApontamentoRepository apontamentoRepository = new ApontamentoRepository(databaseFactory);
         int id = 2;
@@ -37,26 +50,29 @@ public class ConexaoTeste {
 
         // Assert
         assertNotNull(apontamento);
+        assertTrue(apontamento.getUsuarioId() != 0);
+        assertNotNull(apontamento.getUsuario());
+        assertTrue(apontamento.getUsuario().getUsuarioId() != 0);
     }
     
     @Test
     public void insert() {
         // Arrange
-        IUnitOfWork unitOfWork = new UnitOfWork(databaseFactory);
-        IClienteRepository clienteRepository = new ClienteRepository(databaseFactory);
-        Cliente cliente = new Cliente();
-        cliente.setCNPJ(2322323);
-        cliente.setEndereco("rua tal tal");
-        cliente.setNomeResponsavel("Qualquer um");
-        cliente.setRazaoSocial("Razao total pra esse cara");
-        cliente.setTelefone("32352069");
-        cliente.setEmail("joba@joba");
+        //IUnitOfWork unitOfWork = new UnitOfWork(databaseFactory);
+        //IClienteRepository clienteRepository = new ClienteRepository(databaseFactory);
+        //Cliente cliente = new Cliente();
+        //cliente.setCNPJ("232323");
+        //cliente.setEndereco("rua tal tal");
+        //cliente.setNomeResponsavel("Qualquer um");
+        //cliente.setRazaoSocial("Razao total pra esse cara");
+        //cliente.setTelefone("32352069");
+        //cliente.setEmail("joba@joba");
 
         // Act
-        clienteRepository.salvar(cliente);
-        unitOfWork.commit();
+        //clienteRepository.salvar(cliente);
+        //unitOfWork.commit();
 
         // Assert
-        assertTrue(cliente.getClienteId() != 0);
+        //assertTrue(cliente.getClienteId() != 0);
     }
 }

@@ -2,7 +2,7 @@ package Domain.Models;
 
 public class Cliente {
 
-    private int CNPJ;
+    private String CNPJ;
     private int clienteId;
     private String razaoSocial;
     private String nomeResponsavel;
@@ -42,11 +42,11 @@ public class Cliente {
         this.telefone = telefone;
     }
 
-    public int getCNPJ() {
+    public String getCNPJ() {
         return CNPJ;
     }
 
-    public void setCNPJ(int CNPJ) {
+    public void setCNPJ(String CNPJ) {
         this.CNPJ = CNPJ;
     }
 

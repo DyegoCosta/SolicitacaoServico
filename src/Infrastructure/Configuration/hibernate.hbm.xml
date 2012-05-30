@@ -13,25 +13,45 @@
         <property name="dataInicio" column="DataInicio" type="date"/>
         <property name="dataTermino" column="DataTermino" type="date"/>
         <property name="ordemServicoId" column="OrdemServicoId" type="int"/>            
-        <property name="usuarioId" column="UsuarioId" type="int"/>
+        <!--<property name="usuarioId" column="UsuarioId" type="int"/>-->
+        <many-to-one name="usuario" class="Domain.Models.Usuario" fetch="select">
+            <column name="UsuarioId" not-null="true" />
+        </many-to-one>
     </class>
     <class name="Domain.Models.Cliente" table="Clientes">
         <id name="clienteId" type="int" column="ClienteId" unsaved-value="0">
             <generator class="identity"/>
         </id>
         <property name="razaoSocial" column="RazaoSocial" type="string"/>
-        <property name="CNPJ" column="CNPJ" type="int"/>
+        <property name="CNPJ" column="CNPJ" type="string"/>
         <property name="nomeResponsavel" column="NomeResponsavel" type="string"/>
         <property name="telefone" column="Telefone" type="string"/>            
         <property name="endereco" column="Endereco" type="string"/>
         <property name="email" column="Email" type="string"/>
     </class>
     <class name="Domain.Models.OrdemServico" table="OrdemServicos">
-        <id name="ordemServicoId" type="int" column="OrdemServicoId">            
+        <id name="ordemServicoId" type="int" column="OrdemServicoId">
+            <generator class="identity"/>
         </id>
+        <!--<property name="ordemServicoCodigo" column="OrdemServicoCodigo" type="string"/>
+        <property name="clienteId" column="ClienteId" type="int"/>
+        <property name="atendenteId" column="AtendenteId" type="int"/>
+        <property name="analistaId" column="AnalistaId" type="int"/>
+        <property name="tecnicoId" column="TecnicoId" type="int"/>
+        <property name="objetivo" column="Objetivo" type="string"/>
+        <property name="dataAbertura" column="DataAbertura" type="date"/>
+        <property name="dataFechamento" column="DataFechamento" type="date"/>
+        <property name="status" column="Status" type="string"/>
+        <property name="prioridade" column="Prioridade" type="int"/>-->
     </class>
     <class name="Domain.Models.Usuario" table="Usuarios">
-        <id name="usuarioId" type="int" column="UsuarioId">            
+        <id name="usuarioId" type="int" column="UsuarioId">
+            <generator class="identity"/>
         </id>
+        <property name="cpf" column="Cpf" type="string"/>
+        <property name="nome" column="Nome" type="string"/>
+        <property name="sobrenome" column="Sobrenome" type="string"/>
+        <property name="login" column="Login" type="string"/>
+        <property name="senha" column="Senha" type="string"/>
     </class>
 </hibernate-mapping>
