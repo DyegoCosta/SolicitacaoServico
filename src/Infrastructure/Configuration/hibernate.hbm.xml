@@ -20,7 +20,7 @@
             <generator class="identity"/>
         </id>
         <property name="razaoSocial" column="RazaoSocial" type="string"/>
-        <property name="CNPJ" column="CNPJ" type="int"/>
+        <property name="CNPJ" column="CNPJ" type="string"/>
         <property name="nomeResponsavel" column="NomeResponsavel" type="string"/>
         <property name="telefone" column="Telefone" type="string"/>            
         <property name="endereco" column="Endereco" type="string"/>
