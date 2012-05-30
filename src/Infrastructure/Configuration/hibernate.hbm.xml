@@ -33,7 +33,7 @@
         <id name="ordemServicoId" type="int" column="OrdemServicoId">
             <generator class="identity"/>
         </id>
-        <!--<property name="ordemServicoCodigo" column="OrdemServicoCodigo" type="string"/>
+        <property name="ordemServicoCodigo" column="OrdemServicoCodigo" type="string"/>
         <property name="clienteId" column="ClienteId" type="int"/>
         <property name="atendenteId" column="AtendenteId" type="int"/>
         <property name="analistaId" column="AnalistaId" type="int"/>
@@ -42,7 +42,7 @@
         <property name="dataAbertura" column="DataAbertura" type="date"/>
         <property name="dataFechamento" column="DataFechamento" type="date"/>
         <property name="status" column="Status" type="string"/>
-        <property name="prioridade" column="Prioridade" type="int"/>-->
+        <property name="prioridade" column="Prioridade" type="int"/>
     </class>
     <class name="Domain.Models.Usuario" table="Usuarios">
         <id name="usuarioId" type="int" column="UsuarioId">

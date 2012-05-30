@@ -8,7 +8,7 @@ public class OrdemServico {
     private int analistaId;
     private int atendenteId;
     private int clienteId;
-    private Date dataConclusao;
+    private Date dataFechamento;
     private String objetivo;
     private int ordemServicoId;
     private StatusOrdemServico status;
@@ -32,7 +32,7 @@ public class OrdemServico {
         this.prioridade = prioridade;
     }
 
-    public Date getAbertura() {
+    public Date getDataAbertura() {
         return dataAbertura;
     }
 
@@ -40,12 +40,12 @@ public class OrdemServico {
         this.dataAbertura = dataAbertura;
     }
 
-    public Date getDataConclusao() {
-        return dataConclusao;
+    public Date getDataFechamento() {
+        return dataFechamento;
     }
 
-    public void setDataConclusao(Date dataConclusao) {
-        this.dataConclusao = dataConclusao;
+    public void setDataFechamento(Date dataFechamento) {
+        this.dataFechamento = dataFechamento;
     }
 
     public String getObjetivo() {
