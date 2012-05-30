@@ -13,8 +13,8 @@
         <property name="dataInicio" column="DataInicio" type="date"/>
         <property name="dataTermino" column="DataTermino" type="date"/>
         <property name="ordemServicoId" column="OrdemServicoId" type="int"/>            
-        <!--<property name="usuarioId" column="UsuarioId" type="int"/>-->
-        <many-to-one name="usuario" class="Domain.Models.Usuario" fetch="select">
+        <property name="usuarioId" column="UsuarioId" type="int"/>
+        <many-to-one name="usuario" class="Domain.Models.Usuario" fetch="select" update="false" insert="false">
             <column name="UsuarioId" not-null="true" />
         </many-to-one>
     </class>

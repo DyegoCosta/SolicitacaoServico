@@ -29,14 +29,16 @@ public class ConexaoTeste {
     @Test
     public void obterApontamentoPorId() {
         // Arrange
-        //IApontamentoRepository apontamentoRepository = new ApontamentoRepository(databaseFactory);
-        //int id = 2;
+        IApontamentoRepository apontamentoRepository = new ApontamentoRepository(databaseFactory);
+        int id = 2;
 
         // Act
-        //Apontamento apontamento = apontamentoRepository.obterPorId(id);
+        Apontamento apontamento = apontamentoRepository.obterPorId(id);
 
         // Assert
-        //assertNotNull(apontamento);
+        assertNotNull(apontamento);
+        assertFalse(apontamento.getApontamentoId() == 0);
+        assertFalse(apontamento.getUsuarioId() == 0);
     }
     
     @Test
@@ -50,9 +52,9 @@ public class ConexaoTeste {
 
         // Assert
         assertNotNull(apontamento);
-        assertTrue(apontamento.getUsuarioId() != 0);
+        assertFalse(apontamento.getUsuarioId() == 0);
         assertNotNull(apontamento.getUsuario());
-        assertTrue(apontamento.getUsuario().getUsuarioId() != 0);
+        assertFalse(apontamento.getUsuario().getUsuarioId() == 0);
     }
     
     @Test
