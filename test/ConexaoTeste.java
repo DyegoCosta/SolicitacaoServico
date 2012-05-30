@@ -6,9 +6,13 @@ import Domain.Data.UnitOfWork;
 import Domain.Repository.IApontamentoRepository;
 import Domain.Models.Apontamento;
 import Domain.Models.Cliente;
+import Domain.Models.OrdemServico;
+import Domain.Models.StatusOrdemServico;
 import Domain.Repository.IClienteRepository;
+import Domain.Repository.IOrdemServicoRepository;
 import Infrastructure.Repository.ApontamentoRepository;
 import Infrastructure.Repository.ClienteRepository;
+import Infrastructure.Repository.OrdemServicoRepository;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -24,6 +28,21 @@ public class ConexaoTeste {
     public void setUp() {
         
         databaseFactory = new DatabaseFactory("Infrastructure/Configuration/hibernate.cfg.xml");
+    }
+    
+    @Test
+    public void obterOrdemServicoPorId() {
+        // Arrange
+        IOrdemServicoRepository ordemServicoRepository = new OrdemServicoRepository(databaseFactory);
+        int id = 1;
+
+        // Act
+        OrdemServico ordemServico = ordemServicoRepository.obterPorId(id);
+
+        // Assert
+        assertNotNull(ordemServico);
+        assertFalse(ordemServico.getOrdemServicoId() == 0);
+        assertFalse(ordemServico.getStatus() == StatusOrdemServico.Aberta);
     }
     
     @Test
