@@ -46,6 +46,31 @@ public class ConexaoTeste {
     }
     
     @Test
+    public void obterOrdemServicoPorIdComRelacionamentosPreenchidos() {
+        // Arrange
+        IOrdemServicoRepository ordemServicoRepository = new OrdemServicoRepository(databaseFactory);
+        int id = 1;
+
+        // Act
+        OrdemServico ordemServico = ordemServicoRepository.obterPorId(id);
+
+        // Assert
+        assertNotNull(ordemServico);
+        assertFalse(ordemServico.getOrdemServicoId() == 0);
+        assertFalse(ordemServico.getClienteId() == 0);
+        assertFalse(ordemServico.getCliente().getClienteId() == 0);
+        
+        assertFalse(ordemServico.getAnalistaId() == 0);
+        assertFalse(ordemServico.getAnalista().getUsuarioId() == 0);
+        
+        assertFalse(ordemServico.getTecnicoId() == 0);
+        assertFalse(ordemServico.getTecnico().getUsuarioId() == 0);
+        
+        assertFalse(ordemServico.getAtendenteId() == 0);
+        assertFalse(ordemServico.getAtendente().getUsuarioId() == 0);
+    }
+    
+    @Test
     public void obterApontamentoPorId() {
         // Arrange
         IApontamentoRepository apontamentoRepository = new ApontamentoRepository(databaseFactory);

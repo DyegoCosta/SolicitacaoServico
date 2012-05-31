@@ -35,9 +35,21 @@
         </id>
         <property name="ordemServicoCodigo" column="OrdemServicoCodigo" type="string"/>
         <property name="clienteId" column="ClienteId" type="int"/>
+        <many-to-one name="cliente" class="Domain.Models.Cliente" fetch="select" update="false" insert="false">
+            <column name="ClienteId" not-null="true" />
+        </many-to-one>
         <property name="atendenteId" column="AtendenteId" type="int"/>
+        <many-to-one name="atendente" class="Domain.Models.Usuario" fetch="select" update="false" insert="false">
+            <column name="AtendenteId" not-null="true" />
+        </many-to-one>
         <property name="analistaId" column="AnalistaId" type="java.lang.Integer"/>
+        <many-to-one name="analista" class="Domain.Models.Usuario" fetch="select" update="false" insert="false">
+            <column name="AnalistaId" not-null="false" />
+        </many-to-one>
         <property name="tecnicoId" column="TecnicoId" type="java.lang.Integer"/>
+        <many-to-one name="tecnico" class="Domain.Models.Usuario" fetch="select" update="false" insert="false">
+            <column name="TecnicoId" not-null="false" />
+        </many-to-one>
         <property name="objetivo" column="Objetivo" type="string"/>
         <property name="dataAbertura" column="DataAbertura" type="date"/>
         <property name="dataFechamento" column="DataFechamento" type="date"/>

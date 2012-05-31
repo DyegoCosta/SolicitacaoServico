@@ -15,6 +15,42 @@ public class OrdemServico {
     private Integer tecnicoId;
     private int prioridade;
     private String ordemServicoCodigo; //OS1111232010(OSAnoMesDiaHoraMinuto)
+    private Cliente cliente;
+    private Usuario atendente;
+    private Usuario tecnico;
+    private Usuario analista;
+
+    public Usuario getAnalista() {
+        return analista;
+    }
+
+    public void setAnalista(Usuario analista) {
+        this.analista = analista;
+    }
+
+    public Usuario getAtendente() {
+        return atendente;
+    }
+
+    public void setAtendente(Usuario atendente) {
+        this.atendente = atendente;
+    }
+
+    public Usuario getTecnico() {
+        return tecnico;
+    }
+
+    public void setTecnico(Usuario tecnico) {
+        this.tecnico = tecnico;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
 
     public String getOrdemServicoCodigo() {
         return ordemServicoCodigo;
@@ -56,11 +92,11 @@ public class OrdemServico {
         this.objetivo = objetivo;
     }
 
-    public int getAnalistaId() {
+    public Integer getAnalistaId() {
         return analistaId;
     }
 
-    public void setAnalistaId(int analistaId) {
+    public void setAnalistaId(Integer analistaId) {
         this.analistaId = analistaId;
     }
 
