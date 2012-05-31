@@ -1,6 +1,8 @@
 package Domain.Models;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class OrdemServico {
 
@@ -19,6 +21,15 @@ public class OrdemServico {
     private Usuario atendente;
     private Usuario tecnico;
     private Usuario analista;
+    private List<Apontamento> apontamentos = new ArrayList<Apontamento>();
+
+    public List<Apontamento> getApontamentos() {
+        return apontamentos;
+    }
+
+    public void setApontamentos(List<Apontamento> apontamentos) {
+        this.apontamentos = apontamentos;
+    }
 
     public Usuario getAnalista() {
         return analista;

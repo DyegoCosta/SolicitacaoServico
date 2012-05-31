@@ -71,6 +71,20 @@ public class ConexaoTeste {
     }
     
     @Test
+    public void obterOrdemServicoPorIdComApontamentos() {
+        // Arrange
+        IOrdemServicoRepository ordemServicoRepository = new OrdemServicoRepository(databaseFactory);
+        int id = 1;
+
+        // Act
+        OrdemServico ordemServico = ordemServicoRepository.obterPorId(id);
+
+        // Assert
+        assertNotNull(ordemServico);
+        assertFalse(ordemServico.getApontamentos().isEmpty());
+    }
+    
+    @Test
     public void obterApontamentoPorId() {
         // Arrange
         IApontamentoRepository apontamentoRepository = new ApontamentoRepository(databaseFactory);

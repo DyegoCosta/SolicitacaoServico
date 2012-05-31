@@ -6,7 +6,7 @@
 
 <hibernate-mapping>
     <class name="Domain.Models.Apontamento" table="Apontamentos">
-        <id name="apontamentoId" type="int" column="ApontamentoId" unsaved-value="0" >
+        <id name="apontamentoId" type="int" column="ApontamentoId" unsaved-value="0">
             <generator class="identity"/>
         </id>
         <property name="detalhes" column="Detalhes" type="string"/>
@@ -59,6 +59,10 @@
             </type>
         </property>
         <property name="prioridade" column="Prioridade" type="int"/>
+        <list name="apontamentos" table="Apontamentos">
+            <key column="ApontamentoId" not-null="true"/>
+            <one-to-many class="Domain.Models.Apontamento"/>
+        </list>
     </class>
     <class name="Domain.Models.Usuario" table="Usuarios">
         <id name="usuarioId" type="int" column="UsuarioId">
