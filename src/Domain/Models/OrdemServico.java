@@ -5,14 +5,14 @@ import java.util.Date;
 public class OrdemServico {
 
     private Date dataAbertura;
-    private int analistaId;
+    private Integer analistaId;
     private int atendenteId;
     private int clienteId;
     private Date dataFechamento;
     private String objetivo;
     private int ordemServicoId;
     private StatusOrdemServico status;
-    private int tecnicoId;
+    private Integer tecnicoId;
     private int prioridade;
     private String ordemServicoCodigo; //OS1111232010(OSAnoMesDiaHoraMinuto)
 
@@ -88,11 +88,11 @@ public class OrdemServico {
         this.ordemServicoId = ordemServicoId;
     }
 
-    public int getTecnicoId() {
+    public Integer getTecnicoId() {
         return tecnicoId;
     }
 
-    public void setTecnicoId(int tecnicoId) {
+    public void setTecnicoId(Integer tecnicoId) {
         this.tecnicoId = tecnicoId;
     }
 

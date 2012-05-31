@@ -36,12 +36,16 @@
         <property name="ordemServicoCodigo" column="OrdemServicoCodigo" type="string"/>
         <property name="clienteId" column="ClienteId" type="int"/>
         <property name="atendenteId" column="AtendenteId" type="int"/>
-        <property name="analistaId" column="AnalistaId" type="int"/>
-        <property name="tecnicoId" column="TecnicoId" type="int"/>
+        <property name="analistaId" column="AnalistaId" type="java.lang.Integer"/>
+        <property name="tecnicoId" column="TecnicoId" type="java.lang.Integer"/>
         <property name="objetivo" column="Objetivo" type="string"/>
         <property name="dataAbertura" column="DataAbertura" type="date"/>
         <property name="dataFechamento" column="DataFechamento" type="date"/>
-        <property name="status" column="Status" type="string"/>
+        <property name="status" column="Status">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">Domain.Models.StatusOrdemServico</param>
+            </type>
+        </property>
         <property name="prioridade" column="Prioridade" type="int"/>
     </class>
     <class name="Domain.Models.Usuario" table="Usuarios">

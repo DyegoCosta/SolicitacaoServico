@@ -42,7 +42,7 @@ public class ConexaoTeste {
         // Assert
         assertNotNull(ordemServico);
         assertFalse(ordemServico.getOrdemServicoId() == 0);
-        assertFalse(ordemServico.getStatus() == StatusOrdemServico.Aberta);
+        assertTrue(ordemServico.getStatus() == StatusOrdemServico.Aberta);
     }
     
     @Test
