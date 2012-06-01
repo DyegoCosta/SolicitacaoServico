@@ -62,8 +62,8 @@
             </type>
         </property>
         <property name="prioridade" column="Prioridade" type="int"/>
-        <bag name="apontamentos" table="Apontamentos">
-            <key column="ApontamentoId"/>
+        <bag name="apontamentos" table="Apontamentos" lazy="true">
+            <key column="OrdemServicoId" not-null="false"/>
             <one-to-many class="Domain.Models.Apontamento"/>
         </bag>
     </class>

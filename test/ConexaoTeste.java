@@ -13,6 +13,7 @@ import Domain.Repository.IOrdemServicoRepository;
 import Infrastructure.Repository.ApontamentoRepository;
 import Infrastructure.Repository.ClienteRepository;
 import Infrastructure.Repository.OrdemServicoRepository;
+import java.io.Console;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;

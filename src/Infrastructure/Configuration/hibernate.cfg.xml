@@ -6,6 +6,7 @@
     <property name="hibernate.connection.url">jdbc:sqlserver://localhost;databaseName=SolicitacaoServico</property>
     <property name="hibernate.connection.username">sa</property>
     <property name="hibernate.connection.password">sqladmin</property>
+    <property name="show_sql">true</property>
     <mapping resource="Infrastructure/Configuration/hibernate.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>
