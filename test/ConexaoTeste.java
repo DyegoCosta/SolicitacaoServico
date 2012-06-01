@@ -115,6 +115,21 @@ public class ConexaoTeste {
         assertFalse(apontamento.getUsuario().getUsuarioId() == 0);
     }
     
+    public void obterApontamentoPorIdComOrdemServicoPreenchida() {
+        // Arrange
+        IApontamentoRepository apontamentoRepository = new ApontamentoRepository(databaseFactory);
+        int id = 2;
+
+        // Act
+        Apontamento apontamento = apontamentoRepository.obterPorId(id);
+
+        // Assert
+        assertNotNull(apontamento);
+        assertFalse(apontamento.getOrdemServicoId() == 0);
+        assertNotNull(apontamento.getOrdemServico());
+        assertFalse(apontamento.getOrdemServico().getOrdemServicoId() == 0);
+    }
+    
     @Test
     public void insert() {
         // Arrange

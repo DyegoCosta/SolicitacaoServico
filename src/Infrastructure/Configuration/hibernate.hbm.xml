@@ -17,6 +17,9 @@
         <many-to-one name="usuario" class="Domain.Models.Usuario" fetch="select" update="false" insert="false">
             <column name="UsuarioId" not-null="true" />
         </many-to-one>
+        <many-to-one name="ordemServico" class="Domain.Models.OrdemServico" fetch="select" update="false" insert="false">
+            <column name="OrdemServicoId" not-null="true" />
+        </many-to-one>
     </class>
     <class name="Domain.Models.Cliente" table="Clientes">
         <id name="clienteId" type="int" column="ClienteId" unsaved-value="0">
@@ -59,10 +62,10 @@
             </type>
         </property>
         <property name="prioridade" column="Prioridade" type="int"/>
-        <list name="apontamentos" table="Apontamentos">
-            <key column="ApontamentoId" not-null="true"/>
+        <bag name="apontamentos" table="Apontamentos">
+            <key column="ApontamentoId"/>
             <one-to-many class="Domain.Models.Apontamento"/>
-        </list>
+        </bag>
     </class>
     <class name="Domain.Models.Usuario" table="Usuarios">
         <id name="usuarioId" type="int" column="UsuarioId">

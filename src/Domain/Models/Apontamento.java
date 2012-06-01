@@ -11,6 +11,15 @@ public class Apontamento {
     private int usuarioId;
     private Date dataTermino;
     private Usuario usuario;
+    private OrdemServico ordemServico;
+
+    public OrdemServico getOrdemServico() {
+        return ordemServico;
+    }
+
+    public void setOrdemServico(OrdemServico ordemServico) {
+        this.ordemServico = ordemServico;
+    }
 
     public Usuario getUsuario() {
         return usuario;
