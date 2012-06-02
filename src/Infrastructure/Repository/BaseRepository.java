@@ -39,6 +39,10 @@ public abstract class BaseRepository<TEntity>
         session.delete(entidade);
     }
     
+    protected String adicionarSinalPorcentagem(String texto){
+        return String.format("%%%s%%", texto);
+    }
+    
     private String obterNomeTabela(){
         return String.format("%ss", classePersistente.getSimpleName());
     }

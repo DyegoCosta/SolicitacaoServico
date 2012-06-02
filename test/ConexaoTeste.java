@@ -12,7 +12,6 @@ import Infrastructure.Repository.ApontamentoRepository;
 import Infrastructure.Repository.ClienteRepository;
 import Infrastructure.Repository.OrdemServicoRepository;
 import Infrastructure.Repository.UsuarioRepository;
-import java.io.Console;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;

@@ -3,6 +3,10 @@ package Infrastructure.Repository;
 import Domain.Data.IDatabaseFactory;
 import Domain.Models.Usuario;
 import Domain.Repository.IUsuarioRepository;
+import java.util.List;
+import javax.crypto.Cipher;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 
 public class UsuarioRepository extends BaseRepository<Usuario> implements IUsuarioRepository {
     
@@ -17,5 +21,19 @@ public class UsuarioRepository extends BaseRepository<Usuario> implements IUsuar
                                .setString("login", login)
                                .setString("senha", senha)
                                .uniqueResult();
+    }
+
+    @Override
+    public List<Usuario> listarPorCriterio(String texto) {
+        
+        texto = adicionarSinalPorcentagem(texto);
+        Criteria criterio = session.createCriteria(Usuario.class)
+                                   .add(Restrictions.disjunction()
+                                                    .add(Restrictions.ilike("login", texto))
+                                                    .add(Restrictions.ilike("nome", texto))
+                                                    .add(Restrictions.ilike("sobrenome", texto))
+                                                    .add(Restrictions.ilike("cpf", texto)))
+                                                    .add(Restrictions.ilike("usuarioId", texto));
+        return criterio.list();
     }
 }
