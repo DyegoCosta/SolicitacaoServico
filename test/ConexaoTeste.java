@@ -3,16 +3,15 @@ import Domain.Data.DatabaseFactory;
 import Domain.Data.IDatabaseFactory;
 import Domain.Data.IUnitOfWork;
 import Domain.Data.UnitOfWork;
+import Domain.Models.*;
 import Domain.Repository.IApontamentoRepository;
-import Domain.Models.Apontamento;
-import Domain.Models.Cliente;
-import Domain.Models.OrdemServico;
-import Domain.Models.StatusOrdemServico;
 import Domain.Repository.IClienteRepository;
 import Domain.Repository.IOrdemServicoRepository;
+import Domain.Repository.IUsuarioRepository;
 import Infrastructure.Repository.ApontamentoRepository;
 import Infrastructure.Repository.ClienteRepository;
 import Infrastructure.Repository.OrdemServicoRepository;
+import Infrastructure.Repository.UsuarioRepository;
 import java.io.Console;
 import org.junit.Before;
 import org.junit.Test;
@@ -97,6 +96,20 @@ public class ConexaoTeste {
         // Assert
         assertNotNull(cliente);
         assertFalse(cliente.getOrdensServicos().isEmpty());
+    }
+    
+    @Test
+    public void obterUsuarioPorIdComApontamentos() {
+        // Arrange
+        IUsuarioRepository usuarioRepository = new UsuarioRepository(databaseFactory);
+        int id = 1;
+
+        // Act
+        Usuario usuario = usuarioRepository.obterPorId(id);
+
+        // Assert
+        assertNotNull(usuario);
+        assertFalse(usuario.getApontamentos().isEmpty());
     }
     
     @Test

@@ -80,5 +80,9 @@
         <property name="sobrenome" column="Sobrenome" type="string"/>
         <property name="login" column="Login" type="string"/>
         <property name="senha" column="Senha" type="string"/>
+        <bag name="apontamentos" table="Apontamentos" lazy="true">
+            <key column="UsuarioId" not-null="false"/>
+            <one-to-many class="Domain.Models.Apontamento"/>
+        </bag>
     </class>
 </hibernate-mapping>

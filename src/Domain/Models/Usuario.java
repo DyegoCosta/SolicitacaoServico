@@ -1,5 +1,7 @@
 package Domain.Models;
 
+import java.util.List;
+
 public class Usuario {
 
     private int usuarioId;
@@ -8,6 +10,15 @@ public class Usuario {
     private String sobrenome;
     private String senha;
     private String cpf;
+    private List<Apontamento> apontamentos;
+
+    public List<Apontamento> getApontamentos() {
+        return apontamentos;
+    }
+
+    public void setApontamentos(List<Apontamento> apontamentos) {
+        this.apontamentos = apontamentos;
+    }
 
     public String getCpf() {
         return cpf;
