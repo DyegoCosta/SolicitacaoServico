@@ -1,5 +1,7 @@
 package Domain.Models;
 
+import java.util.List;
+
 public class Cliente {
 
     private String CNPJ;
@@ -9,6 +11,15 @@ public class Cliente {
     private String telefone;
     private String email;
     private String endereco;
+    private List<OrdemServico> ordensServicos;
+
+    public List<OrdemServico> getOrdensServicos() {
+        return ordensServicos;
+    }
+
+    public void setOrdensServicos(List<OrdemServico> ordensServicos) {
+        this.ordensServicos = ordensServicos;
+    }
 
     public String getEndereco() {
         return endereco;

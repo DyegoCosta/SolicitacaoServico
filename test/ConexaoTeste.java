@@ -86,6 +86,20 @@ public class ConexaoTeste {
     }
     
     @Test
+    public void obterClientePorIdComOrdensServicos() {
+        // Arrange
+        IClienteRepository clienteRepository = new ClienteRepository(databaseFactory);
+        int id = 1;
+
+        // Act
+        Cliente cliente = clienteRepository.obterPorId(id);
+
+        // Assert
+        assertNotNull(cliente);
+        assertFalse(cliente.getOrdensServicos().isEmpty());
+    }
+    
+    @Test
     public void obterApontamentoPorId() {
         // Arrange
         IApontamentoRepository apontamentoRepository = new ApontamentoRepository(databaseFactory);
@@ -116,6 +130,7 @@ public class ConexaoTeste {
         assertFalse(apontamento.getUsuario().getUsuarioId() == 0);
     }
     
+    @Test
     public void obterApontamentoPorIdComOrdemServicoPreenchida() {
         // Arrange
         IApontamentoRepository apontamentoRepository = new ApontamentoRepository(databaseFactory);

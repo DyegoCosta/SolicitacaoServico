@@ -31,6 +31,10 @@
         <property name="telefone" column="Telefone" type="string"/>            
         <property name="endereco" column="Endereco" type="string"/>
         <property name="email" column="Email" type="string"/>
+        <bag name="ordensServicos" table="OrdemServicos" lazy="true">
+            <key column="ClienteId" not-null="false"/>
+            <one-to-many class="Domain.Models.OrdemServico"/>
+        </bag>
     </class>
     <class name="Domain.Models.OrdemServico" table="OrdemServicos">
         <id name="ordemServicoId" type="int" column="OrdemServicoId">
