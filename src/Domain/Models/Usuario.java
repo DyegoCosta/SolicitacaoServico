@@ -11,6 +11,15 @@ public class Usuario {
     private String senha;
     private String cpf;
     private List<Apontamento> apontamentos;
+    private List<OrdemServico> ordensServicos;
+
+    public List<OrdemServico> getOrdensServicos() {
+        return ordensServicos;
+    }
+
+    public void setOrdensServicos(List<OrdemServico> ordensServicos) {
+        this.ordensServicos = ordensServicos;
+    }
 
     public List<Apontamento> getApontamentos() {
         return apontamentos;

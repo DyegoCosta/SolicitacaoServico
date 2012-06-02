@@ -84,5 +84,9 @@
             <key column="UsuarioId" not-null="false"/>
             <one-to-many class="Domain.Models.Apontamento"/>
         </bag>
+        <bag name="ordensServicos" table="OrdemServicos" lazy="true">
+            <key column="TecnicoId" not-null="false"/>
+            <one-to-many class="Domain.Models.OrdemServico"/>
+        </bag>
     </class>
 </hibernate-mapping>
