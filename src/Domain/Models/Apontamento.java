@@ -1,15 +1,16 @@
 package Domain.Models;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
 
 public class Apontamento {
     
     private String detalhes;
     private int apontamentoId;
-    private DateTime dataInicio;
+    private LocalDateTime dataInicio;
     private int ordemServicoId;
     private int usuarioId;
-    private DateTime dataTermino;
+    private LocalDateTime dataTermino;
     private Usuario usuario;
     private OrdemServico ordemServico;
 
@@ -29,19 +30,19 @@ public class Apontamento {
         this.usuario = usuario;
     }
 
-    public DateTime getDataInicio() {
+    public LocalDateTime getDataInicio() {
         return dataInicio;
     }
 
-    public void setDataInicio(DateTime dataInicio) {
+    public void setDataInicio(LocalDateTime dataInicio) {
         this.dataInicio = dataInicio;
     }
 
-    public DateTime getDataTermino() {
+    public LocalDateTime getDataTermino() {
         return dataTermino;
     }
 
-    public void setDataTermino(DateTime dataTermino) {
+    public void setDataTermino(LocalDateTime dataTermino) {
         this.dataTermino = dataTermino;
     }
 
