@@ -1,15 +1,15 @@
 package Domain.Models;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 public class Apontamento {
     
     private String detalhes;
     private int apontamentoId;
-    private Date dataInicio;
+    private DateTime dataInicio;
     private int ordemServicoId;
     private int usuarioId;
-    private Date dataTermino;
+    private DateTime dataTermino;
     private Usuario usuario;
     private OrdemServico ordemServico;
 
@@ -29,19 +29,19 @@ public class Apontamento {
         this.usuario = usuario;
     }
 
-    public Date getDataInicio() {
+    public DateTime getDataInicio() {
         return dataInicio;
     }
 
-    public void setDataInicio(Date dataInicio) {
+    public void setDataInicio(DateTime dataInicio) {
         this.dataInicio = dataInicio;
     }
 
-    public Date getDataTermino() {
+    public DateTime getDataTermino() {
         return dataTermino;
     }
 
-    public void setDataTermino(Date dataTermino) {
+    public void setDataTermino(DateTime dataTermino) {
         this.dataTermino = dataTermino;
     }
 
