@@ -1,16 +1,16 @@
 package Domain.Models;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import org.joda.time.LocalDateTime;
 
 public class OrdemServico {
 
-    private Date dataAbertura;
+    private LocalDateTime dataAbertura;
     private Integer analistaId;
     private int atendenteId;
     private int clienteId;
-    private Date dataFechamento;
+    private LocalDateTime dataFechamento;
     private String objetivo;
     private int ordemServicoId;
     private StatusOrdemServico status;
@@ -79,19 +79,19 @@ public class OrdemServico {
         this.prioridade = prioridade;
     }
 
-    public Date getDataAbertura() {
+    public LocalDateTime getDataAbertura() {
         return dataAbertura;
     }
 
-    public void setDataAbertura(Date dataAbertura) {
+    public void setDataAbertura(LocalDateTime dataAbertura) {
         this.dataAbertura = dataAbertura;
     }
 
-    public Date getDataFechamento() {
+    public LocalDateTime getDataFechamento() {
         return dataFechamento;
     }
 
-    public void setDataFechamento(Date dataFechamento) {
+    public void setDataFechamento(LocalDateTime dataFechamento) {
         this.dataFechamento = dataFechamento;
     }
 

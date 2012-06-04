@@ -45,7 +45,7 @@ CREATE TABLE Apontamentos
 	ApontamentoId INT PRIMARY KEY IDENTITY,
 	OrdemServicoId INT FOREIGN KEY REFERENCES OrdemServicos(OrdemServicoId) NOT NULL,
 	DataInicio DATETIME NOT NULL,
-	DataTermino DATETIME NOT NULL,
+	DataTermino DATETIME NULL,
 	UsuarioId INT FOREIGN KEY REFERENCES Usuarios(UsuarioId) NOT NULL,
 	Detalhes VARCHAR(500) NOT NULL
 )

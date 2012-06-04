@@ -1,6 +1,5 @@
 package Domain.Models;
 
-import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 
 public class Apontamento {
