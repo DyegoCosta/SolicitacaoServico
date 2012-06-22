@@ -9,25 +9,27 @@ import Presentation.Util.UIHelper;
 import javax.swing.JOptionPane;
 
 public class NovoClienteDialog extends javax.swing.JDialog {
-
+    
     private IClienteRepository clienteRepository;
     private Cliente cliente;
-
+    
     public NovoClienteDialog(java.awt.Frame parent, IClienteRepository clienteRepository) {
         this(parent, clienteRepository, null);
     }
-
+    
     public NovoClienteDialog(java.awt.Frame parent, IClienteRepository clienteRepository, Cliente cliente) {
         super(parent, true);
         initComponents();
-
+        
         this.clienteRepository = clienteRepository;
         this.cliente = cliente;
         this.setLocationRelativeTo(null);
         UIHelper.criarGroupBox(jPanel1, "Dados");
         habilitaBotoes();
+        if(!estaModoEdicao())
+            habilitaCampos();
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -184,6 +186,11 @@ public class NovoClienteDialog extends javax.swing.JDialog {
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Editar.png"))); // NOI18N
         btnEditar.setText("Editar");
         btnEditar.setEnabled(false);
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -223,10 +230,10 @@ public class NovoClienteDialog extends javax.swing.JDialog {
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
-
+    
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         if (estaModoEdicao() && exclusaoConfirmada()) {
-
+            
             try {
                 excluir();
             } catch (ValidacaoException ex) {
@@ -234,7 +241,12 @@ public class NovoClienteDialog extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
-
+    
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        habilitaCampos();
+        txtCodigo.setEditable(false);
+        txtRazaosocial.requestFocus();
+    }//GEN-LAST:event_btnEditarActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEditar;
@@ -272,18 +284,18 @@ public class NovoClienteDialog extends javax.swing.JDialog {
         return JOptionPane.showConfirmDialog(this, "Deseja mesmo excluir?", "", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == 0;
     }
     
-    private boolean estaModoEdicao(){
+    private boolean estaModoEdicao() {
         return cliente != null;
     }
     
-    private void habilitaBotoes(){
+    private void habilitaBotoes() {
         btnCancelar.setEnabled(true);
         btnEditar.setEnabled(estaModoEdicao());
         btnExcluir.setEnabled(estaModoEdicao());
         btnSalvar.setEnabled(true);
     }
     
-    private void habilitaCampos(){
+    private void habilitaCampos() {
         UIHelper.habilitaCampos(this);
     }
 }
