@@ -7,34 +7,41 @@ import Domain.Models.Usuario;
 import Domain.Repository.IUsuarioRepository;
 import Infrastructure.Repository.UsuarioRepository;
 import Presentation.Util.KeyValue;
-import java.util.*;
-import javax.swing.ComboBoxModel;
+import Presentation.Util.UIHelper;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
 import javax.swing.JComboBox;
 
 public class OrdemServicoDialog extends javax.swing.JDialog {
-    private IUsuarioRepository _usuarioRepository;    
-    
+
+    private IUsuarioRepository _usuarioRepository;
+
     public OrdemServicoDialog(java.awt.Frame parent, boolean modal, IDatabaseFactory databaseFactory) {
         super(parent, modal);
         _usuarioRepository = new UsuarioRepository(databaseFactory, null);
-        
+
         initComponents();
-        
+
+        UIHelper.criarGroupBox(panelAtendimento, "Atendimento");
+        UIHelper.criarGroupBox(panelInformacoesRequerimento, "Requerimento");
+
         PreencherComponentes();
-        
-        HabilitarCamposParaCriacao();        
-        
+
+        HabilitarCamposParaCriacao();
+
         this.setLocationRelativeTo(null);
     }
-    
+
     public OrdemServicoDialog(java.awt.Frame parent, boolean modal, OrdemServico ordemServico) {
         super(parent, modal);
         initComponents();
-        
+
         PreencherComponentes(ordemServico);
-        
+
         btnEdit.setEnabled(true);
-        
+
         this.setLocationRelativeTo(null);
     }
 
@@ -42,13 +49,13 @@ public class OrdemServicoDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel2 = new javax.swing.JPanel();
+        panelInformacoesRequerimento = new javax.swing.JPanel();
         lblPrioridade = new javax.swing.JLabel();
         lblObjetivo = new javax.swing.JLabel();
         cbxPrioridade = new javax.swing.JComboBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtObjetivo = new javax.swing.JTextArea();
-        jPanel1 = new javax.swing.JPanel();
+        panelAtendimento = new javax.swing.JPanel();
         lblNumero = new javax.swing.JLabel();
         lblAtendente = new javax.swing.JLabel();
         txtNumero = new javax.swing.JTextField();
@@ -63,7 +70,7 @@ public class OrdemServicoDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        panelInformacoesRequerimento.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         lblPrioridade.setText("Prioridade");
 
@@ -76,36 +83,36 @@ public class OrdemServicoDialog extends javax.swing.JDialog {
         txtObjetivo.setEnabled(false);
         jScrollPane1.setViewportView(txtObjetivo);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelInformacoesRequerimentoLayout = new javax.swing.GroupLayout(panelInformacoesRequerimento);
+        panelInformacoesRequerimento.setLayout(panelInformacoesRequerimentoLayout);
+        panelInformacoesRequerimentoLayout.setHorizontalGroup(
+            panelInformacoesRequerimentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelInformacoesRequerimentoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelInformacoesRequerimentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblObjetivo)
                     .addComponent(lblPrioridade))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelInformacoesRequerimentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cbxPrioridade, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        panelInformacoesRequerimentoLayout.setVerticalGroup(
+            panelInformacoesRequerimentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelInformacoesRequerimentoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelInformacoesRequerimentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblPrioridade)
                     .addComponent(cbxPrioridade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelInformacoesRequerimentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblObjetivo)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        panelAtendimento.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         lblNumero.setText("Número");
 
@@ -123,45 +130,45 @@ public class OrdemServicoDialog extends javax.swing.JDialog {
 
         txtDataAbertura.setEnabled(false);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelAtendimentoLayout = new javax.swing.GroupLayout(panelAtendimento);
+        panelAtendimento.setLayout(panelAtendimentoLayout);
+        panelAtendimentoLayout.setHorizontalGroup(
+            panelAtendimentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelAtendimentoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(panelAtendimentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(panelAtendimentoLayout.createSequentialGroup()
                         .addComponent(lblNumero)
                         .addGap(32, 32, 32)
                         .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(panelAtendimentoLayout.createSequentialGroup()
                         .addComponent(lblAtendente)
                         .addGap(18, 18, 18)
                         .addComponent(cbxAtendente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(26, 26, 26)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(panelAtendimentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(panelAtendimentoLayout.createSequentialGroup()
                         .addComponent(lblDataAbertura)
                         .addGap(18, 18, 18)
                         .addComponent(txtDataAbertura, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(panelAtendimentoLayout.createSequentialGroup()
                         .addComponent(lblAnalista)
                         .addGap(50, 50, 50)
                         .addComponent(cbxAnalista, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        panelAtendimentoLayout.setVerticalGroup(
+            panelAtendimentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelAtendimentoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelAtendimentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelAtendimentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblNumero)
                         .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblDataAbertura))
                     .addComponent(txtDataAbertura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelAtendimentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblAtendente)
                     .addComponent(lblAnalista)
                     .addComponent(cbxAtendente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -185,7 +192,7 @@ public class OrdemServicoDialog extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(357, Short.MAX_VALUE)
+                .addContainerGap(368, Short.MAX_VALUE)
                 .addComponent(btnEdit)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSalvar)
@@ -195,15 +202,15 @@ public class OrdemServicoDialog extends javax.swing.JDialog {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addContainerGap()))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(panelInformacoesRequerimento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(panelAtendimento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addContainerGap(21, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(294, Short.MAX_VALUE)
+                .addContainerGap(336, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSalvar)
                     .addComponent(btnCancelar)
@@ -212,10 +219,10 @@ public class OrdemServicoDialog extends javax.swing.JDialog {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(18, 18, 18)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelAtendimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(18, 18, 18)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(48, Short.MAX_VALUE)))
+                    .addComponent(panelInformacoesRequerimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(90, Short.MAX_VALUE)))
         );
 
         pack();
@@ -277,8 +284,6 @@ public class OrdemServicoDialog extends javax.swing.JDialog {
     private javax.swing.JComboBox cbxAnalista;
     private javax.swing.JComboBox cbxAtendente;
     private javax.swing.JComboBox cbxPrioridade;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAnalista;
     private javax.swing.JLabel lblAtendente;
@@ -286,41 +291,43 @@ public class OrdemServicoDialog extends javax.swing.JDialog {
     private javax.swing.JLabel lblNumero;
     private javax.swing.JLabel lblObjetivo;
     private javax.swing.JLabel lblPrioridade;
+    private javax.swing.JPanel panelAtendimento;
+    private javax.swing.JPanel panelInformacoesRequerimento;
     private com.toedter.calendar.JDateChooser txtDataAbertura;
     private javax.swing.JTextField txtNumero;
     private javax.swing.JTextArea txtObjetivo;
     // End of variables declaration//GEN-END:variables
 
-    private void PreencherComponentes() {   
+    private void PreencherComponentes() {
         PreencheComboBoxes();
-        
-        txtNumero.setText(GerarCodigoPadraoOrdemServico());        
-        txtDataAbertura.setDate(new Date());               
+
+        txtNumero.setText(GerarCodigoPadraoOrdemServico());
+        txtDataAbertura.setDate(new Date());
     }
 
     private void PreencherComponentes(OrdemServico ordemServico) {
         PreencheComboBoxes();
-        
+
         txtNumero.setText(ordemServico.getOrdemServicoCodigo());
         txtDataAbertura.setDate(ordemServico.getDataAbertura().toDate());
         txtObjetivo.setText(ordemServico.getObjetivo());
     }
-    
-    private String GerarCodigoPadraoOrdemServico() {        
+
+    private String GerarCodigoPadraoOrdemServico() {
         Calendar dataAtual = Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00"));
         int ano = dataAtual.get(Calendar.YEAR);
         int mes = dataAtual.get(Calendar.MONTH);
         int dia = dataAtual.get(Calendar.DAY_OF_MONTH);
         int hora = dataAtual.get(Calendar.HOUR);
         int minuto = dataAtual.get(Calendar.MINUTE);
-        int milessegundo = dataAtual.get(Calendar.MILLISECOND);
-        
-        return String.format("OS%s%s%s%s%s%s", ano, mes, dia, hora, minuto, milessegundo);
+
+        return String.format("OS%s%s%s%s%s", ano, mes, dia, hora, minuto);
     }
 
     private void PreencherComboBoxUsuarios(JComboBox comboBox, List<Usuario> usuarios) {
-        for(Usuario u : usuarios)
+        for (Usuario u : usuarios) {
             comboBox.addItem(new KeyValue(u.getNome(), String.valueOf(u.getUsuarioId())));
+        }
     }
 
     private void PreencherComboBoxPrioridades(JComboBox cbxPrioridade) {
@@ -335,25 +342,25 @@ public class OrdemServicoDialog extends javax.swing.JDialog {
         txtObjetivo.setEnabled(true);
         cbxAnalista.setEnabled(true);
         cbxAtendente.setEnabled(true);
-        cbxPrioridade.setEnabled(true);        
-        
+        cbxPrioridade.setEnabled(true);
+
         // O botão editar será desabilitado pois se os campos editáveis
         // estiverem habilitados será para edição ou criação de uma OS        
-        btnEdit.setEnabled(true);         
+        btnEdit.setEnabled(true);
     }
 
     private void HabilitarCamposParaCriacao() {
         HabilitarCampos();
-        
+
         btnSalvar.setEnabled(true);
         btnCancelar.setEnabled(true);
     }
 
     private void PreencheComboBoxes() {
         List<Usuario> usuarios = _usuarioRepository.obterTodos();
-        PreencherComboBoxUsuarios(cbxAnalista, usuarios);                
+        PreencherComboBoxUsuarios(cbxAnalista, usuarios);
         PreencherComboBoxUsuarios(cbxAtendente, usuarios);
-        
+
         PreencherComboBoxPrioridades(cbxPrioridade);
     }
 }

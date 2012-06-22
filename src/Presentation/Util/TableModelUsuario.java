@@ -5,7 +5,7 @@ import java.util.List;
 
 public class TableModelUsuario extends TableModel<Usuario> {
     public TableModelUsuario(List<Usuario> usuarios) {        
-        super(new String[]{"Id", "Nome", "Sobrenome", "Login"}, usuarios);                
+        super(new String[]{"Código", "Nome", "Sobrenome", "Login", "CPF"}, usuarios);                
     }
 
     @Override
@@ -19,6 +19,8 @@ public class TableModelUsuario extends TableModel<Usuario> {
                 return entidades.get(row).getSobrenome();
             case 3:
                 return entidades.get(row).getLogin();
+            case 4:
+                return entidades.get(row).getCpf();
             default:
                 throw new RuntimeException("coluna inválida");
         }
@@ -34,6 +36,8 @@ public class TableModelUsuario extends TableModel<Usuario> {
             case 2:
                 return String.class;
             case 3:
+                return String.class;
+            case 4:
                 return String.class;
             default:
                 throw new RuntimeException("coluna inválida");
