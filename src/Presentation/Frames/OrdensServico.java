@@ -16,21 +16,18 @@ import javax.swing.table.TableModel;
 public class OrdensServico extends BaseJInternalFrame {
 
     private IOrdemServicoRepository _ordemServicoRepository;
-    private TableModel _modelOrdensServico;
-    private IDatabaseFactory _databaseFactory;
+    private TableModel _modelOrdensServico;    
     private List<OrdemServico> _listaOrdensServicos;
     
     public OrdensServico(IDatabaseFactory databaseFactory) {
-        super(new OrdemServicoRepository(databaseFactory));        
-        _ordemServicoRepository = (IOrdemServicoRepository)super.Repository;
-        
-        _databaseFactory = databaseFactory;
+        super(databaseFactory);        
+        _ordemServicoRepository = new OrdemServicoRepository(super.getDatabaseFactory());
 
         initComponents();
 
         UIHelper.criarGroupBox(jPanel1, "Pesquisar");
 
-        _modelOrdensServico = obterOrdemServicoTableModel(_databaseFactory);
+        _modelOrdensServico = obterOrdemServicoTableModel(super.getDatabaseFactory());
         tblListaOrdensServico.setModel(_modelOrdensServico);
 
         jPanel1.setBorder(BorderFactory.createTitledBorder("Pesquisar"));
@@ -170,7 +167,7 @@ private void txtPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
 }//GEN-LAST:event_txtPesquisarActionPerformed
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-        OrdemServicoDialog dialog = new OrdemServicoDialog(null, true, _databaseFactory);
+        OrdemServicoDialog dialog = new OrdemServicoDialog(null, true, super.getDatabaseFactory());
         dialog.setVisible(true);
     }//GEN-LAST:event_btnNovoActionPerformed
 
