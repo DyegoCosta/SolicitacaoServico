@@ -24,7 +24,7 @@ public class UsuarioTeste {
     @Test
     public void listarUsuariosCriterioJoba() {
         // Arrange
-        IUsuarioRepository usuarioRepository = new UsuarioRepository(databaseFactory);
+        IUsuarioRepository usuarioRepository = new UsuarioRepository(databaseFactory, null);
         String texto = "joba";
         // Act
         List<Usuario> usuarios = usuarioRepository.listarPorCriterio(texto);
@@ -36,7 +36,7 @@ public class UsuarioTeste {
     @Test
     public void listarUsuariosCriterioUsuarioId() {
         // Arrange
-        IUsuarioRepository usuarioRepository = new UsuarioRepository(databaseFactory);
+        IUsuarioRepository usuarioRepository = new UsuarioRepository(databaseFactory, null);
         String texto = "4";
         // Act
         List<Usuario> usuarios = usuarioRepository.listarPorCriterio(texto);
