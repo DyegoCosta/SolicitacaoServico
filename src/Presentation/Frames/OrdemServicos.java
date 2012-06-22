@@ -10,6 +10,7 @@
  */
 package Presentation.Frames;
 
+import Presentation.Util.UIHelper;
 import javax.swing.BorderFactory;
 
 /**
@@ -21,7 +22,7 @@ public class OrdemServicos extends javax.swing.JInternalFrame {
     /** Creates new form OrdemServicos */
     public OrdemServicos() {
         initComponents();
-        jPanel1.setBorder(BorderFactory.createTitledBorder("Pesquisar"));
+        UIHelper.criarGroupBox(jPanel1, "Pesquisar");
         
     }
 
