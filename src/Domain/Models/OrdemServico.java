@@ -5,7 +5,6 @@ import java.util.List;
 import org.joda.time.LocalDateTime;
 
 public class OrdemServico {
-
     private LocalDateTime dataAbertura;
     private Integer analistaId;
     private int atendenteId;

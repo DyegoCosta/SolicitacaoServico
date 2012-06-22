@@ -5,23 +5,27 @@ import Domain.Models.OrdemServico;
 import Domain.Repository.IOrdemServicoRepository;
 import Infrastructure.Repository.OrdemServicoRepository;
 import Presentation.Util.TableModelOrdemServico;
-import java.util.List;
 import Presentation.Util.UIHelper;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.table.TableModel;
 
-public class OrdemServicos extends javax.swing.JInternalFrame {
+public class OrdensServico extends javax.swing.JInternalFrame {
+
     private IOrdemServicoRepository _ordemServicoRepository;
     private TableModel _modelOrdensServico;
-    
-    public OrdemServicos(IDatabaseFactory databaseFactory) {
+    private IDatabaseFactory _databaseFactory;
+
+    public OrdensServico(IDatabaseFactory databaseFactory) {
+        _databaseFactory = databaseFactory;
+
         initComponents();
 
         UIHelper.criarGroupBox(jPanel1, "Pesquisar");
 
-        _modelOrdensServico = obterOrdemServicoTableModel(databaseFactory);
+        _modelOrdensServico = obterOrdemServicoTableModel(_databaseFactory);
         tblListaOrdensServico.setModel(_modelOrdensServico);
-        
+
         jPanel1.setBorder(BorderFactory.createTitledBorder("Pesquisar"));
     }
 
@@ -103,6 +107,11 @@ public class OrdemServicos extends javax.swing.JInternalFrame {
 
         btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Novo.png"))); // NOI18N
         btnNovo.setText("Novo");
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnNovo);
         btnNovo.setBounds(500, 430, 77, 25);
 
@@ -123,6 +132,10 @@ public class OrdemServicos extends javax.swing.JInternalFrame {
 private void txtPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPesquisarActionPerformed
 }//GEN-LAST:event_txtPesquisarActionPerformed
 
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        OrdemServicoDialog dialog = new OrdemServicoDialog(null, true, _databaseFactory);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_btnNovoActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnExcluir;
@@ -136,8 +149,8 @@ private void txtPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
 
     private TableModel obterOrdemServicoTableModel(IDatabaseFactory databaseFactory) {
         _ordemServicoRepository = new OrdemServicoRepository(databaseFactory);
-        List<OrdemServico> ordensServico = _ordemServicoRepository.obterTodos();                
-                
+        List<OrdemServico> ordensServico = _ordemServicoRepository.obterTodos();
+
         return new TableModelOrdemServico(ordensServico);
     }
 }

@@ -6,6 +6,8 @@ public class Acesso extends javax.swing.JFrame {
 
     public Acesso() {
         initComponents();
+        
+        this.setLocationRelativeTo(null);
     }
 
     /**

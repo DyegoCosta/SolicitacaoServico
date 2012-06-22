@@ -8,9 +8,11 @@ public class Principal extends javax.swing.JFrame {
     private IDatabaseFactory _databaseFactory;
 
     public Principal() {
-        _databaseFactory = new DatabaseFactory("Infrastructure/Configuration/hibernate.cfg.xml");
-
+        _databaseFactory = new DatabaseFactory("Infrastructure/Configuration/hibernate.cfg.xml");        
+        
         initComponents();
+        
+        this.setLocationRelativeTo(null);
     }
 
     @SuppressWarnings("unchecked")
@@ -74,8 +76,9 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 private void ServicosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ServicosActionPerformed
-    OrdemServicos janelas = new OrdemServicos(_databaseFactory);
+    OrdensServico janelas = new OrdensServico(_databaseFactory);    
     this.add(janelas);
+    
     janelas.setVisible(true);
 }//GEN-LAST:event_ServicosActionPerformed
 
