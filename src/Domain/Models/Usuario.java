@@ -12,6 +12,15 @@ public class Usuario {
     private String cpf;
     private List<Apontamento> apontamentos;
     private List<OrdemServico> ordensServicos;
+    private Perfil pefil;
+
+    public Perfil getPefil() {
+        return pefil;
+    }
+
+    public void setPefil(Perfil pefil) {
+        this.pefil = pefil;
+    }
 
     public List<OrdemServico> getOrdensServicos() {
         return ordensServicos;
