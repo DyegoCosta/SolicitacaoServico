@@ -22,9 +22,9 @@ public class ClienteRepository extends BaseRepository<Cliente> implements IClien
                                                     .add(Restrictions.ilike("razaoSocial", texto))
                                                     .add(Restrictions.ilike("CNPJ", texto))
                                                     .add(Restrictions.ilike("nomeResponsavel", texto))
-                                                    .add(Restrictions.ilike("telefone", texto)))
+                                                    .add(Restrictions.ilike("telefone", texto))
                                                     .add(Restrictions.ilike("endereco", texto))
-                                                    .add(Restrictions.ilike("email", texto));
+                                                    .add(Restrictions.ilike("email", texto)));
         return criterio.list();
     }
 }

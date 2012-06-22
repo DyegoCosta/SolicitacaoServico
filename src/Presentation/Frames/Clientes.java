@@ -1,25 +1,29 @@
 package Presentation.Frames;
 
+import Domain.Application.StringHelper;
 import Domain.Data.IDatabaseFactory;
 import Domain.Models.Cliente;
 import Domain.Repository.IClienteRepository;
 import Infrastructure.Repository.ClienteRepository;
+import Presentation.Util.ITableModel;
 import Presentation.Util.TableModelCliente;
+import Presentation.Util.UIHelper;
+import java.awt.event.KeyEvent;
 import java.util.List;
-import javax.swing.BorderFactory;
-import javax.swing.table.TableModel;
 
 public class Clientes extends javax.swing.JInternalFrame {
+
     private IClienteRepository _clienteRepository;
-    private TableModel _modelCliente;
-    
-    public Clientes(IDatabaseFactory databaseFactory) {                
+    private ITableModel _modelCliente;
+    private List<Cliente> clientes;
+
+    public Clientes(IDatabaseFactory databaseFactory) {
         initComponents();
-        
+
         _modelCliente = obterClienteTableModel(databaseFactory);
         tblClientes.setModel(_modelCliente);
-        
-        panelPesquisa.setBorder(BorderFactory.createTitledBorder("Pesquisar"));                
+
+        UIHelper.criarGroupBox(panelPesquisa, "Pesquisar");
     }
 
     @SuppressWarnings("unchecked")
@@ -43,9 +47,9 @@ public class Clientes extends javax.swing.JInternalFrame {
 
         panelPesquisa.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        txtPesquisar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPesquisarActionPerformed(evt);
+        txtPesquisar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPesquisarKeyPressed(evt);
             }
         });
 
@@ -137,10 +141,6 @@ public class Clientes extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-private void txtPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPesquisarActionPerformed
-// TODO add your handling code here:
-}//GEN-LAST:event_txtPesquisarActionPerformed
-
 private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
     Novocliente janelanc = new Novocliente();
     janelanc.setVisible(true);
@@ -149,9 +149,14 @@ private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
 }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-        // TODO add your handling code here:
+        pesquisar();
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
+    private void txtPesquisarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisarKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            pesquisar();
+        }
+    }//GEN-LAST:event_txtPesquisarKeyPressed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnExcluir;
@@ -163,10 +168,22 @@ private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private javax.swing.JTextField txtPesquisar;
     // End of variables declaration//GEN-END:variables
 
-    private TableModel obterClienteTableModel(IDatabaseFactory databaseFactory) {
+    private ITableModel obterClienteTableModel(IDatabaseFactory databaseFactory) {
         _clienteRepository = new ClienteRepository(databaseFactory);
-        List<Cliente> clientes = _clienteRepository.obterTodos();                
-                
+        clientes = _clienteRepository.obterTodos();
+
         return new TableModelCliente(clientes);
+    }
+
+    private void pesquisar() {
+        String pesquisa = txtPesquisar.getText();
+        if (StringHelper.estaNulaOuVazia(pesquisa)) {
+            clientes = _clienteRepository.obterTodos();
+        } else {
+            clientes = _clienteRepository.listarPorCriterio(pesquisa);
+        }
+
+        _modelCliente.clear();
+        _modelCliente.addRows(clientes);
     }
 }
