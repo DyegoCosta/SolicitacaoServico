@@ -19,7 +19,7 @@ public class Clientes extends javax.swing.JInternalFrame {
 
     private IClienteRepository clienteRepository;
     private ITableModel _modelCliente;
-    private List<Cliente> clientes;
+    private List<Cliente> _listaClientes;
 
     public Clientes(IDatabaseFactory databaseFactory) {
         initComponents();
@@ -150,7 +150,7 @@ public class Clientes extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(btnExcluir);
-        btnExcluir.setBounds(670, 390, 95, 25);
+        btnExcluir.setBounds(530, 390, 95, 25);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -172,7 +172,6 @@ private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         if (existeClienteSelecionado() && exclusaoConfirmada()) {
-
             try {
                 excluir();
             } catch (ValidacaoException ex) {
@@ -183,7 +182,7 @@ private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
 
     private void btnVisualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisualizarActionPerformed
         if (existeClienteSelecionado()) {
-            Cliente clienteSelecionado = clientes.get(tblClientes.getSelectedRow());
+            Cliente clienteSelecionado = _listaClientes.get(tblClientes.getSelectedRow());
             NovoClienteDialog dialog = new NovoClienteDialog(null, clienteRepository, clienteSelecionado);
             dialog.setVisible(true);
         }
@@ -205,21 +204,21 @@ private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
 
     private ITableModel obterClienteTableModel(IDatabaseFactory databaseFactory) {
         clienteRepository = new ClienteRepository(databaseFactory);
-        clientes = clienteRepository.obterTodos();
+        _listaClientes = clienteRepository.obterTodos();
 
-        return new TableModelCliente(clientes);
+        return new TableModelCliente(_listaClientes);
     }
 
     private void pesquisar() {
         String pesquisa = txtPesquisar.getText();
         if (StringHelper.estaNulaOuVazia(pesquisa)) {
-            clientes = clienteRepository.obterTodos();
+            _listaClientes = clienteRepository.obterTodos();
         } else {
-            clientes = clienteRepository.listarPorCriterio(pesquisa);
+            _listaClientes = clienteRepository.listarPorCriterio(pesquisa);
         }
 
         _modelCliente.clear();
-        _modelCliente.addRows(clientes);
+        _modelCliente.addRows(_listaClientes);
     }
 
     private boolean existeClienteSelecionado() {
@@ -231,7 +230,7 @@ private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     }
 
     private void excluir() throws ValidacaoException {
-        Cliente clienteSelecionado = clientes.get(tblClientes.getSelectedRow());
+        Cliente clienteSelecionado = _listaClientes.get(tblClientes.getSelectedRow());
         IUnitOfWork unitOfWork = obterUnitOfWork();
         clienteRepository.deletar(clienteSelecionado);
         unitOfWork.commit();

@@ -1,6 +1,8 @@
 package Presentation.Frames;
 
+import Domain.Application.ValidacaoException;
 import Domain.Data.IDatabaseFactory;
+import Domain.Data.IUnitOfWork;
 import Domain.Models.OrdemServico;
 import Domain.Repository.IOrdemServicoRepository;
 import Infrastructure.Repository.OrdemServicoRepository;
@@ -11,13 +13,17 @@ import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
 
-public class OrdensServico extends javax.swing.JInternalFrame {
+public class OrdensServico extends BaseJInternalFrame {
 
     private IOrdemServicoRepository _ordemServicoRepository;
     private TableModel _modelOrdensServico;
     private IDatabaseFactory _databaseFactory;
-
+    private List<OrdemServico> _listaOrdensServicos;
+    
     public OrdensServico(IDatabaseFactory databaseFactory) {
+        super(new OrdemServicoRepository(databaseFactory));        
+        _ordemServicoRepository = (IOrdemServicoRepository)super.Repository;
+        
         _databaseFactory = databaseFactory;
 
         initComponents();
@@ -40,7 +46,6 @@ public class OrdensServico extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblListaOrdensServico = new javax.swing.JTable();
         btnNovo = new javax.swing.JButton();
-        btnAlterar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
@@ -56,7 +61,7 @@ public class OrdensServico extends javax.swing.JInternalFrame {
             }
         });
 
-        btnPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Procurar.png"))); // NOI18N
+        btnPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Pesquisar.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -108,12 +113,13 @@ public class OrdensServico extends javax.swing.JInternalFrame {
             }
         });
 
-        btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Editar.png"))); // NOI18N
-        btnAlterar.setText("Editar");
-        btnAlterar.setToolTipText("");
-
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Excluir.png"))); // NOI18N
         btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("Visualizar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -138,10 +144,8 @@ public class OrdensServico extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnNovo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnAlterar)
-                .addGap(5, 5, 5)
                 .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -154,9 +158,7 @@ public class OrdensServico extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnAlterar)
-                            .addComponent(btnNovo)))
+                        .addComponent(btnNovo))
                     .addComponent(btnExcluir))
                 .addContainerGap())
         );
@@ -183,8 +185,18 @@ private void txtPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
             JOptionPane.showMessageDialog(null, "Selecione uma OS da tabela para que possa visualiza-la");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        if (existeOrdemServicoSelecionada() && super.exclusaoConfirmada()) {
+            try {
+                excluir();
+            } catch (ValidacaoException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnNovo;
     private javax.swing.JButton btnPesquisar;
@@ -195,10 +207,25 @@ private void txtPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     private javax.swing.JTextField txtPesquisar;
     // End of variables declaration//GEN-END:variables
 
-    private TableModel obterOrdemServicoTableModel(IDatabaseFactory databaseFactory) {
-        _ordemServicoRepository = new OrdemServicoRepository(databaseFactory);
+    private TableModel obterOrdemServicoTableModel(IDatabaseFactory databaseFactory) {        
         List<OrdemServico> ordensServico = _ordemServicoRepository.obterTodos();
 
         return new TableModelOrdemServico(ordensServico);
+    }
+    
+    private boolean existeOrdemServicoSelecionada() {
+        return tblListaOrdensServico.getSelectedRow() >= 0;
+    }
+
+    private void excluir() throws ValidacaoException {
+        OrdemServico clienteSelecionado = _listaOrdensServicos.get(tblListaOrdensServico.getSelectedRow());
+        IUnitOfWork unitOfWork = super.obterUnitOfWork();
+        
+        _ordemServicoRepository.deletar(clienteSelecionado);
+        unitOfWork.commit();
+        
+        // pesquisar();
+
+        JOptionPane.showMessageDialog(this, "Cliente excluído com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
     }
 }
