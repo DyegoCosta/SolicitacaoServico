@@ -101,7 +101,7 @@ public class ConexaoTeste {
     @Test
     public void obterUsuarioPorIdComApontamentos() {
         // Arrange
-        IUsuarioRepository usuarioRepository = new UsuarioRepository(databaseFactory);
+        IUsuarioRepository usuarioRepository = new UsuarioRepository(databaseFactory, null);
         int id = 1;
 
         // Act
