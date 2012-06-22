@@ -29,6 +29,9 @@ public abstract class BaseRepository<TEntity>
 
     @Override
     public TEntity salvar(TEntity entidade) {
+        if (entidade == null)
+            throw new IllegalArgumentException("'entidade' não pode ser nula");
+        
         session.saveOrUpdate(entidade);
         
         return entidade;

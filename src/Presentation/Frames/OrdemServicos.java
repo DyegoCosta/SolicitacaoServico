@@ -6,6 +6,7 @@ import Domain.Repository.IOrdemServicoRepository;
 import Infrastructure.Repository.OrdemServicoRepository;
 import Presentation.Util.TableModelOrdemServico;
 import java.util.List;
+import Presentation.Util.UIHelper;
 import javax.swing.BorderFactory;
 import javax.swing.table.TableModel;
 
@@ -15,7 +16,9 @@ public class OrdemServicos extends javax.swing.JInternalFrame {
     
     public OrdemServicos(IDatabaseFactory databaseFactory) {
         initComponents();
-        
+
+        UIHelper.criarGroupBox(jPanel1, "Pesquisar");
+
         _modelOrdensServico = obterOrdemServicoTableModel(databaseFactory);
         tblListaOrdensServico.setModel(_modelOrdensServico);
         

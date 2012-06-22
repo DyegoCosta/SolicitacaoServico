@@ -1,10 +1,12 @@
 package Presentation.Frames;
 
+import Domain.Application.Authentication;
 import Domain.Data.IDatabaseFactory;
 import Domain.Models.Usuario;
 import Domain.Repository.IUsuarioRepository;
 import Infrastructure.Repository.UsuarioRepository;
 import Presentation.Util.TableModelUsuario;
+import Presentation.Util.UIHelper;
 import java.util.List;
 import javax.swing.BorderFactory;
 
@@ -15,12 +17,12 @@ private IUsuarioRepository _usuarioRepository;
     public Usuarios(IDatabaseFactory databaseFactory) {                
         initComponents();
         
-        _usuarioRepository = new UsuarioRepository(databaseFactory, null); //TODO: passar o Authentication corretamente.
+        _usuarioRepository = new UsuarioRepository(databaseFactory, Authentication.getInstance());
         List<Usuario> usuarios = _usuarioRepository.obterTodos();
         
         TableModelUsuario modelUsuario = new TableModelUsuario(usuarios);
         tblUsuarios.setModel(modelUsuario); //jtPesquisa é o JTable
-        jPanel1.setBorder(BorderFactory.createTitledBorder("Pesquisar"));                
+        UIHelper.criarGroupBox(jPanel1, "Pesquisar");
     }
 
     /** This method is called from within the constructor to
