@@ -36,8 +36,7 @@ public class UsuarioRepository extends BaseRepository<Usuario> implements IUsuar
                                                     .add(Restrictions.ilike("login", texto))
                                                     .add(Restrictions.ilike("nome", texto))
                                                     .add(Restrictions.ilike("sobrenome", texto))
-                                                    .add(Restrictions.ilike("cpf", texto))
-                                                    .add(Restrictions.ilike("usuarioId", texto)));
+                                                    .add(Restrictions.ilike("cpf", texto)));
         return criterio.list();
     }
 

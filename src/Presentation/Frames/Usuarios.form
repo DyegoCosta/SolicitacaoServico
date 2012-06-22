@@ -101,7 +101,7 @@
       <SubComponents>
         <Component class="javax.swing.JTextField" name="txtPesquisar">
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtPesquisarActionPerformed"/>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtPesquisarKeyPressed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnPesquisar">
@@ -110,6 +110,9 @@
               <Image iconType="3" name="/Presentation/Icons/Pesquisar.png"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPesquisarActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

@@ -1,26 +1,29 @@
 package Presentation.Frames;
 
 import Domain.Application.Authentication;
+import Domain.Application.StringHelper;
 import Domain.Data.IDatabaseFactory;
 import Domain.Models.Usuario;
 import Domain.Repository.IUsuarioRepository;
 import Infrastructure.Repository.UsuarioRepository;
+import Presentation.Util.ITableModel;
 import Presentation.Util.TableModelUsuario;
 import Presentation.Util.UIHelper;
+import java.awt.event.KeyEvent;
 import java.util.List;
 
 public class Usuarios extends javax.swing.JInternalFrame {
 
-private IUsuarioRepository _usuarioRepository;
-    
-    public Usuarios(IDatabaseFactory databaseFactory) {                
+    private IUsuarioRepository _usuarioRepository;
+    private ITableModel modelUsuario;
+    private List<Usuario> usuarios;
+
+    public Usuarios(IDatabaseFactory databaseFactory) {
         initComponents();
-        
-        _usuarioRepository = new UsuarioRepository(databaseFactory, Authentication.getInstance());
-        List<Usuario> usuarios = _usuarioRepository.obterTodos();
-        
-        TableModelUsuario modelUsuario = new TableModelUsuario(usuarios);
-        tblUsuarios.setModel(modelUsuario); //jtPesquisa é o JTable
+
+        modelUsuario = obterUsuarioTableModel(databaseFactory);
+        tblUsuarios.setModel(modelUsuario);
+
         UIHelper.criarGroupBox(jPanel1, "Pesquisar");
     }
 
@@ -43,13 +46,18 @@ private IUsuarioRepository _usuarioRepository;
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        txtPesquisar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPesquisarActionPerformed(evt);
+        txtPesquisar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPesquisarKeyPressed(evt);
             }
         });
 
         btnPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Pesquisar.png"))); // NOI18N
+        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -144,15 +152,20 @@ private IUsuarioRepository _usuarioRepository;
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-private void txtPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPesquisarActionPerformed
-// TODO add your handling code here:
-}//GEN-LAST:event_txtPesquisarActionPerformed
-
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         UsuarioDialog dialog = new UsuarioDialog(null, true);
         dialog.setVisible(true);
     }//GEN-LAST:event_btnNovoActionPerformed
 
+    private void txtPesquisarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisarKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            pesquisar();
+        }
+    }//GEN-LAST:event_txtPesquisarKeyPressed
+
+    private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
+        pesquisar();
+    }//GEN-LAST:event_btnPesquisarActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnExcluir;
@@ -163,4 +176,23 @@ private void txtPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     private javax.swing.JTable tblUsuarios;
     private javax.swing.JTextField txtPesquisar;
     // End of variables declaration//GEN-END:variables
+
+    private ITableModel obterUsuarioTableModel(IDatabaseFactory databaseFactory) {
+        _usuarioRepository = new UsuarioRepository(databaseFactory);
+        usuarios = _usuarioRepository.obterTodos();
+
+        return new TableModelUsuario(usuarios);
+    }
+
+    private void pesquisar() {
+        String pesquisa = txtPesquisar.getText();
+        if (StringHelper.estaNulaOuVazia(pesquisa)) {
+            usuarios = _usuarioRepository.obterTodos();
+        } else {
+            usuarios = _usuarioRepository.listarPorCriterio(pesquisa);
+        }
+
+        modelUsuario.clear();
+        modelUsuario.addRows(usuarios);
+    }
 }
