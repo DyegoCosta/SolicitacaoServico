@@ -1,5 +1,6 @@
 package Presentation.Frames;
 
+import Domain.Application.Authentication;
 import Domain.Data.IDatabaseFactory;
 import Domain.Models.Usuario;
 import Domain.Repository.IUsuarioRepository;
@@ -15,7 +16,7 @@ private IUsuarioRepository _usuarioRepository;
     public Usuarios(IDatabaseFactory databaseFactory) {                
         initComponents();
         
-        _usuarioRepository = new UsuarioRepository(databaseFactory, null); //TODO: passar o Authentication corretamente.
+        _usuarioRepository = new UsuarioRepository(databaseFactory, Authentication.getInstance());
         List<Usuario> usuarios = _usuarioRepository.obterTodos();
         
         TableModelUsuario modelUsuario = new TableModelUsuario(usuarios);
