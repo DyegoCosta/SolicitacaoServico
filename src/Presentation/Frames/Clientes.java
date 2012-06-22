@@ -2,6 +2,8 @@ package Presentation.Frames;
 
 import Domain.Application.StringHelper;
 import Domain.Data.IDatabaseFactory;
+import Domain.Data.IUnitOfWork;
+import Domain.Data.UnitOfWork;
 import Domain.Models.Cliente;
 import Domain.Repository.IClienteRepository;
 import Infrastructure.Repository.ClienteRepository;
@@ -17,11 +19,13 @@ public class Clientes extends javax.swing.JInternalFrame {
     private IClienteRepository _clienteRepository;
     private ITableModel _modelCliente;
     private List<Cliente> clientes;
+    private IDatabaseFactory databaseFactory;
 
     public Clientes(IDatabaseFactory databaseFactory) {
         initComponents();
 
-        _modelCliente = obterClienteTableModel(databaseFactory);
+        this.databaseFactory = databaseFactory;
+        _modelCliente = obterClienteTableModel();
         tblClientes.setModel(_modelCliente);
 
         UIHelper.criarGroupBox(panelPesquisa, "Pesquisar");
@@ -165,9 +169,12 @@ private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         if (existeClienteSelecionado() && exclusaoConfirmada()) {
             Cliente clienteSelecionado = clientes.get(tblClientes.getSelectedRow());
-            _clienteRepository.deletar(clienteSelecionado);
-            pesquisar();
             
+            IUnitOfWork unitOfWork = obterUnitOfWork();
+            _clienteRepository.deletar(clienteSelecionado);
+            unitOfWork.commit();
+            
+            pesquisar();
             JOptionPane.showMessageDialog(this, "Cliente excluído com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
@@ -182,7 +189,11 @@ private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private javax.swing.JTextField txtPesquisar;
     // End of variables declaration//GEN-END:variables
 
-    private ITableModel obterClienteTableModel(IDatabaseFactory databaseFactory) {
+    private IUnitOfWork obterUnitOfWork(){
+        return new UnitOfWork(databaseFactory);
+    }
+    
+    private ITableModel obterClienteTableModel() {
         _clienteRepository = new ClienteRepository(databaseFactory);
         clientes = _clienteRepository.obterTodos();
 
