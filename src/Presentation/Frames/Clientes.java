@@ -10,6 +10,7 @@ import Presentation.Util.TableModelCliente;
 import Presentation.Util.UIHelper;
 import java.awt.event.KeyEvent;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 public class Clientes extends javax.swing.JInternalFrame {
 
@@ -135,6 +136,11 @@ public class Clientes extends javax.swing.JInternalFrame {
         btnExcluir.setMaximumSize(new java.awt.Dimension(95, 25));
         btnExcluir.setMinimumSize(new java.awt.Dimension(95, 25));
         btnExcluir.setPreferredSize(new java.awt.Dimension(95, 25));
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnExcluir);
         btnExcluir.setBounds(670, 390, 95, 25);
 
@@ -142,10 +148,8 @@ public class Clientes extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-    Novocliente janelanc = new Novocliente();
-    janelanc.setVisible(true);
-    // NovoClienteDialog clienteDialog = new NovoClienteDialog();
-    // clienteDialog.setModal(true);
+    NovoClienteDialog dialog = new NovoClienteDialog(null, true);
+    dialog.setVisible(true);
 }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
@@ -157,6 +161,16 @@ private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
             pesquisar();
         }
     }//GEN-LAST:event_txtPesquisarKeyPressed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        if (existeClienteSelecionado() && exclusaoConfirmada()) {
+            Cliente clienteSelecionado = clientes.get(tblClientes.getSelectedRow());
+            _clienteRepository.deletar(clienteSelecionado);
+            pesquisar();
+            
+            JOptionPane.showMessageDialog(this, "Cliente excluído com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnExcluir;
@@ -185,5 +199,13 @@ private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
 
         _modelCliente.clear();
         _modelCliente.addRows(clientes);
+    }
+
+    private boolean existeClienteSelecionado() {
+        return tblClientes.getSelectedRow() >= 0;
+    }
+
+    private boolean exclusaoConfirmada() {
+        return JOptionPane.showConfirmDialog(this, "Deseja mesmo excluir?", "", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == 0;
     }
 }
