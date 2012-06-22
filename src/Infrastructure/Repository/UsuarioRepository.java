@@ -1,6 +1,7 @@
 package Infrastructure.Repository;
 
 import Domain.Application.IAuthentication;
+import Domain.Application.ValidacaoException;
 import Domain.Data.IDatabaseFactory;
 import Domain.Models.Usuario;
 import Domain.Repository.IUsuarioRepository;
@@ -58,13 +59,13 @@ public class UsuarioRepository extends BaseRepository<Usuario> implements IUsuar
     }
 
     @Override
-    public void deletar(Usuario entidade) {
+    public void deletar(Usuario entidade) throws ValidacaoException {
         
         if (entidade == null)
             throw new IllegalArgumentException("'usuario' não pode ser nulo");
         
         if (seUsuarioForUsuarioAutenticado(entidade))
-            throw new RuntimeException("Não é possível excluir o próprio usuário autenticado");
+            throw new ValidacaoException("Não é possível excluir o próprio usuário autenticado");
         
         super.deletar(entidade);
     }

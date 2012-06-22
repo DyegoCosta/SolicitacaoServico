@@ -1,5 +1,6 @@
 package Infrastructure.Repository;
 
+import Domain.Application.ValidacaoException;
 import Domain.Data.IDatabaseFactory;
 import Domain.Models.Cliente;
 import Domain.Repository.IClienteRepository;
@@ -26,5 +27,18 @@ public class ClienteRepository extends BaseRepository<Cliente> implements IClien
                                                     .add(Restrictions.ilike("endereco", texto))
                                                     .add(Restrictions.ilike("email", texto)));
         return criterio.list();
+    }
+
+    @Override
+    public void deletar(Cliente entidade) throws ValidacaoException {
+        if (entidade == null)
+            throw new IllegalArgumentException("'entidade' não pode ser nula");
+        
+        if(!entidade.getOrdensServicos().isEmpty())
+            throw new ValidacaoException(
+                    String.format("Cliente '%s' não pode ser excluído pois possui Ordem de Serviço vinculada",
+                    entidade.getRazaoSocial()));
+        
+        super.deletar(entidade);
     }
 }

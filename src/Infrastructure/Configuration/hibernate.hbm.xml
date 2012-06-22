@@ -58,8 +58,8 @@
             <column name="TecnicoId" not-null="false" />
         </many-to-one>
         <property name="objetivo" column="Objetivo" type="string"/>
-        <property name="dataAbertura" column="DataAbertura" type="date"/>
-        <property name="dataFechamento" column="DataFechamento" type="date"/>
+        <property name="dataAbertura" column="DataAbertura" type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime"/>
+        <property name="dataFechamento" column="DataFechamento" type="org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime"/>
         <property name="status" column="Status">
             <type name="org.hibernate.type.EnumType">
                 <param name="enumClass">Domain.Models.StatusOrdemServico</param>

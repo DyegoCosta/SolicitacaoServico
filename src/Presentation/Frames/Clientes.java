@@ -1,6 +1,7 @@
 package Presentation.Frames;
 
 import Domain.Application.StringHelper;
+import Domain.Application.ValidacaoException;
 import Domain.Data.IDatabaseFactory;
 import Domain.Data.IUnitOfWork;
 import Domain.Data.UnitOfWork;
@@ -12,6 +13,8 @@ import Presentation.Util.TableModelCliente;
 import Presentation.Util.UIHelper;
 import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class Clientes extends javax.swing.JInternalFrame {
@@ -168,14 +171,12 @@ private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         if (existeClienteSelecionado() && exclusaoConfirmada()) {
-            Cliente clienteSelecionado = clientes.get(tblClientes.getSelectedRow());
-            
-            IUnitOfWork unitOfWork = obterUnitOfWork();
-            _clienteRepository.deletar(clienteSelecionado);
-            unitOfWork.commit();
-            
-            pesquisar();
-            JOptionPane.showMessageDialog(this, "Cliente excluído com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+
+            try {
+                excluir();
+            } catch (ValidacaoException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -189,10 +190,10 @@ private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private javax.swing.JTextField txtPesquisar;
     // End of variables declaration//GEN-END:variables
 
-    private IUnitOfWork obterUnitOfWork(){
+    private IUnitOfWork obterUnitOfWork() {
         return new UnitOfWork(databaseFactory);
     }
-    
+
     private ITableModel obterClienteTableModel() {
         _clienteRepository = new ClienteRepository(databaseFactory);
         clientes = _clienteRepository.obterTodos();
@@ -218,5 +219,15 @@ private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
 
     private boolean exclusaoConfirmada() {
         return JOptionPane.showConfirmDialog(this, "Deseja mesmo excluir?", "", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == 0;
+    }
+
+    private void excluir() throws ValidacaoException {
+        Cliente clienteSelecionado = clientes.get(tblClientes.getSelectedRow());
+        IUnitOfWork unitOfWork = obterUnitOfWork();
+        _clienteRepository.deletar(clienteSelecionado);
+        unitOfWork.commit();
+        pesquisar();
+
+        JOptionPane.showMessageDialog(this, "Cliente excluído com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
     }
 }

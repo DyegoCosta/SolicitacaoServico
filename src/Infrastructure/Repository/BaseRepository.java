@@ -1,5 +1,6 @@
 package Infrastructure.Repository;
 
+import Domain.Application.ValidacaoException;
 import Domain.Data.IDatabaseFactory;
 import Domain.Repository.IBaseRepository;
 import java.lang.reflect.ParameterizedType;
@@ -38,7 +39,10 @@ public abstract class BaseRepository<TEntity>
     }
 
     @Override
-    public void deletar(TEntity entidade) {
+    public void deletar(TEntity entidade) throws ValidacaoException {
+        if (entidade == null)
+            throw new IllegalArgumentException("'entidade' não pode ser nula");
+        
         session.delete(entidade);
     }
     
