@@ -296,6 +296,6 @@ public class NovoClienteDialog extends javax.swing.JDialog {
     }
     
     private void habilitaCampos() {
-        UIHelper.habilitaCampos(this);
+        UIHelper.habilitaCampos(getContentPane());
     }
 }
