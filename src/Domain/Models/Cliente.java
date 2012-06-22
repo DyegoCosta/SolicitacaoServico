@@ -11,8 +11,8 @@ public class Cliente {
     private String telefone;
     private String email;
     private String endereco;
-    private List<OrdemServico> ordensServicos;
-
+    private List<OrdemServico> ordensServicos;    
+    
     public List<OrdemServico> getOrdensServicos() {
         return ordensServicos;
     }

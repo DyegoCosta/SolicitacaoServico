@@ -1,11 +1,10 @@
-
 import Domain.Data.DatabaseFactory;
 import Domain.Data.IDatabaseFactory;
 import Domain.Models.Usuario;
 import Domain.Repository.IUsuarioRepository;
 import Infrastructure.Repository.UsuarioRepository;
 import java.util.List;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 

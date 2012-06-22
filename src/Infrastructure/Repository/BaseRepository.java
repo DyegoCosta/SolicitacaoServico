@@ -44,7 +44,7 @@ public abstract class BaseRepository<TEntity>
     }
     
     private String obterNomeTabela(){
-        return String.format("%ss", classePersistente.getSimpleName());
+        return classePersistente.getSimpleName();
     }
     
     private String obterConsultaTodos(){

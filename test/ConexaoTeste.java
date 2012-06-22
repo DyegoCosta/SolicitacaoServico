@@ -12,6 +12,7 @@ import Infrastructure.Repository.ApontamentoRepository;
 import Infrastructure.Repository.ClienteRepository;
 import Infrastructure.Repository.OrdemServicoRepository;
 import Infrastructure.Repository.UsuarioRepository;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -161,21 +162,33 @@ public class ConexaoTeste {
     @Test
     public void insert() {
         // Arrange
-        //IUnitOfWork unitOfWork = new UnitOfWork(databaseFactory);
-        //IClienteRepository clienteRepository = new ClienteRepository(databaseFactory);
-        //Cliente cliente = new Cliente();
-        //cliente.setCNPJ("232323");
-        //cliente.setEndereco("rua tal tal");
-        //cliente.setNomeResponsavel("Qualquer um");
-        //cliente.setRazaoSocial("Razao total pra esse cara");
-        //cliente.setTelefone("32352069");
-        //cliente.setEmail("joba@joba");
+        IUnitOfWork unitOfWork = new UnitOfWork(databaseFactory);
+        IClienteRepository clienteRepository = new ClienteRepository(databaseFactory);
+        Cliente cliente = new Cliente();
+        cliente.setCNPJ("232323");
+        cliente.setEndereco("rua tal tal");
+        cliente.setNomeResponsavel("Qualquer um");
+        cliente.setRazaoSocial("Razao total pra esse cara");
+        cliente.setTelefone("32352069");
+        cliente.setEmail("joba@joba");
 
         // Act
-        //clienteRepository.salvar(cliente);
-        //unitOfWork.commit();
+        clienteRepository.salvar(cliente);
+        unitOfWork.commit();
 
         // Assert
-        //assertTrue(cliente.getClienteId() != 0);
+        assertTrue(cliente.getClienteId() != 0);
+    }
+    
+    @Test
+    public void obterTodosCliente() {
+        // Arrange
+        IClienteRepository clienteRepository = new ClienteRepository(databaseFactory);        
+
+        // Act
+        List<Cliente> clientes = clienteRepository.obterTodos();
+
+        // Assert
+        assertNotNull(clientes);       
     }
 }

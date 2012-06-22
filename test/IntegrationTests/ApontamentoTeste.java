@@ -21,7 +21,6 @@ public class ApontamentoTeste {
 
     @Before
     public void setUp() {
-
         databaseFactory = new DatabaseFactory("Infrastructure/Configuration/hibernate.cfg.xml");
     }
 
