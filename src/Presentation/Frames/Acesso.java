@@ -1,6 +1,7 @@
 package Presentation.Frames;
 
 import Domain.Application.Authentication;
+import Domain.Application.ExceptionHandler;
 import Domain.Data.DatabaseFactory;
 import Domain.Data.IDatabaseFactory;
 import Domain.Models.Usuario;
@@ -168,6 +169,7 @@ public class Acesso extends javax.swing.JFrame {
             
             @Override
             public void run() {
+                Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
                 new Acesso().setVisible(true);
             }
         });
