@@ -15,7 +15,7 @@ private IUsuarioRepository _usuarioRepository;
     public Usuarios(IDatabaseFactory databaseFactory) {                
         initComponents();
         
-        _usuarioRepository = new UsuarioRepository(databaseFactory);
+        _usuarioRepository = new UsuarioRepository(databaseFactory, null); //TODO: passar o Authentication corretamente.
         List<Usuario> usuarios = _usuarioRepository.obterTodos();
         
         TableModelUsuario modelUsuario = new TableModelUsuario(usuarios);
