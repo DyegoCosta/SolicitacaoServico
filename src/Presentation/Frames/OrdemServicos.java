@@ -44,7 +44,7 @@ public class OrdemServicos extends javax.swing.JInternalFrame {
         btnExcluir = new javax.swing.JButton();
 
         setClosable(true);
-        setTitle("Solicitação de Serviços - Serviços");
+        setTitle("Ordens de Serviços");
         setPreferredSize(new java.awt.Dimension(550, 500));
         getContentPane().setLayout(null);
 
@@ -56,7 +56,7 @@ public class OrdemServicos extends javax.swing.JInternalFrame {
             }
         });
 
-        btnPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icones/Procurar.png"))); // NOI18N
+        btnPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Procurar.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -64,7 +64,7 @@ public class OrdemServicos extends javax.swing.JInternalFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
-                .addComponent(txtPesquisar, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
+                .addComponent(txtPesquisar, javax.swing.GroupLayout.DEFAULT_SIZE, 682, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(btnPesquisar)
                 .addGap(20, 20, 20))
@@ -76,11 +76,11 @@ public class OrdemServicos extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnPesquisar))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(0, 28, 0, 0);
+        jPanel1.setBounds(0, 28, 800, 65);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -104,23 +104,23 @@ public class OrdemServicos extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(jTable1);
 
         getContentPane().add(jScrollPane1);
-        jScrollPane1.setBounds(0, 116, 467, 245);
+        jScrollPane1.setBounds(0, 116, 800, 245);
 
-        btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icones/Novo.png"))); // NOI18N
+        btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Novo.png"))); // NOI18N
         btnNovo.setText("Novo");
         getContentPane().add(btnNovo);
-        btnNovo.setBounds(206, 406, 57, 23);
+        btnNovo.setBounds(206, 406, 77, 25);
 
-        btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icones/Editar.png"))); // NOI18N
+        btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Editar.png"))); // NOI18N
         btnAlterar.setText("Alterar");
         btnAlterar.setToolTipText("");
         getContentPane().add(btnAlterar);
-        btnAlterar.setBounds(293, 406, 65, 23);
+        btnAlterar.setBounds(293, 406, 85, 25);
 
-        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icones/Excluir.png"))); // NOI18N
+        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Excluir.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         getContentPane().add(btnExcluir);
-        btnExcluir.setBounds(384, 406, 63, 23);
+        btnExcluir.setBounds(384, 406, 90, 25);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
