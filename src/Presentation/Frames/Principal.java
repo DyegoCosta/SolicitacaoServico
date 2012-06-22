@@ -47,7 +47,7 @@ public class Principal extends javax.swing.JFrame {
         });
         Cadastro.add(Usuarios);
 
-        Servicos.setText("Serviços");
+        Servicos.setText("Ordens de serviços");
         Servicos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ServicosActionPerformed(evt);
@@ -74,7 +74,7 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 private void ServicosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ServicosActionPerformed
-    OrdemServicos janelas = new OrdemServicos();
+    OrdemServicos janelas = new OrdemServicos(_databaseFactory);
     this.add(janelas);
     janelas.setVisible(true);
 }//GEN-LAST:event_ServicosActionPerformed

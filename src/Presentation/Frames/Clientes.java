@@ -17,8 +17,9 @@ public class Clientes extends javax.swing.JInternalFrame {
         initComponents();
         
         _modelCliente = obterClienteTableModel(databaseFactory);
-        tblClientes.setModel(_modelCliente); //jtPesquisa é o JTable
-        //jPanel1.setBorder(BorderFactory.createTitledBorder("Pesquisar"));                
+        tblClientes.setModel(_modelCliente);
+        
+        jPanel1.setBorder(BorderFactory.createTitledBorder("Pesquisar"));                
     }
 
     @SuppressWarnings("unchecked")
