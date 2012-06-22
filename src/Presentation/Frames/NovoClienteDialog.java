@@ -9,27 +9,29 @@ import Presentation.Util.UIHelper;
 import javax.swing.JOptionPane;
 
 public class NovoClienteDialog extends javax.swing.JDialog {
-    
+
     private IClienteRepository clienteRepository;
     private Cliente cliente;
-    
+
     public NovoClienteDialog(java.awt.Frame parent, IClienteRepository clienteRepository) {
         this(parent, clienteRepository, null);
     }
-    
+
     public NovoClienteDialog(java.awt.Frame parent, IClienteRepository clienteRepository, Cliente cliente) {
         super(parent, true);
         initComponents();
-        
+
         this.clienteRepository = clienteRepository;
         this.cliente = cliente;
         this.setLocationRelativeTo(null);
         UIHelper.criarGroupBox(jPanel1, "Dados");
         habilitaBotoes();
-        if(!estaModoEdicao())
+        if (estaModoEdicao())
+            preencheFormulario();
+        else
             habilitaCampos();
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -55,6 +57,7 @@ public class NovoClienteDialog extends javax.swing.JDialog {
         btnEditar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(534, 300));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -230,10 +233,10 @@ public class NovoClienteDialog extends javax.swing.JDialog {
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
-    
+
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         if (estaModoEdicao() && exclusaoConfirmada()) {
-            
+
             try {
                 excluir();
             } catch (ValidacaoException ex) {
@@ -241,7 +244,7 @@ public class NovoClienteDialog extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
-    
+
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         habilitaCampos();
         txtCodigo.setEditable(false);
@@ -272,30 +275,40 @@ public class NovoClienteDialog extends javax.swing.JDialog {
     private IUnitOfWork obterUnitOfWork() {
         return new UnitOfWork(clienteRepository.getDatabaseFactory());
     }
-    
+
     private void excluir() throws ValidacaoException {
         IUnitOfWork unitOfWork = obterUnitOfWork();
         clienteRepository.deletar(cliente);
         unitOfWork.commit();
         dispose();
     }
-    
+
     private boolean exclusaoConfirmada() {
         return JOptionPane.showConfirmDialog(this, "Deseja mesmo excluir?", "", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == 0;
     }
-    
+
     private boolean estaModoEdicao() {
         return cliente != null;
     }
-    
+
     private void habilitaBotoes() {
         btnCancelar.setEnabled(true);
         btnEditar.setEnabled(estaModoEdicao());
         btnExcluir.setEnabled(estaModoEdicao());
         btnSalvar.setEnabled(true);
     }
-    
+
     private void habilitaCampos() {
         UIHelper.habilitaCampos(getContentPane());
+    }
+
+    private void preencheFormulario() {
+        txtCodigo.setText(String.valueOf(cliente.getClienteId()));
+        txtCnpj.setText(cliente.getCNPJ());
+        txtEmail.setText(cliente.getEmail());
+        txtEndereco.setText(cliente.getEndereco());
+        txtNomeresponsavel.setText(cliente.getNomeResponsavel());
+        txtRazaosocial.setText(cliente.getRazaoSocial());
+        txtTelefone.setText(cliente.getTelefone());
     }
 }

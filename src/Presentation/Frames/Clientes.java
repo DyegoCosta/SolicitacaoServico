@@ -15,13 +15,14 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-public class Clientes extends javax.swing.JInternalFrame {
+public class Clientes extends BaseJInternalFrame {
 
     private IClienteRepository clienteRepository;
     private ITableModel _modelCliente;
     private List<Cliente> _listaClientes;
 
     public Clientes(IDatabaseFactory databaseFactory) {
+        super(databaseFactory);
         initComponents();
 
         _modelCliente = obterClienteTableModel(databaseFactory);
@@ -198,10 +199,6 @@ private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private javax.swing.JTextField txtPesquisar;
     // End of variables declaration//GEN-END:variables
 
-    private IUnitOfWork obterUnitOfWork() {
-        return new UnitOfWork(clienteRepository.getDatabaseFactory());
-    }
-
     private ITableModel obterClienteTableModel(IDatabaseFactory databaseFactory) {
         clienteRepository = new ClienteRepository(databaseFactory);
         _listaClientes = clienteRepository.obterTodos();
@@ -223,10 +220,6 @@ private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
 
     private boolean existeClienteSelecionado() {
         return tblClientes.getSelectedRow() >= 0;
-    }
-
-    private boolean exclusaoConfirmada() {
-        return JOptionPane.showConfirmDialog(this, "Deseja mesmo excluir?", "", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == 0;
     }
 
     private void excluir() throws ValidacaoException {
