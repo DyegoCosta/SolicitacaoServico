@@ -10,8 +10,8 @@ import javax.swing.JOptionPane;
 
 public class NovoClienteDialog extends javax.swing.JDialog {
 
-    private IClienteRepository clienteRepository;
-    private Cliente cliente;
+    private IClienteRepository _clienteRepository;
+    private Cliente _cliente;
 
     public NovoClienteDialog(java.awt.Frame parent, IClienteRepository clienteRepository) {
         this(parent, clienteRepository, null);
@@ -21,8 +21,8 @@ public class NovoClienteDialog extends javax.swing.JDialog {
         super(parent, true);
         initComponents();
 
-        this.clienteRepository = clienteRepository;
-        this.cliente = cliente;
+        this._clienteRepository = clienteRepository;
+        this._cliente = cliente;
         this.setLocationRelativeTo(null);
         UIHelper.criarGroupBox(jPanel1, "Dados");
         habilitaBotoes();
@@ -273,12 +273,12 @@ public class NovoClienteDialog extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private IUnitOfWork obterUnitOfWork() {
-        return new UnitOfWork(clienteRepository.getDatabaseFactory());
+        return new UnitOfWork(_clienteRepository.getDatabaseFactory());
     }
 
     private void excluir() throws ValidacaoException {
         IUnitOfWork unitOfWork = obterUnitOfWork();
-        clienteRepository.deletar(cliente);
+        _clienteRepository.deletar(_cliente);
         unitOfWork.commit();
         dispose();
     }
@@ -288,7 +288,7 @@ public class NovoClienteDialog extends javax.swing.JDialog {
     }
 
     private boolean estaModoEdicao() {
-        return cliente != null;
+        return _cliente != null;
     }
 
     private void habilitaBotoes() {
@@ -303,12 +303,12 @@ public class NovoClienteDialog extends javax.swing.JDialog {
     }
 
     private void preencheFormulario() {
-        txtCodigo.setText(String.valueOf(cliente.getClienteId()));
-        txtCnpj.setText(cliente.getCNPJ());
-        txtEmail.setText(cliente.getEmail());
-        txtEndereco.setText(cliente.getEndereco());
-        txtNomeresponsavel.setText(cliente.getNomeResponsavel());
-        txtRazaosocial.setText(cliente.getRazaoSocial());
-        txtTelefone.setText(cliente.getTelefone());
+        txtCodigo.setText(String.valueOf(_cliente.getClienteId()));
+        txtCnpj.setText(_cliente.getCNPJ());
+        txtEmail.setText(_cliente.getEmail());
+        txtEndereco.setText(_cliente.getEndereco());
+        txtNomeresponsavel.setText(_cliente.getNomeResponsavel());
+        txtRazaosocial.setText(_cliente.getRazaoSocial());
+        txtTelefone.setText(_cliente.getTelefone());
     }
 }

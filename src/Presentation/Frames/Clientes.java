@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
 
 public class Clientes extends BaseJInternalFrame {
 
-    private IClienteRepository clienteRepository;
+    private IClienteRepository _clienteRepository;
     private ITableModel _modelCliente;
     private List<Cliente> _listaClientes;
 
@@ -157,7 +157,7 @@ public class Clientes extends BaseJInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-    NovoClienteDialog dialog = new NovoClienteDialog(null, clienteRepository);
+    NovoClienteDialog dialog = new NovoClienteDialog(null, _clienteRepository);
     dialog.setVisible(true);
 }//GEN-LAST:event_btnNovoActionPerformed
 
@@ -184,7 +184,7 @@ private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private void btnVisualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisualizarActionPerformed
         if (existeClienteSelecionado()) {
             Cliente clienteSelecionado = _listaClientes.get(tblClientes.getSelectedRow());
-            NovoClienteDialog dialog = new NovoClienteDialog(null, clienteRepository, clienteSelecionado);
+            NovoClienteDialog dialog = new NovoClienteDialog(null, _clienteRepository, clienteSelecionado);
             dialog.setVisible(true);
         }
     }//GEN-LAST:event_btnVisualizarActionPerformed
@@ -200,8 +200,8 @@ private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     // End of variables declaration//GEN-END:variables
 
     private ITableModel obterClienteTableModel(IDatabaseFactory databaseFactory) {
-        clienteRepository = new ClienteRepository(databaseFactory);
-        _listaClientes = clienteRepository.obterTodos();
+        _clienteRepository = new ClienteRepository(databaseFactory);
+        _listaClientes = _clienteRepository.obterTodos();
 
         return new TableModelCliente(_listaClientes);
     }
@@ -209,9 +209,9 @@ private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private void pesquisar() {
         String pesquisa = txtPesquisar.getText();
         if (StringHelper.estaNulaOuVazia(pesquisa)) {
-            _listaClientes = clienteRepository.obterTodos();
+            _listaClientes = _clienteRepository.obterTodos();
         } else {
-            _listaClientes = clienteRepository.listarPorCriterio(pesquisa);
+            _listaClientes = _clienteRepository.listarPorCriterio(pesquisa);
         }
 
         _modelCliente.clear();
@@ -225,7 +225,7 @@ private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private void excluir() throws ValidacaoException {
         Cliente clienteSelecionado = _listaClientes.get(tblClientes.getSelectedRow());
         IUnitOfWork unitOfWork = obterUnitOfWork();
-        clienteRepository.deletar(clienteSelecionado);
+        _clienteRepository.deletar(clienteSelecionado);
         unitOfWork.commit();
         pesquisar();
 
