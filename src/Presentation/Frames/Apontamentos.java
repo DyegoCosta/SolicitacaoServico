@@ -103,16 +103,20 @@ public class Apontamentos extends javax.swing.JInternalFrame {
         );
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(10, 27, 0, 0);
+        jPanel1.setBounds(10, 27, 566, 186);
 
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Cancelar.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
         getContentPane().add(btnCancelar);
-        btnCancelar.setBounds(501, 232, 75, 23);
+        btnCancelar.setBounds(480, 230, 100, 25);
 
-        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icones/Salvar.png"))); // NOI18N
+        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Salvar.png"))); // NOI18N
         btnSalvar.setText("Salvar");
+        btnSalvar.setMaximumSize(new java.awt.Dimension(95, 25));
+        btnSalvar.setMinimumSize(new java.awt.Dimension(95, 25));
+        btnSalvar.setPreferredSize(new java.awt.Dimension(95, 25));
         getContentPane().add(btnSalvar);
-        btnSalvar.setBounds(412, 231, 63, 23);
+        btnSalvar.setBounds(380, 230, 95, 25);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

@@ -109,7 +109,7 @@ public class OrdensServico extends javax.swing.JInternalFrame {
         });
 
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Editar.png"))); // NOI18N
-        btnAlterar.setText("Alterar");
+        btnAlterar.setText("Editar");
         btnAlterar.setToolTipText("");
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Excluir.png"))); // NOI18N

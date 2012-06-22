@@ -49,7 +49,7 @@ public class Clientes extends javax.swing.JInternalFrame {
             }
         });
 
-        btnPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Procurar.png"))); // NOI18N
+        btnPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Pesquisar.png"))); // NOI18N
         btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPesquisarActionPerformed(evt);
@@ -106,24 +106,33 @@ public class Clientes extends javax.swing.JInternalFrame {
 
         btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Novo.png"))); // NOI18N
         btnNovo.setText("Novo");
+        btnNovo.setMaximumSize(new java.awt.Dimension(95, 25));
+        btnNovo.setMinimumSize(new java.awt.Dimension(95, 25));
+        btnNovo.setPreferredSize(new java.awt.Dimension(95, 25));
         btnNovo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNovoActionPerformed(evt);
             }
         });
         getContentPane().add(btnNovo);
-        btnNovo.setBounds(510, 390, 77, 25);
+        btnNovo.setBounds(470, 390, 95, 25);
 
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Editar.png"))); // NOI18N
-        btnAlterar.setText("Alterar");
+        btnAlterar.setText("Editar");
         btnAlterar.setToolTipText("");
+        btnAlterar.setMaximumSize(new java.awt.Dimension(95, 25));
+        btnAlterar.setMinimumSize(new java.awt.Dimension(95, 25));
+        btnAlterar.setPreferredSize(new java.awt.Dimension(95, 25));
         getContentPane().add(btnAlterar);
-        btnAlterar.setBounds(590, 390, 85, 25);
+        btnAlterar.setBounds(570, 390, 95, 25);
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Excluir.png"))); // NOI18N
         btnExcluir.setText("Excluir");
+        btnExcluir.setMaximumSize(new java.awt.Dimension(95, 25));
+        btnExcluir.setMinimumSize(new java.awt.Dimension(95, 25));
+        btnExcluir.setPreferredSize(new java.awt.Dimension(95, 25));
         getContentPane().add(btnExcluir);
-        btnExcluir.setBounds(680, 390, 83, 25);
+        btnExcluir.setBounds(670, 390, 95, 25);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
