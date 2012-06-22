@@ -12,8 +12,7 @@ import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
 
 public class OrdemServicoDialog extends javax.swing.JDialog {
-    private IUsuarioRepository _usuarioRepository;
-    private boolean _modoEdicao;
+    private IUsuarioRepository _usuarioRepository;    
     
     public OrdemServicoDialog(java.awt.Frame parent, boolean modal, IDatabaseFactory databaseFactory) {
         super(parent, modal);
@@ -28,13 +27,13 @@ public class OrdemServicoDialog extends javax.swing.JDialog {
         this.setLocationRelativeTo(null);
     }
     
-    public OrdemServicoDialog(java.awt.Frame parent, boolean modal, OrdemServico ordemServico, boolean editavel) {
+    public OrdemServicoDialog(java.awt.Frame parent, boolean modal, OrdemServico ordemServico) {
         super(parent, modal);
         initComponents();
         
-        _modoEdicao = editavel;
-        
         PreencherComponentes(ordemServico);
+        
+        btnEdit.setEnabled(true);
         
         this.setLocationRelativeTo(null);
     }
