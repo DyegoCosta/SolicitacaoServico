@@ -12,6 +12,10 @@ public class UsuarioRepository extends BaseRepository<Usuario> implements IUsuar
 
     private IAuthentication authentication;
     
+    public UsuarioRepository(IDatabaseFactory databaseFactory) {
+        super(databaseFactory);
+    }
+    
     public UsuarioRepository(IDatabaseFactory databaseFactory, IAuthentication authentication) {
         super(databaseFactory);
         this.authentication = authentication;
