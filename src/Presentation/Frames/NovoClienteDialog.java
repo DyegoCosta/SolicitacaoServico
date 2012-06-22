@@ -1,15 +1,31 @@
 package Presentation.Frames;
 
+import Domain.Application.ValidacaoException;
+import Domain.Data.IUnitOfWork;
+import Domain.Data.UnitOfWork;
+import Domain.Models.Cliente;
+import Domain.Repository.IClienteRepository;
 import Presentation.Util.UIHelper;
+import javax.swing.JOptionPane;
 
 public class NovoClienteDialog extends javax.swing.JDialog {
 
-    public NovoClienteDialog(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    private IClienteRepository clienteRepository;
+    private Cliente cliente;
+
+    public NovoClienteDialog(java.awt.Frame parent, IClienteRepository clienteRepository) {
+        this(parent, clienteRepository, null);
+    }
+
+    public NovoClienteDialog(java.awt.Frame parent, IClienteRepository clienteRepository, Cliente cliente) {
+        super(parent, true);
         initComponents();
-        
+
+        this.clienteRepository = clienteRepository;
+        this.cliente = cliente;
         this.setLocationRelativeTo(null);
         UIHelper.criarGroupBox(jPanel1, "Dados");
+        habilitaBotoes();
     }
 
     @SuppressWarnings("unchecked")
@@ -34,6 +50,7 @@ public class NovoClienteDialog extends javax.swing.JDialog {
         btnSalvar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -41,17 +58,31 @@ public class NovoClienteDialog extends javax.swing.JDialog {
 
         lblCodigo.setText("Código");
 
+        txtCodigo.setEditable(false);
+
         lblRazaosocial.setText("Razão Social");
+
+        txtRazaosocial.setEditable(false);
 
         lblCnpj.setText("CNPJ");
 
+        txtCnpj.setEditable(false);
+
         lblNomeresponsavel.setText("Nome responsável");
+
+        txtNomeresponsavel.setEditable(false);
 
         lblTelefone.setText("Telefone");
 
+        txtTelefone.setEditable(false);
+
         lblEndereco.setText("Endereço");
 
+        txtEndereco.setEditable(false);
+
         lblEmail.setText("Email");
+
+        txtEmail.setEditable(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -130,17 +161,29 @@ public class NovoClienteDialog extends javax.swing.JDialog {
 
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Salvar.png"))); // NOI18N
         btnSalvar.setText("Salvar");
+        btnSalvar.setEnabled(false);
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Excluir.png"))); // NOI18N
         btnExcluir.setText("Excluir");
+        btnExcluir.setEnabled(false);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Cancelar.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
+        btnCancelar.setEnabled(false);
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelarActionPerformed(evt);
             }
         });
+
+        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Editar.png"))); // NOI18N
+        btnEditar.setText("Editar");
+        btnEditar.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -150,10 +193,12 @@ public class NovoClienteDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnSalvar)
+                        .addComponent(btnEditar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnExcluir)
+                        .addComponent(btnSalvar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnExcluir)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCancelar))
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -167,7 +212,8 @@ public class NovoClienteDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnExcluir)
-                    .addComponent(btnSalvar))
+                    .addComponent(btnSalvar)
+                    .addComponent(btnEditar))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
@@ -178,8 +224,20 @@ public class NovoClienteDialog extends javax.swing.JDialog {
         dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        if (estaModoEdicao() && exclusaoConfirmada()) {
+
+            try {
+                excluir();
+            } catch (ValidacaoException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JPanel jPanel1;
@@ -198,4 +256,34 @@ public class NovoClienteDialog extends javax.swing.JDialog {
     private javax.swing.JTextField txtRazaosocial;
     private javax.swing.JTextField txtTelefone;
     // End of variables declaration//GEN-END:variables
+
+    private IUnitOfWork obterUnitOfWork() {
+        return new UnitOfWork(clienteRepository.getDatabaseFactory());
+    }
+    
+    private void excluir() throws ValidacaoException {
+        IUnitOfWork unitOfWork = obterUnitOfWork();
+        clienteRepository.deletar(cliente);
+        unitOfWork.commit();
+        dispose();
+    }
+    
+    private boolean exclusaoConfirmada() {
+        return JOptionPane.showConfirmDialog(this, "Deseja mesmo excluir?", "", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == 0;
+    }
+    
+    private boolean estaModoEdicao(){
+        return cliente != null;
+    }
+    
+    private void habilitaBotoes(){
+        btnCancelar.setEnabled(true);
+        btnEditar.setEnabled(estaModoEdicao());
+        btnExcluir.setEnabled(estaModoEdicao());
+        btnSalvar.setEnabled(true);
+    }
+    
+    private void habilitaCampos(){
+        UIHelper.habilitaCampos(this);
+    }
 }

@@ -13,22 +13,18 @@ import Presentation.Util.TableModelCliente;
 import Presentation.Util.UIHelper;
 import java.awt.event.KeyEvent;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class Clientes extends javax.swing.JInternalFrame {
 
-    private IClienteRepository _clienteRepository;
+    private IClienteRepository clienteRepository;
     private ITableModel _modelCliente;
     private List<Cliente> clientes;
-    private IDatabaseFactory databaseFactory;
 
     public Clientes(IDatabaseFactory databaseFactory) {
         initComponents();
 
-        this.databaseFactory = databaseFactory;
-        _modelCliente = obterClienteTableModel();
+        _modelCliente = obterClienteTableModel(databaseFactory);
         tblClientes.setModel(_modelCliente);
 
         UIHelper.criarGroupBox(panelPesquisa, "Pesquisar");
@@ -44,7 +40,7 @@ public class Clientes extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblClientes = new javax.swing.JTable();
         btnNovo = new javax.swing.JButton();
-        btnAlterar = new javax.swing.JButton();
+        btnVisualizar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
 
         setClosable(true);
@@ -127,16 +123,21 @@ public class Clientes extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(btnNovo);
-        btnNovo.setBounds(470, 390, 95, 25);
+        btnNovo.setBounds(460, 390, 95, 25);
 
-        btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Editar.png"))); // NOI18N
-        btnAlterar.setText("Editar");
-        btnAlterar.setToolTipText("");
-        btnAlterar.setMaximumSize(new java.awt.Dimension(95, 25));
-        btnAlterar.setMinimumSize(new java.awt.Dimension(95, 25));
-        btnAlterar.setPreferredSize(new java.awt.Dimension(95, 25));
-        getContentPane().add(btnAlterar);
-        btnAlterar.setBounds(570, 390, 95, 25);
+        btnVisualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Editar.png"))); // NOI18N
+        btnVisualizar.setText("Visualizar");
+        btnVisualizar.setToolTipText("");
+        btnVisualizar.setMaximumSize(new java.awt.Dimension(95, 25));
+        btnVisualizar.setMinimumSize(new java.awt.Dimension(95, 25));
+        btnVisualizar.setPreferredSize(new java.awt.Dimension(95, 25));
+        btnVisualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVisualizarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnVisualizar);
+        btnVisualizar.setBounds(565, 390, 100, 25);
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Excluir.png"))); // NOI18N
         btnExcluir.setText("Excluir");
@@ -155,7 +156,7 @@ public class Clientes extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-    NovoClienteDialog dialog = new NovoClienteDialog(null, true);
+    NovoClienteDialog dialog = new NovoClienteDialog(null, clienteRepository);
     dialog.setVisible(true);
 }//GEN-LAST:event_btnNovoActionPerformed
 
@@ -179,11 +180,19 @@ private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
             }
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnVisualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisualizarActionPerformed
+        if (existeClienteSelecionado()) {
+            Cliente clienteSelecionado = clientes.get(tblClientes.getSelectedRow());
+            NovoClienteDialog dialog = new NovoClienteDialog(null, clienteRepository, clienteSelecionado);
+            dialog.setVisible(true);
+        }
+    }//GEN-LAST:event_btnVisualizarActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnNovo;
     private javax.swing.JButton btnPesquisar;
+    private javax.swing.JButton btnVisualizar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel panelPesquisa;
     private javax.swing.JTable tblClientes;
@@ -191,12 +200,12 @@ private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     // End of variables declaration//GEN-END:variables
 
     private IUnitOfWork obterUnitOfWork() {
-        return new UnitOfWork(databaseFactory);
+        return new UnitOfWork(clienteRepository.getDatabaseFactory());
     }
 
-    private ITableModel obterClienteTableModel() {
-        _clienteRepository = new ClienteRepository(databaseFactory);
-        clientes = _clienteRepository.obterTodos();
+    private ITableModel obterClienteTableModel(IDatabaseFactory databaseFactory) {
+        clienteRepository = new ClienteRepository(databaseFactory);
+        clientes = clienteRepository.obterTodos();
 
         return new TableModelCliente(clientes);
     }
@@ -204,9 +213,9 @@ private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private void pesquisar() {
         String pesquisa = txtPesquisar.getText();
         if (StringHelper.estaNulaOuVazia(pesquisa)) {
-            clientes = _clienteRepository.obterTodos();
+            clientes = clienteRepository.obterTodos();
         } else {
-            clientes = _clienteRepository.listarPorCriterio(pesquisa);
+            clientes = clienteRepository.listarPorCriterio(pesquisa);
         }
 
         _modelCliente.clear();
@@ -224,7 +233,7 @@ private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private void excluir() throws ValidacaoException {
         Cliente clienteSelecionado = clientes.get(tblClientes.getSelectedRow());
         IUnitOfWork unitOfWork = obterUnitOfWork();
-        _clienteRepository.deletar(clienteSelecionado);
+        clienteRepository.deletar(clienteSelecionado);
         unitOfWork.commit();
         pesquisar();
 

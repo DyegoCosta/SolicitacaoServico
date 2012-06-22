@@ -12,9 +12,11 @@ public abstract class BaseRepository<TEntity>
 
     protected Session session;
     private Class<TEntity> classePersistente;
+    private IDatabaseFactory databaseFactory;
 
     public BaseRepository(IDatabaseFactory databaseFactory) {
         this.classePersistente = (Class<TEntity>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        this.databaseFactory = databaseFactory;
         this.session = databaseFactory.getSession();
     }
 
@@ -44,6 +46,11 @@ public abstract class BaseRepository<TEntity>
             throw new IllegalArgumentException("'entidade' não pode ser nula");
         
         session.delete(entidade);
+    }
+
+    @Override
+    public IDatabaseFactory getDatabaseFactory() {
+        return  this.databaseFactory;
     }
     
     protected String adicionarSinalPorcentagem(String texto){
