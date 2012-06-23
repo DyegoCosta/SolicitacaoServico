@@ -106,6 +106,7 @@ public final class OrdemServicoDialog extends BaseJDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(656, 580));
+        setPreferredSize(new java.awt.Dimension(646, 595));
 
         panelInformacoesRequerimento.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 

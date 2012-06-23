@@ -39,7 +39,9 @@ public class OrdensServico extends BaseJInternalFrame {
         _clienteRepository = new ClienteRepository(super.getDatabaseFactory());
         _apontamentoRepository = new ApontamentoRepository(super.getDatabaseFactory());
         
-        pesquisar();        
+        _listaOrdensServicos = _ordemServicoRepository.obterTodos();
+        _modelOrdensServico = obterOrdemServicoTableModel();                        
+        tblListaOrdensServico.setModel(_modelOrdensServico);
 
         UIHelper.criarGroupBox(panelPesquisa, "Pesquisar");
     }
@@ -186,6 +188,7 @@ private void txtPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         OrdemServicoDialog dialog = new OrdemServicoDialog(null, _ordemServicoRepository, _usuarioRepository, _clienteRepository, _apontamentoRepository);
         dialog.setVisible(true);
+        
         pesquisar();
     }//GEN-LAST:event_btnNovoActionPerformed
 
@@ -253,7 +256,7 @@ private void txtPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
             _listaOrdensServicos = _ordemServicoRepository.listarPorCriterio(pesquisa);
         }
 
-        _modelOrdensServico = obterOrdemServicoTableModel();
-        tblListaOrdensServico.setModel(_modelOrdensServico);
+        _modelOrdensServico.clear();
+        _modelOrdensServico.addRows(_listaOrdensServicos);
     }
 }
