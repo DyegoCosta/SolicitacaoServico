@@ -1,5 +1,6 @@
 package Presentation.Frames;
 
+import Domain.Application.StringHelper;
 import Domain.Application.ValidacaoException;
 import Domain.Data.IUnitOfWork;
 import Domain.Data.UnitOfWork;
@@ -167,6 +168,11 @@ public class NovoClienteDialog extends javax.swing.JDialog {
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Salvar.png"))); // NOI18N
         btnSalvar.setText("Salvar");
         btnSalvar.setEnabled(false);
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Excluir.png"))); // NOI18N
         btnExcluir.setText("Excluir");
@@ -250,6 +256,14 @@ public class NovoClienteDialog extends javax.swing.JDialog {
         txtCodigo.setEditable(false);
         txtRazaosocial.requestFocus();
     }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        if(dadosValidos()){
+            preencheCliente();
+            _clienteRepository.salvar(_cliente);
+        }
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEditar;
@@ -310,5 +324,17 @@ public class NovoClienteDialog extends javax.swing.JDialog {
         txtNomeresponsavel.setText(_cliente.getNomeResponsavel());
         txtRazaosocial.setText(_cliente.getRazaoSocial());
         txtTelefone.setText(_cliente.getTelefone());
+    }
+    
+    private void preencheCliente(){
+        
+    }
+
+    private boolean dadosValidos() {
+        return !StringHelper.estaNulaOuVazia(txtCnpj.getText())
+                && !StringHelper.estaNulaOuVazia(txtEndereco.getText())
+                && !StringHelper.estaNulaOuVazia(txtNomeresponsavel.getText())
+                && !StringHelper.estaNulaOuVazia(txtRazaosocial.getText())
+                && !StringHelper.estaNulaOuVazia(txtTelefone.getText());
     }
 }
