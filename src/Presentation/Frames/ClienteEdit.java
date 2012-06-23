@@ -334,6 +334,8 @@ public class ClienteEdit extends javax.swing.JDialog {
     
     private void habilitaCampos() {
         UIHelper.habilitaCampos(getContentPane());
+        txtCodigo.setEditable(false);
+        txtRazaosocial.requestFocus();
     }
     
     private void preencheFormulario() {

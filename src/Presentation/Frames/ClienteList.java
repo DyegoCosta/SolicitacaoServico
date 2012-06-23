@@ -161,6 +161,7 @@ public class ClienteList extends BaseJInternalFrame {
 private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
     ClienteEdit dialog = new ClienteEdit(null, _clienteRepository);
     dialog.setVisible(true);
+    pesquisar();
 }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
