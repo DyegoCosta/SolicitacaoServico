@@ -247,6 +247,7 @@ public class ClienteEdit extends javax.swing.JDialog {
             try {
                 excluir();
             } catch (ValidacaoException ex) {
+                unitOfWork.rollback();
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -308,6 +309,7 @@ public class ClienteEdit extends javax.swing.JDialog {
     
     private void excluir() throws ValidacaoException {
         unitOfWork = obterUnitOfWork();
+        unitOfWork.beginTransaction();
         _clienteRepository.deletar(_cliente);
         unitOfWork.commit();
         

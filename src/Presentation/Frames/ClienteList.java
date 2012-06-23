@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 
 public class ClienteList extends BaseJInternalFrame {
 
+    private IUnitOfWork unitOfWork;
     private IClienteRepository _clienteRepository;
     private ITableModel _modelCliente;
     private List<Cliente> _listaClientes;
@@ -177,6 +178,7 @@ private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
             try {
                 excluir();
             } catch (ValidacaoException ex) {
+                unitOfWork.rollback();
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -226,7 +228,8 @@ private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
 
     private void excluir() throws ValidacaoException {
         Cliente clienteSelecionado = _listaClientes.get(tblClientes.getSelectedRow());
-        IUnitOfWork unitOfWork = obterUnitOfWork();
+        unitOfWork = obterUnitOfWork();
+        unitOfWork.beginTransaction();
         _clienteRepository.deletar(clienteSelecionado);
         unitOfWork.commit();
         pesquisar();
