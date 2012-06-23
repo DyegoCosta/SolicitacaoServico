@@ -89,7 +89,7 @@ private void UsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 }//GEN-LAST:event_UsuariosActionPerformed
 
     private void ClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClientesActionPerformed
-        Clientes clienteInternalFrame = new Clientes(_databaseFactory);
+        ClienteList clienteInternalFrame = new ClienteList(_databaseFactory);
         this.add(clienteInternalFrame);
         clienteInternalFrame.setVisible(true);
 }//GEN-LAST:event_ClientesActionPerformed

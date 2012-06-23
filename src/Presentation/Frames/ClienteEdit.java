@@ -9,16 +9,16 @@ import Domain.Repository.IClienteRepository;
 import Presentation.Util.UIHelper;
 import javax.swing.JOptionPane;
 
-public class NovoClienteDialog extends javax.swing.JDialog {
+public class ClienteEdit extends javax.swing.JDialog {
 
     private IClienteRepository _clienteRepository;
     private Cliente _cliente;
 
-    public NovoClienteDialog(java.awt.Frame parent, IClienteRepository clienteRepository) {
+    public ClienteEdit(java.awt.Frame parent, IClienteRepository clienteRepository) {
         this(parent, clienteRepository, null);
     }
 
-    public NovoClienteDialog(java.awt.Frame parent, IClienteRepository clienteRepository, Cliente cliente) {
+    public ClienteEdit(java.awt.Frame parent, IClienteRepository clienteRepository, Cliente cliente) {
         super(parent, true);
         initComponents();
 
@@ -258,12 +258,15 @@ public class NovoClienteDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        if(dadosValidos()){
-            preencheCliente();
-            _clienteRepository.salvar(_cliente);
+        if (dadosValidos()) {
+            try {
+                preencheCliente();
+                _clienteRepository.salvar(_cliente);
+            } catch (ValidacaoException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEditar;
@@ -325,9 +328,8 @@ public class NovoClienteDialog extends javax.swing.JDialog {
         txtRazaosocial.setText(_cliente.getRazaoSocial());
         txtTelefone.setText(_cliente.getTelefone());
     }
-    
-    private void preencheCliente(){
-        
+
+    private void preencheCliente() {
     }
 
     private boolean dadosValidos() {
