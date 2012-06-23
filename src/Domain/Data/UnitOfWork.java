@@ -9,7 +9,6 @@ public class UnitOfWork implements IUnitOfWork {
 
     public UnitOfWork(IDatabaseFactory databaseFactory) {
         this.databaseFactory = databaseFactory;
-        begginTransaction(); //opens a trasaction right away.
     }
 
     @Override
@@ -24,7 +23,8 @@ public class UnitOfWork implements IUnitOfWork {
             currentTransaction.rollback();
     }
 
-    private void begginTransaction() {
+    @Override
+    public void beginTransaction() {
         currentTransaction = databaseFactory.getSession().beginTransaction();
     }
 }

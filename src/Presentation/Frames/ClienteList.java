@@ -139,7 +139,7 @@ public class ClienteList extends BaseJInternalFrame {
             }
         });
         getContentPane().add(btnVisualizar);
-        btnVisualizar.setBounds(630, 390, 100, 25);
+        btnVisualizar.setBounds(530, 390, 100, 25);
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Excluir.png"))); // NOI18N
         btnExcluir.setText("Excluir");
@@ -152,7 +152,7 @@ public class ClienteList extends BaseJInternalFrame {
             }
         });
         getContentPane().add(btnExcluir);
-        btnExcluir.setBounds(530, 390, 95, 25);
+        btnExcluir.setBounds(640, 390, 95, 25);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

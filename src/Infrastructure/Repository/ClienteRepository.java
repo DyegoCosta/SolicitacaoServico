@@ -52,7 +52,7 @@ public class ClienteRepository extends BaseRepository<Cliente> implements IClien
         if (entidade == null)
             throw new IllegalArgumentException("'entidade' não pode ser nula");
         
-        if(emailEstaValido(entidade.getEmail()))
+        if(!emailEstaValido(entidade.getEmail()))
             throw new ValidacaoException(
                     String.format("Email '%s' não é um email válido",
                     entidade.getEmail()));

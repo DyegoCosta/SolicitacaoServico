@@ -10,18 +10,19 @@ import Presentation.Util.UIHelper;
 import javax.swing.JOptionPane;
 
 public class ClienteEdit extends javax.swing.JDialog {
-
+    
+    private IUnitOfWork unitOfWork;
     private IClienteRepository _clienteRepository;
     private Cliente _cliente;
-
+    
     public ClienteEdit(java.awt.Frame parent, IClienteRepository clienteRepository) {
         this(parent, clienteRepository, null);
     }
-
+    
     public ClienteEdit(java.awt.Frame parent, IClienteRepository clienteRepository, Cliente cliente) {
         super(parent, true);
         initComponents();
-
+        
         this._clienteRepository = clienteRepository;
         this._cliente = cliente;
         this.setLocationRelativeTo(null);
@@ -32,7 +33,7 @@ public class ClienteEdit extends javax.swing.JDialog {
         else
             habilitaCampos();
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -239,10 +240,10 @@ public class ClienteEdit extends javax.swing.JDialog {
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
-
+    
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         if (estaModoEdicao() && exclusaoConfirmada()) {
-
+            
             try {
                 excluir();
             } catch (ValidacaoException ex) {
@@ -250,19 +251,21 @@ public class ClienteEdit extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
-
+    
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         habilitaCampos();
         txtCodigo.setEditable(false);
         txtRazaosocial.requestFocus();
     }//GEN-LAST:event_btnEditarActionPerformed
-
+    
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         if (dadosValidos()) {
             try {
                 salvar();
             } catch (ValidacaoException ex) {
+                unitOfWork.rollback();
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                
             }
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
@@ -291,38 +294,45 @@ public class ClienteEdit extends javax.swing.JDialog {
     private IUnitOfWork obterUnitOfWork() {
         return new UnitOfWork(_clienteRepository.getDatabaseFactory());
     }
-
+    
     private void salvar() throws ValidacaoException {
         preencheCliente();
+        unitOfWork = obterUnitOfWork();
         _clienteRepository.salvar(_cliente);
-    }
-
-    private void excluir() throws ValidacaoException {
-        IUnitOfWork unitOfWork = obterUnitOfWork();
-        _clienteRepository.deletar(_cliente);
         unitOfWork.commit();
+        
+        JOptionPane.showMessageDialog(this, "Cliente salvo com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
         dispose();
     }
-
+    
+    private void excluir() throws ValidacaoException {
+        unitOfWork = obterUnitOfWork();
+        _clienteRepository.deletar(_cliente);
+        unitOfWork.commit();
+        
+        JOptionPane.showMessageDialog(this, "Cliente excluído com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        dispose();
+    }
+    
     private boolean exclusaoConfirmada() {
         return JOptionPane.showConfirmDialog(this, "Deseja mesmo excluir?", "", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == 0;
     }
-
+    
     private boolean estaModoEdicao() {
         return _cliente != null;
     }
-
+    
     private void habilitaBotoes() {
         btnCancelar.setEnabled(true);
         btnEditar.setEnabled(estaModoEdicao());
         btnExcluir.setEnabled(estaModoEdicao());
         btnSalvar.setEnabled(true);
     }
-
+    
     private void habilitaCampos() {
         UIHelper.habilitaCampos(getContentPane());
     }
-
+    
     private void preencheFormulario() {
         txtCodigo.setText(String.valueOf(_cliente.getClienteId()));
         txtCnpj.setText(_cliente.getCNPJ());
@@ -332,10 +342,19 @@ public class ClienteEdit extends javax.swing.JDialog {
         txtRazaosocial.setText(_cliente.getRazaoSocial());
         txtTelefone.setText(_cliente.getTelefone());
     }
-
+    
     private void preencheCliente() {
+        if (!estaModoEdicao())
+            _cliente = new Cliente();
+        
+        _cliente.setCNPJ(txtCnpj.getText());
+        _cliente.setEmail(txtEmail.getText());
+        _cliente.setEndereco(txtEndereco.getText());
+        _cliente.setNomeResponsavel(txtNomeresponsavel.getText());
+        _cliente.setRazaoSocial(txtRazaosocial.getText());
+        _cliente.setTelefone(txtTelefone.getText());
     }
-
+    
     private boolean dadosValidos() {
         return !StringHelper.estaNulaOuVazia(txtCnpj.getText())
                 && !StringHelper.estaNulaOuVazia(txtEndereco.getText())
