@@ -1,6 +1,5 @@
 package Presentation.Frames;
 
-import Domain.Application.Authentication;
 import Domain.Application.StringHelper;
 import Domain.Data.IDatabaseFactory;
 import Domain.Models.Usuario;

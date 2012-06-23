@@ -6,13 +6,13 @@ import Domain.Repository.IApontamentoRepository;
 import java.util.List;
 
 public class ApontamentoRepository extends BaseRepository<Apontamento> implements IApontamentoRepository {
-    
-    public ApontamentoRepository(IDatabaseFactory databaseFactory){
-         super(databaseFactory);
+
+    public ApontamentoRepository(IDatabaseFactory databaseFactory) {
+        super(databaseFactory);
     }
 
     @Override
-    public List<Apontamento> obterPorOrdemServico(int ordemServicoId) {    
-        return (List<Apontamento>) (Apontamento) session.createQuery("from Apontamento where OrdemServicoId = :ordemServicoId").setString("ordemServicoId", String.valueOf(ordemServicoId)).list();
+    public List<Apontamento> obterPorOrdemServico(int ordemServicoId) {
+        return session.createQuery("from Apontamento where OrdemServicoId = :ordemServicoId").setInteger("ordemServicoId", ordemServicoId).list();
     }
 }
