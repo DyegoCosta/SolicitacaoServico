@@ -125,7 +125,7 @@ public class ClienteList extends BaseJInternalFrame {
             }
         });
         getContentPane().add(btnNovo);
-        btnNovo.setBounds(460, 390, 95, 25);
+        btnNovo.setBounds(430, 390, 95, 25);
 
         btnVisualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Editar.png"))); // NOI18N
         btnVisualizar.setText("Visualizar");
@@ -139,7 +139,7 @@ public class ClienteList extends BaseJInternalFrame {
             }
         });
         getContentPane().add(btnVisualizar);
-        btnVisualizar.setBounds(565, 390, 100, 25);
+        btnVisualizar.setBounds(630, 390, 100, 25);
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Excluir.png"))); // NOI18N
         btnExcluir.setText("Excluir");
@@ -187,6 +187,7 @@ private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
             Cliente clienteSelecionado = _listaClientes.get(tblClientes.getSelectedRow());
             ClienteEdit dialog = new ClienteEdit(null, _clienteRepository, clienteSelecionado);
             dialog.setVisible(true);
+            pesquisar(); //na Dialog, pode-se excluir ou modificar registro, então faz pesquisa novamente.
         }
     }//GEN-LAST:event_btnVisualizarActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables

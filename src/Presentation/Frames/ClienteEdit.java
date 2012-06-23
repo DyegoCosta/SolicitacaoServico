@@ -58,7 +58,7 @@ public class ClienteEdit extends javax.swing.JDialog {
         btnEditar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(534, 300));
+        setPreferredSize(new java.awt.Dimension(600, 300));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -230,7 +230,7 @@ public class ClienteEdit extends javax.swing.JDialog {
                     .addComponent(btnExcluir)
                     .addComponent(btnSalvar)
                     .addComponent(btnEditar))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(90, Short.MAX_VALUE))
         );
 
         pack();
