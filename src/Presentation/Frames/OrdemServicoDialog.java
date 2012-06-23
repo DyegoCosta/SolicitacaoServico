@@ -105,7 +105,7 @@ public final class OrdemServicoDialog extends BaseJDialog {
         btnAdicionarApontamento = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(646, 595));
+        setPreferredSize(new java.awt.Dimension(646, 680));
 
         panelInformacoesRequerimento.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
