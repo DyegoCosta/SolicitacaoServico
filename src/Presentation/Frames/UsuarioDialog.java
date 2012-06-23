@@ -68,6 +68,7 @@ public class UsuarioDialog extends BaseJDialog {
         btnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(560, 400));
 
         panelInfomacoesPessoais.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -376,7 +377,7 @@ public class UsuarioDialog extends BaseJDialog {
 
     private void preencheFormulario() {
         txtConfirmarSenha.setText(_usuario.getSenha());
-        txtCpf.setText(_usuario.getCpf());
+        txtCpf.setValue(_usuario.getCpf());
         txtLogin.setText(_usuario.getLogin());
         txtNome.setText(_usuario.getNome());
         txtSenha.setText(_usuario.getSenha());
