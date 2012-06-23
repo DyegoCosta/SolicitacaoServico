@@ -1,9 +1,9 @@
 package Presentation.Frames;
 
-import Domain.Data.DatabaseFactory;
 import Domain.Data.IDatabaseFactory;
 import Domain.Models.OrdemServico;
 import Domain.Models.Usuario;
+import Domain.Repository.IOrdemServicoRepository;
 import Domain.Repository.IUsuarioRepository;
 import Infrastructure.Repository.UsuarioRepository;
 import Presentation.Util.KeyValue;
@@ -14,35 +14,34 @@ import java.util.List;
 import java.util.TimeZone;
 import javax.swing.JComboBox;
 
-public class OrdemServicoDialog extends javax.swing.JDialog {
+public class OrdemServicoDialog extends BaseJDialog {
 
+    private IOrdemServicoRepository _ordemServicoRepository;
     private IUsuarioRepository _usuarioRepository;
-
-    public OrdemServicoDialog(java.awt.Frame parent, boolean modal, IDatabaseFactory databaseFactory) {
-        super(parent, modal);
-        _usuarioRepository = new UsuarioRepository(databaseFactory, null);
-
-        initComponents();
-
-        UIHelper.criarGroupBox(panelAtendimento, "Atendimento");
-        UIHelper.criarGroupBox(panelInformacoesRequerimento, "Requerimento");
-
-        PreencherComponentes();
-
-        HabilitarCamposParaCriacao();
-
-        this.setLocationRelativeTo(null);
+    private OrdemServico _ordemServico;
+    
+    public OrdemServicoDialog(java.awt.Frame parent, IOrdemServicoRepository ordemServicoRepository) {
+        this(parent, ordemServicoRepository, null);        
     }
 
-    public OrdemServicoDialog(java.awt.Frame parent, boolean modal, OrdemServico ordemServico) {
-        super(parent, modal);
+    public OrdemServicoDialog(java.awt.Frame parent, IOrdemServicoRepository ordemServicoRepository, OrdemServico ordemServico) {
+        super(parent, true);
         initComponents();
-
-        PreencherComponentes(ordemServico);
-
-        btnEdit.setEnabled(true);
-
+        
+        UIHelper.criarGroupBox(panelAtendimento, "Atendimento");
+        UIHelper.criarGroupBox(panelInformacoesRequerimento, "Requerimento");
+        
+        _ordemServicoRepository = ordemServicoRepository;
+        _ordemServico = ordemServico;
+        
         this.setLocationRelativeTo(null);
+        
+        preencheComboBoxes();
+        
+        if (estaModoEdicao())
+            preencheFormulario();
+        else
+            super.habilitaCampos();
     }
 
     @SuppressWarnings("unchecked")
@@ -67,6 +66,7 @@ public class OrdemServicoDialog extends javax.swing.JDialog {
         btnSalvar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -188,13 +188,19 @@ public class OrdemServicoDialog extends javax.swing.JDialog {
         btnEdit.setText("Editar");
         btnEdit.setEnabled(false);
 
+        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Excluir.png"))); // NOI18N
+        btnExcluir.setText("Excluir");
+        btnExcluir.setEnabled(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(348, Short.MAX_VALUE)
+                .addContainerGap(259, Short.MAX_VALUE)
                 .addComponent(btnEdit)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnExcluir)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSalvar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -215,7 +221,8 @@ public class OrdemServicoDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSalvar)
                     .addComponent(btnCancelar)
-                    .addComponent(btnEdit))
+                    .addComponent(btnEdit)
+                    .addComponent(btnExcluir))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -232,6 +239,7 @@ public class OrdemServicoDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JComboBox cbxAnalista;
     private javax.swing.JComboBox cbxAtendente;
@@ -250,22 +258,7 @@ public class OrdemServicoDialog extends javax.swing.JDialog {
     private javax.swing.JTextArea txtObjetivo;
     // End of variables declaration//GEN-END:variables
 
-    private void PreencherComponentes() {
-        PreencheComboBoxes();
-
-        txtNumero.setText(GerarCodigoPadraoOrdemServico());
-        txtDataAbertura.setDate(new Date());
-    }
-
-    private void PreencherComponentes(OrdemServico ordemServico) {
-        PreencheComboBoxes();
-
-        txtNumero.setText(ordemServico.getOrdemServicoCodigo());
-        txtDataAbertura.setDate(ordemServico.getDataAbertura().toDate());
-        txtObjetivo.setText(ordemServico.getObjetivo());
-    }
-
-    private String GerarCodigoPadraoOrdemServico() {
+    private String gerarCodigoPadraoOrdemServico() {
         Calendar dataAtual = Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00"));
         int ano = dataAtual.get(Calendar.YEAR);
         int mes = dataAtual.get(Calendar.MONTH);
@@ -276,43 +269,33 @@ public class OrdemServicoDialog extends javax.swing.JDialog {
         return String.format("OS%s%s%s%s%s", ano, mes, dia, hora, minuto);
     }
 
-    private void PreencherComboBoxUsuarios(JComboBox comboBox, List<Usuario> usuarios) {
+    private void preencherComboBoxUsuarios(JComboBox comboBox, List<Usuario> usuarios) {
         for (Usuario u : usuarios) {
             comboBox.addItem(new KeyValue(u.getNome(), String.valueOf(u.getUsuarioId())));
         }
     }
 
-    private void PreencherComboBoxPrioridades(JComboBox cbxPrioridade) {
+    private void preencherComboBoxPrioridades(JComboBox cbxPrioridade) {
         cbxPrioridade.addItem("Alta");
         cbxPrioridade.addItem("Média");
         cbxPrioridade.addItem("Baixa");
     }
 
-    private void HabilitarCampos() {
-        txtDataAbertura.setEnabled(true);
-        txtNumero.setEnabled(true);
-        txtObjetivo.setEnabled(true);
-        cbxAnalista.setEnabled(true);
-        cbxAtendente.setEnabled(true);
-        cbxPrioridade.setEnabled(true);
-
-        // O botão editar será desabilitado pois se os campos editáveis
-        // estiverem habilitados será para edição ou criação de uma OS        
-        btnEdit.setEnabled(true);
-    }
-
-    private void HabilitarCamposParaCriacao() {
-        HabilitarCampos();
-
-        btnSalvar.setEnabled(true);
-        btnCancelar.setEnabled(true);
-    }
-
-    private void PreencheComboBoxes() {
+    private void preencheComboBoxes() {
         List<Usuario> usuarios = _usuarioRepository.obterTodos();
-        PreencherComboBoxUsuarios(cbxAnalista, usuarios);
-        PreencherComboBoxUsuarios(cbxAtendente, usuarios);
+        preencherComboBoxUsuarios(cbxAnalista, usuarios);
+        preencherComboBoxUsuarios(cbxAtendente, usuarios);
 
-        PreencherComboBoxPrioridades(cbxPrioridade);
+        preencherComboBoxPrioridades(cbxPrioridade);
+    }
+
+    private boolean estaModoEdicao() {
+        return _ordemServico != null;
+    }
+
+    private void preencheFormulario() {
+        txtNumero.setText(_ordemServico.getOrdemServicoCodigo());
+        txtObjetivo.setText(_ordemServico.getObjetivo());
+        txtDataAbertura.setDate(_ordemServico.getDataAbertura().toDate());
     }
 }

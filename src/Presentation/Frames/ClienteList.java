@@ -158,7 +158,7 @@ public class ClienteList extends BaseJInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-    ClienteEdit dialog = new ClienteEdit(null, _clienteRepository);
+    ClienteDialog dialog = new ClienteDialog(null, _clienteRepository);
     dialog.setVisible(true);
 }//GEN-LAST:event_btnNovoActionPerformed
 
@@ -185,7 +185,7 @@ private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private void btnVisualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisualizarActionPerformed
         if (existeClienteSelecionado()) {
             Cliente clienteSelecionado = _listaClientes.get(tblClientes.getSelectedRow());
-            ClienteEdit dialog = new ClienteEdit(null, _clienteRepository, clienteSelecionado);
+            ClienteDialog dialog = new ClienteDialog(null, _clienteRepository, clienteSelecionado);
             dialog.setVisible(true);
             pesquisar(); //na Dialog, pode-se excluir ou modificar registro, então faz pesquisa novamente.
         }

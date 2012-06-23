@@ -9,17 +9,17 @@ import Domain.Repository.IClienteRepository;
 import Presentation.Util.UIHelper;
 import javax.swing.JOptionPane;
 
-public class ClienteEdit extends javax.swing.JDialog {
+public class ClienteDialog extends BaseJDialog {
     
     private IUnitOfWork unitOfWork;
     private IClienteRepository _clienteRepository;
     private Cliente _cliente;
     
-    public ClienteEdit(java.awt.Frame parent, IClienteRepository clienteRepository) {
+    public ClienteDialog(java.awt.Frame parent, IClienteRepository clienteRepository) {
         this(parent, clienteRepository, null);
     }
     
-    public ClienteEdit(java.awt.Frame parent, IClienteRepository clienteRepository, Cliente cliente) {
+    public ClienteDialog(java.awt.Frame parent, IClienteRepository clienteRepository, Cliente cliente) {
         super(parent, true);
         initComponents();
         
@@ -31,7 +31,7 @@ public class ClienteEdit extends javax.swing.JDialog {
         if (estaModoEdicao())
             preencheFormulario();
         else
-            habilitaCampos();
+            super.habilitaCampos();
     }
     
     @SuppressWarnings("unchecked")
@@ -59,7 +59,7 @@ public class ClienteEdit extends javax.swing.JDialog {
         btnEditar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(600, 300));
+        setPreferredSize(new java.awt.Dimension(600, 400));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -212,9 +212,9 @@ public class ClienteEdit extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnEditar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSalvar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnExcluir)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSalvar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCancelar))
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -228,10 +228,10 @@ public class ClienteEdit extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
-                    .addComponent(btnExcluir)
                     .addComponent(btnSalvar)
-                    .addComponent(btnEditar))
-                .addContainerGap(90, Short.MAX_VALUE))
+                    .addComponent(btnEditar)
+                    .addComponent(btnExcluir))
+                .addContainerGap(198, Short.MAX_VALUE))
         );
 
         pack();
@@ -328,11 +328,7 @@ public class ClienteEdit extends javax.swing.JDialog {
         btnEditar.setEnabled(estaModoEdicao());
         btnExcluir.setEnabled(estaModoEdicao());
         btnSalvar.setEnabled(true);
-    }
-    
-    private void habilitaCampos() {
-        UIHelper.habilitaCampos(getContentPane());
-    }
+    }    
     
     private void preencheFormulario() {
         txtCodigo.setText(String.valueOf(_cliente.getClienteId()));
