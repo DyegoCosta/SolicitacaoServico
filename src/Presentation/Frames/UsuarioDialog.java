@@ -8,6 +8,7 @@ import Domain.Models.Perfil;
 import Domain.Models.Usuario;
 import Domain.Repository.IUsuarioRepository;
 import Presentation.Util.UIHelper;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 public class UsuarioDialog extends BaseJDialog {
@@ -32,6 +33,7 @@ public class UsuarioDialog extends BaseJDialog {
         UIHelper.criarGroupBox(panelInfomacoesPessoais, "Informações pessoais");
         UIHelper.criarGroupBox(panelInformacoesAcesso, "Informações de acesso");
 
+        preenchePerfis();
         habilitaBotoes();
 
         if (estaModoEdicao())
@@ -58,6 +60,8 @@ public class UsuarioDialog extends BaseJDialog {
         txtSenha = new javax.swing.JPasswordField();
         txtConfirmarSenha = new javax.swing.JPasswordField();
         lblConfirmarSenha = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        cboPerfil = new javax.swing.JComboBox();
         btnEditar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         btnSalvar = new javax.swing.JButton();
@@ -67,14 +71,17 @@ public class UsuarioDialog extends BaseJDialog {
 
         panelInfomacoesPessoais.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        lblNome.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNome.setText("Nome");
 
         txtNome.setEditable(false);
 
+        lblSobrenome.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblSobrenome.setText("Sobrenome");
 
         txtSobrenome.setEditable(false);
 
+        lblCpf.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblCpf.setText("CPF");
 
         txtCpf.setEditable(false);
@@ -96,16 +103,18 @@ public class UsuarioDialog extends BaseJDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelInfomacoesPessoaisLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(lblSobrenome)
+                        .addGroup(panelInfomacoesPessoaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelInfomacoesPessoaisLayout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(lblSobrenome))
+                            .addGroup(panelInfomacoesPessoaisLayout.createSequentialGroup()
+                                .addGap(45, 45, 45)
+                                .addComponent(lblCpf)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtSobrenome, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelInfomacoesPessoaisLayout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addComponent(lblCpf)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(12, Short.MAX_VALUE))
+                        .addGroup(panelInfomacoesPessoaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtSobrenome, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         panelInfomacoesPessoaisLayout.setVerticalGroup(
             panelInfomacoesPessoaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,17 +141,25 @@ public class UsuarioDialog extends BaseJDialog {
 
         panelInformacoesAcesso.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        lblLogin.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblLogin.setText("Login");
 
         txtLogin.setEditable(false);
 
+        lblSenha.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblSenha.setText("Senha");
 
         txtSenha.setEditable(false);
 
         txtConfirmarSenha.setEditable(false);
 
+        lblConfirmarSenha.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblConfirmarSenha.setText("Confirmar senha");
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setText("Perfil");
+
+        cboPerfil.setEnabled(false);
 
         javax.swing.GroupLayout panelInformacoesAcessoLayout = new javax.swing.GroupLayout(panelInformacoesAcesso);
         panelInformacoesAcesso.setLayout(panelInformacoesAcessoLayout);
@@ -153,12 +170,14 @@ public class UsuarioDialog extends BaseJDialog {
                 .addGroup(panelInformacoesAcessoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblLogin)
                     .addComponent(lblSenha)
-                    .addComponent(lblConfirmarSenha))
+                    .addComponent(lblConfirmarSenha)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addGroup(panelInformacoesAcessoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtLogin, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
                     .addComponent(txtSenha)
-                    .addComponent(txtConfirmarSenha))
+                    .addComponent(txtConfirmarSenha)
+                    .addComponent(cboPerfil, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelInformacoesAcessoLayout.setVerticalGroup(
@@ -176,24 +195,48 @@ public class UsuarioDialog extends BaseJDialog {
                 .addGroup(panelInformacoesAcessoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtConfirmarSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblConfirmarSenha))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelInformacoesAcessoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(cboPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Editar.png"))); // NOI18N
         btnEditar.setText("Editar");
         btnEditar.setEnabled(false);
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Excluir.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.setEnabled(false);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Salvar.png"))); // NOI18N
         btnSalvar.setText("Salvar");
         btnSalvar.setEnabled(false);
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Cancelar.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.setEnabled(false);
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -222,22 +265,59 @@ public class UsuarioDialog extends BaseJDialog {
                 .addComponent(panelInfomacoesPessoais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(panelInformacoesAcesso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSalvar)
                     .addComponent(btnExcluir)
                     .addComponent(btnEditar)
                     .addComponent(btnCancelar))
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addGap(28, 28, 28))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        habilitaCampos();
+        txtNome.requestFocus();
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        if (estaModoEdicao() && exclusaoConfirmada()) {
+            try {
+                excluir();
+            } catch (ValidacaoException ex) {
+                _unitOfWork.rollback();
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        if (dadosValidos()) {
+            if (senhasValidas()) {
+                try {
+                    salvar();
+                } catch (ValidacaoException ex) {
+                    _unitOfWork.rollback();
+                    JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            } else
+                JOptionPane.showMessageDialog(this, "Confirme a senha corretamente", "Erro", JOptionPane.WARNING_MESSAGE);
+        } else
+            JOptionPane.showMessageDialog(this, "Preencha todos os campos obrigatórios", "Erro", JOptionPane.WARNING_MESSAGE);
+    }//GEN-LAST:event_btnSalvarActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JComboBox cboPerfil;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblConfirmarSenha;
     private javax.swing.JLabel lblCpf;
     private javax.swing.JLabel lblLogin;
@@ -301,6 +381,7 @@ public class UsuarioDialog extends BaseJDialog {
         txtNome.setText(_usuario.getNome());
         txtSenha.setText(_usuario.getSenha());
         txtSobrenome.setText(_usuario.getSobrenome());
+        cboPerfil.setSelectedItem(_usuario.getPerfil());
     }
 
     private void preencheUsuario() {
@@ -310,7 +391,7 @@ public class UsuarioDialog extends BaseJDialog {
         _usuario.setCpf(txtCpf.getText());
         _usuario.setLogin(txtLogin.getText());
         _usuario.setNome(txtNome.getText());
-        _usuario.setPerfil(Perfil.Tecnico);
+        _usuario.setPerfil((Perfil) cboPerfil.getSelectedItem());
         _usuario.setSenha(txtSenha.getText());
         _usuario.setSobrenome(txtSobrenome.getText());
     }
@@ -321,10 +402,15 @@ public class UsuarioDialog extends BaseJDialog {
                 && !StringHelper.estaNulaOuVazia(txtNome.getText())
                 && !StringHelper.estaNulaOuVazia(txtSenha.getText())
                 && !StringHelper.estaNulaOuVazia(txtConfirmarSenha.getText())
-                && !StringHelper.estaNulaOuVazia(txtSobrenome.getText());
+                && !StringHelper.estaNulaOuVazia(txtSobrenome.getText())
+                && cboPerfil.getSelectedItem() != null;
     }
 
     private boolean senhasValidas() {
         return txtSenha.getText().equals(txtConfirmarSenha.getText());
+    }
+
+    private void preenchePerfis() {
+        cboPerfil.setModel(new DefaultComboBoxModel(new Perfil[]{Perfil.Analista, Perfil.Atendente, Perfil.Tecnico, Perfil.Administrador}));
     }
 }
