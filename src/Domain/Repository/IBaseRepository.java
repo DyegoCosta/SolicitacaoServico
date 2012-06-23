@@ -9,7 +9,7 @@ public interface IBaseRepository<TEntity> {
     
     List<TEntity> obterTodos();
     
-    TEntity salvar(TEntity entidade);
+    TEntity salvar(TEntity entidade) throws ValidacaoException;
     
     void deletar(TEntity entidade) throws ValidacaoException;
     

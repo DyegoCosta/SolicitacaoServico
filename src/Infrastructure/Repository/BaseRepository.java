@@ -31,7 +31,7 @@ public abstract class BaseRepository<TEntity>
     }
 
     @Override
-    public TEntity salvar(TEntity entidade) {
+    public TEntity salvar(TEntity entidade) throws ValidacaoException {
         if (entidade == null)
             throw new IllegalArgumentException("'entidade' não pode ser nula");
         

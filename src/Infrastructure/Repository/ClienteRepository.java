@@ -1,5 +1,7 @@
 package Infrastructure.Repository;
 
+import Domain.Application.IEmailValidator;
+import Domain.Application.StringHelper;
 import Domain.Application.ValidacaoException;
 import Domain.Data.IDatabaseFactory;
 import Domain.Models.Cliente;
@@ -10,8 +12,11 @@ import org.hibernate.criterion.Restrictions;
 
 public class ClienteRepository extends BaseRepository<Cliente> implements IClienteRepository {
     
-    public ClienteRepository(IDatabaseFactory databaseFactory){
+    private IEmailValidator _emailValidator;
+    
+    public ClienteRepository(IDatabaseFactory databaseFactory, IEmailValidator emailValidator){
          super(databaseFactory);
+         _emailValidator = emailValidator;
     }
 
     @Override
@@ -40,5 +45,24 @@ public class ClienteRepository extends BaseRepository<Cliente> implements IClien
                     entidade.getRazaoSocial()));
         
         super.deletar(entidade);
+    }
+
+    @Override
+    public Cliente salvar(Cliente entidade) throws ValidacaoException {
+        if (entidade == null)
+            throw new IllegalArgumentException("'entidade' não pode ser nula");
+        
+        if(emailEstaValido(entidade.getEmail()))
+            throw new ValidacaoException(
+                    String.format("Email '%s' não é um email válido",
+                    entidade.getEmail()));
+        
+        return super.salvar(entidade);
+    }
+    
+    private boolean emailEstaValido(String email){
+        //email não é obrigatório.
+        return StringHelper.estaNulaOuVazia(email) ||
+                _emailValidator.estaValido(email);
     }
 }

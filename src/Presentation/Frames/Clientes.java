@@ -1,5 +1,6 @@
 package Presentation.Frames;
 
+import Domain.Application.EmailValidator;
 import Domain.Application.StringHelper;
 import Domain.Application.ValidacaoException;
 import Domain.Data.IDatabaseFactory;
@@ -200,7 +201,7 @@ private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     // End of variables declaration//GEN-END:variables
 
     private ITableModel obterClienteTableModel(IDatabaseFactory databaseFactory) {
-        _clienteRepository = new ClienteRepository(databaseFactory);
+        _clienteRepository = new ClienteRepository(databaseFactory, new EmailValidator());
         _listaClientes = _clienteRepository.obterTodos();
 
         return new TableModelCliente(_listaClientes);
