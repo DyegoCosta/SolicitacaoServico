@@ -6,9 +6,9 @@ import Domain.Repository.IApontamentoRepository;
 import java.util.List;
 
 public class ApontamentoRepository extends BaseRepository<Apontamento> implements IApontamentoRepository {
-    
-    public ApontamentoRepository(IDatabaseFactory databaseFactory){
-         super(databaseFactory);
+
+    public ApontamentoRepository(IDatabaseFactory databaseFactory) {
+        super(databaseFactory);
     }
 
     @Override
