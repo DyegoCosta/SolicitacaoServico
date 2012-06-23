@@ -298,6 +298,7 @@ public class ClienteEdit extends javax.swing.JDialog {
     private void salvar() throws ValidacaoException {
         preencheCliente();
         unitOfWork = obterUnitOfWork();
+        unitOfWork.beginTransaction();
         _clienteRepository.salvar(_cliente);
         unitOfWork.commit();
         
