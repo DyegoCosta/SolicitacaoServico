@@ -330,7 +330,17 @@ public class ClienteDialog extends BaseJDialog {
         btnEditar.setEnabled(estaModoEdicao());
         btnExcluir.setEnabled(estaModoEdicao());
         btnSalvar.setEnabled(true);
+<<<<<<< HEAD:src/Presentation/Frames/ClienteDialog.java
     }    
+=======
+    }
+    
+    private void habilitaCampos() {
+        UIHelper.habilitaCampos(getContentPane());
+        txtCodigo.setEditable(false);
+        txtRazaosocial.requestFocus();
+    }
+>>>>>>> bba74d55476849b1d7f4867f9a14e75c9d81809a:src/Presentation/Frames/ClienteEdit.java
     
     private void preencheFormulario() {
         txtCodigo.setText(String.valueOf(_cliente.getClienteId()));

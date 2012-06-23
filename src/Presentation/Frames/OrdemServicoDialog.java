@@ -9,7 +9,6 @@ import Infrastructure.Repository.UsuarioRepository;
 import Presentation.Util.KeyValue;
 import Presentation.Util.UIHelper;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 import javax.swing.JComboBox;
