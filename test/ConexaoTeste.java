@@ -1,4 +1,5 @@
 
+import Domain.Application.ValidacaoException;
 import Domain.Data.DatabaseFactory;
 import Domain.Data.IDatabaseFactory;
 import Domain.Data.IUnitOfWork;
@@ -160,7 +161,7 @@ public class ConexaoTeste {
     }
     
     @Test
-    public void insert() {
+    public void insert() throws ValidacaoException {
         // Arrange
         IUnitOfWork unitOfWork = new UnitOfWork(databaseFactory);
         IClienteRepository clienteRepository = new ClienteRepository(databaseFactory);

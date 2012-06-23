@@ -2,9 +2,18 @@ package Domain.Models;
 
 
 public enum StatusOrdemServico {
+    Nova(1),
+    Aberta(2),
+    Concluida(3),
+    Pendente(4);
+    
+    private final int index;   
 
-    Nova,
-    Aberta,
-    Concluida,
-    Pendente
+    StatusOrdemServico(int index) {
+        this.index = index;
+    }
+
+    public int index() { 
+        return index; 
+    }
 }

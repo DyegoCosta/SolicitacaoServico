@@ -5,8 +5,12 @@ import Domain.Application.ValidacaoException;
 import Domain.Data.IDatabaseFactory;
 import Domain.Data.IUnitOfWork;
 import Domain.Models.OrdemServico;
+import Domain.Repository.IClienteRepository;
 import Domain.Repository.IOrdemServicoRepository;
+import Domain.Repository.IUsuarioRepository;
+import Infrastructure.Repository.ClienteRepository;
 import Infrastructure.Repository.OrdemServicoRepository;
+import Infrastructure.Repository.UsuarioRepository;
 import Presentation.Util.ITableModel;
 import Presentation.Util.TableModelOrdemServico;
 import Presentation.Util.UIHelper;
@@ -16,6 +20,9 @@ import javax.swing.JOptionPane;
 public class OrdensServico extends BaseJInternalFrame {
 
     private IOrdemServicoRepository _ordemServicoRepository;
+    private IUsuarioRepository _usuarioRepository;
+    private IClienteRepository _clienteRepository;
+    
     private ITableModel _modelOrdensServico;
     private List<OrdemServico> _listaOrdensServicos;
 
@@ -25,7 +32,9 @@ public class OrdensServico extends BaseJInternalFrame {
         initComponents();
 
         _ordemServicoRepository = new OrdemServicoRepository(super.getDatabaseFactory());
-
+        _usuarioRepository = new UsuarioRepository(super.getDatabaseFactory());
+        _clienteRepository = new ClienteRepository(super.getDatabaseFactory());
+        
         _listaOrdensServicos = _ordemServicoRepository.obterTodos();
         _modelOrdensServico = obterOrdemServicoTableModel();
         tblListaOrdensServico.setModel(_modelOrdensServico);
@@ -158,11 +167,11 @@ public class OrdensServico extends BaseJInternalFrame {
                 .addGap(25, 25, 25)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnExcluir)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnVisualizar)
-                        .addComponent(btnNovo)))
+                        .addComponent(btnNovo))
+                    .addComponent(btnExcluir))
                 .addContainerGap())
         );
 
@@ -173,14 +182,14 @@ private void txtPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
 }//GEN-LAST:event_txtPesquisarActionPerformed
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-        OrdemServicoDialog dialog = new OrdemServicoDialog(null, _ordemServicoRepository);
+        OrdemServicoDialog dialog = new OrdemServicoDialog(null, _ordemServicoRepository, _usuarioRepository, _clienteRepository);
         dialog.setVisible(true);
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnVisualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisualizarActionPerformed
         if (existeOrdemServicoSelecionada()) {
-            OrdemServico ordemServicoSelecionada = _listaOrdensServicos.get(tblListaOrdensServico.getSelectedRow());                                
-            OrdemServicoDialog dialog = new OrdemServicoDialog(null, _ordemServicoRepository, ordemServicoSelecionada);
+            OrdemServico ordemServicoSelecionada = _listaOrdensServicos.get(tblListaOrdensServico.getSelectedRow());
+            OrdemServicoDialog dialog = new OrdemServicoDialog(null, _ordemServicoRepository, _usuarioRepository, _clienteRepository, ordemServicoSelecionada);
             dialog.setVisible(true);
             pesquisar(); //na Dialog, pode-se excluir ou modificar registro, então faz pesquisa novamente.
         }
@@ -199,7 +208,6 @@ private void txtPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         pesquisar();
     }//GEN-LAST:event_btnPesquisarActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnNovo;
@@ -230,14 +238,15 @@ private void txtPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
 
         JOptionPane.showMessageDialog(this, "Cliente excluído com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
     }
-    
+
     private void pesquisar() {
         String pesquisa = txtPesquisar.getText();
-        if (StringHelper.estaNulaOuVazia(pesquisa))
+        if (StringHelper.estaNulaOuVazia(pesquisa)) {
             _listaOrdensServicos = _ordemServicoRepository.obterTodos();
-        else
+        } else {
             _listaOrdensServicos = _ordemServicoRepository.listarPorCriterio(pesquisa);
-        
+        }
+
         _modelOrdensServico.clear();
         _modelOrdensServico.addRows(_listaOrdensServicos);
     }

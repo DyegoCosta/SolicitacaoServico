@@ -23,11 +23,15 @@ public class ClienteDialog extends BaseJDialog {
         super(parent, true);
         initComponents();
         
-        this._clienteRepository = clienteRepository;
-        this._cliente = cliente;
-        this.setLocationRelativeTo(null);
+        _clienteRepository = clienteRepository;
+        _cliente = cliente;
+        
+        setLocationRelativeTo(null);
+        
         UIHelper.criarGroupBox(jPanel1, "Dados");
+        
         habilitaBotoes();
+        
         if (estaModoEdicao())
             preencheFormulario();
         else

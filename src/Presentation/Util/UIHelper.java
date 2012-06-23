@@ -3,6 +3,7 @@ package Presentation.Util;
 import java.awt.Component;
 import java.awt.Container;
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
 
 public class UIHelper {
 
@@ -38,9 +39,8 @@ public class UIHelper {
 
     public static void habilitaCampos(Container container) {
         for (Component component : container.getComponents()) {
-
-            if (component instanceof JTextField)
-                habilitaTextField((JTextField) component);
+            if (component instanceof JTextComponent)
+                habilitaTextField((JTextComponent) component);
             else if (component instanceof JComboBox)
                 habilitaComponent(component);
             else if (component instanceof JCheckBox)
@@ -48,11 +48,13 @@ public class UIHelper {
             else if (component instanceof JRadioButton)
                 habilitaComponent(component);
             else if (component instanceof JPanel)
-                habilitaCampos((JPanel) component);
+                habilitaCampos((JPanel) component);            
+            else if (component instanceof JScrollPane)
+                habilitaComponent((JScrollPane) component);
         }
     }
 
-    private static void habilitaTextField(JTextField textField) {
+    private static void habilitaTextField(JTextComponent textField) {
         textField.setEditable(true);
     }
 

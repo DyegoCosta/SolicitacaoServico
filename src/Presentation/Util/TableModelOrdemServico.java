@@ -36,8 +36,7 @@ public class TableModelOrdemServico  extends TableModel<OrdemServico> {
             case 3:
                 return String.class;
             default:
-                throw new RuntimeException("coluna inválida");
-                
+                throw new RuntimeException("coluna inválida");                
         }        
     }   
 }

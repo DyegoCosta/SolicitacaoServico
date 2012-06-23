@@ -1,5 +1,6 @@
 package Infrastructure.Repository;
 
+import Domain.Application.EmailValidator;
 import Domain.Application.IEmailValidator;
 import Domain.Application.StringHelper;
 import Domain.Application.ValidacaoException;
@@ -13,6 +14,10 @@ import org.hibernate.criterion.Restrictions;
 public class ClienteRepository extends BaseRepository<Cliente> implements IClienteRepository {
     
     private IEmailValidator _emailValidator;
+    
+    public ClienteRepository(IDatabaseFactory databaseFactory){
+        this(databaseFactory, new EmailValidator());
+    }
     
     public ClienteRepository(IDatabaseFactory databaseFactory, IEmailValidator emailValidator){
          super(databaseFactory);
