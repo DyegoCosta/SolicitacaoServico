@@ -399,9 +399,10 @@ public final class OrdemServicoDialog extends BaseJDialog {
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnAdicionarApontamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarApontamentoActionPerformed
-        ApontamentoDialog dialog = new ApontamentoDialog(null, true);
-
+        ApontamentoDialog dialog = new ApontamentoDialog(null, true, _apontamentoRepository, _ordemServico);
         dialog.setVisible(true);
+        
+        pesquisar();
     }//GEN-LAST:event_btnAdicionarApontamentoActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdicionarApontamento;
@@ -524,6 +525,7 @@ public final class OrdemServicoDialog extends BaseJDialog {
         _unitOfWork.commit();
 
         JOptionPane.showMessageDialog(this, "OS salva com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        
         dispose();
     }
 
@@ -565,7 +567,8 @@ public final class OrdemServicoDialog extends BaseJDialog {
 
         JOptionPane.showMessageDialog(this, "OS excluída com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
         
-        dispose();
+        if(!estaModoEdicao())
+            dispose();
     }
 
     private void preencheApontamentosPelaOrdemServico() {
@@ -582,5 +585,12 @@ public final class OrdemServicoDialog extends BaseJDialog {
     
     private void preencheApontamentoTableModel() {
         _modelApontamentos = new TableModelApontamento(_apontamentos);        
+    }
+
+    private void pesquisar() {
+        preencheApontamentosBuscandoNoBanco();
+        preencheApontamentoTableModel();
+        
+        tblListaApontamentos.setModel(_modelApontamentos);
     }
 }

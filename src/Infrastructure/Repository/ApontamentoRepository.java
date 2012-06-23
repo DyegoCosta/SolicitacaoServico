@@ -12,7 +12,7 @@ public class ApontamentoRepository extends BaseRepository<Apontamento> implement
     }
 
     @Override
-    public List<Apontamento> obterPorOrdemServico(int ordemServicoId) {
-        return session.createQuery("from Apontamento where OrdemServicoId = :ordemServicoId").setInteger("ordemServicoId", ordemServicoId).list();
+    public List<Apontamento> obterPorOrdemServico(int ordemServicoId) {    
+        return session.createQuery("from Apontamento where OrdemServicoId = :ordemServicoId").setString("ordemServicoId", String.valueOf(ordemServicoId)).list();
     }
 }
