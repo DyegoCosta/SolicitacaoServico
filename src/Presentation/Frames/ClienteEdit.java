@@ -260,8 +260,7 @@ public class ClienteEdit extends javax.swing.JDialog {
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         if (dadosValidos()) {
             try {
-                preencheCliente();
-                _clienteRepository.salvar(_cliente);
+                salvar();
             } catch (ValidacaoException ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
@@ -291,6 +290,11 @@ public class ClienteEdit extends javax.swing.JDialog {
 
     private IUnitOfWork obterUnitOfWork() {
         return new UnitOfWork(_clienteRepository.getDatabaseFactory());
+    }
+
+    private void salvar() throws ValidacaoException {
+        preencheCliente();
+        _clienteRepository.salvar(_cliente);
     }
 
     private void excluir() throws ValidacaoException {

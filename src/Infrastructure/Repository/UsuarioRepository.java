@@ -42,7 +42,7 @@ public class UsuarioRepository extends BaseRepository<Usuario> implements IUsuar
     }
 
     @Override
-    public Usuario salvar(Usuario entidade) {
+    public Usuario salvar(Usuario entidade) throws ValidacaoException {
 
         if (entidade == null)
             throw new IllegalArgumentException("'usuario' não pode ser nulo");
@@ -52,7 +52,7 @@ public class UsuarioRepository extends BaseRepository<Usuario> implements IUsuar
                 continue;
 
             if (usuario.getLogin().equals(entidade.getLogin()))
-                throw new RuntimeException(String.format("O Login '%s' já está em uso", usuario.getLogin()));
+                throw new ValidacaoException(String.format("O Login '%s' já está em uso", usuario.getLogin()));
         }
 
         return super.salvar(entidade);
