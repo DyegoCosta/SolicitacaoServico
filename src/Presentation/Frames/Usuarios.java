@@ -1,7 +1,9 @@
 package Presentation.Frames;
 
 import Domain.Application.StringHelper;
+import Domain.Application.ValidacaoException;
 import Domain.Data.IDatabaseFactory;
+import Domain.Data.IUnitOfWork;
 import Domain.Models.Usuario;
 import Domain.Repository.IUsuarioRepository;
 import Infrastructure.Repository.UsuarioRepository;
@@ -10,18 +12,21 @@ import Presentation.Util.TableModelUsuario;
 import Presentation.Util.UIHelper;
 import java.awt.event.KeyEvent;
 import java.util.List;
+import javax.swing.JOptionPane;
 
-public class Usuarios extends javax.swing.JInternalFrame {
+public class Usuarios extends BaseJInternalFrame {
 
+    private IUnitOfWork _unitOfWork;
     private IUsuarioRepository _usuarioRepository;
-    private ITableModel modelUsuario;
-    private List<Usuario> usuarios;
+    private ITableModel _modelUsuario;
+    private List<Usuario> _listaUsuarios;
 
     public Usuarios(IDatabaseFactory databaseFactory) {
+        super(databaseFactory);
         initComponents();
 
-        modelUsuario = obterUsuarioTableModel(databaseFactory);
-        tblUsuarios.setModel(modelUsuario);
+        _modelUsuario = obterUsuarioTableModel(databaseFactory);
+        tblUsuarios.setModel(_modelUsuario);
 
         UIHelper.criarGroupBox(jPanel1, "Pesquisar");
     }
@@ -36,7 +41,7 @@ public class Usuarios extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblUsuarios = new javax.swing.JTable();
         btnNovo = new javax.swing.JButton();
-        btnAlterar = new javax.swing.JButton();
+        btnVisualizar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
 
         setClosable(true);
@@ -108,12 +113,22 @@ public class Usuarios extends javax.swing.JInternalFrame {
             }
         });
 
-        btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Editar.png"))); // NOI18N
-        btnAlterar.setText("Editar");
-        btnAlterar.setToolTipText("");
+        btnVisualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Editar.png"))); // NOI18N
+        btnVisualizar.setText("Visualizar");
+        btnVisualizar.setToolTipText("");
+        btnVisualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVisualizarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Excluir.png"))); // NOI18N
         btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -125,7 +140,7 @@ public class Usuarios extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnNovo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnAlterar)
+                        .addComponent(btnVisualizar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnExcluir))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -142,7 +157,7 @@ public class Usuarios extends javax.swing.JInternalFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAlterar)
+                    .addComponent(btnVisualizar)
                     .addComponent(btnNovo)
                     .addComponent(btnExcluir))
                 .addContainerGap(67, Short.MAX_VALUE))
@@ -152,8 +167,9 @@ public class Usuarios extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-        UsuarioDialog dialog = new UsuarioDialog(null, true);
+        UsuarioDialog dialog = new UsuarioDialog(null, _usuarioRepository);
         dialog.setVisible(true);
+        pesquisar();
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void txtPesquisarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisarKeyPressed
@@ -165,11 +181,31 @@ public class Usuarios extends javax.swing.JInternalFrame {
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         pesquisar();
     }//GEN-LAST:event_btnPesquisarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        if (existeUsuarioSelecionado() && exclusaoConfirmada()) {
+            try {
+                excluir();
+            } catch (ValidacaoException ex) {
+                _unitOfWork.rollback();
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnVisualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisualizarActionPerformed
+        if (existeUsuarioSelecionado()) {
+            Usuario usuarioSelecionado = _listaUsuarios.get(tblUsuarios.getSelectedRow());
+            UsuarioDialog dialog = new UsuarioDialog(null, _usuarioRepository, usuarioSelecionado);
+            dialog.setVisible(true);
+            pesquisar();
+        }
+    }//GEN-LAST:event_btnVisualizarActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnNovo;
     private javax.swing.JButton btnPesquisar;
+    private javax.swing.JButton btnVisualizar;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblUsuarios;
@@ -178,20 +214,35 @@ public class Usuarios extends javax.swing.JInternalFrame {
 
     private ITableModel obterUsuarioTableModel(IDatabaseFactory databaseFactory) {
         _usuarioRepository = new UsuarioRepository(databaseFactory);
-        usuarios = _usuarioRepository.obterTodos();
+        _listaUsuarios = _usuarioRepository.obterTodos();
 
-        return new TableModelUsuario(usuarios);
+        return new TableModelUsuario(_listaUsuarios);
     }
 
     private void pesquisar() {
         String pesquisa = txtPesquisar.getText();
         if (StringHelper.estaNulaOuVazia(pesquisa)) {
-            usuarios = _usuarioRepository.obterTodos();
+            _listaUsuarios = _usuarioRepository.obterTodos();
         } else {
-            usuarios = _usuarioRepository.listarPorCriterio(pesquisa);
+            _listaUsuarios = _usuarioRepository.listarPorCriterio(pesquisa);
         }
 
-        modelUsuario.clear();
-        modelUsuario.addRows(usuarios);
+        _modelUsuario.clear();
+        _modelUsuario.addRows(_listaUsuarios);
+    }
+
+    private boolean existeUsuarioSelecionado() {
+        return tblUsuarios.getSelectedRow() >= 0;
+    }
+
+    private void excluir() throws ValidacaoException {
+        Usuario usuarioSelecionado = _listaUsuarios.get(tblUsuarios.getSelectedRow());
+        _unitOfWork = obterUnitOfWork();
+        _unitOfWork.beginTransaction();
+        _usuarioRepository.deletar(usuarioSelecionado);
+        _unitOfWork.commit();
+        pesquisar();
+
+        JOptionPane.showMessageDialog(this, "Usuário excluído com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
     }
 }

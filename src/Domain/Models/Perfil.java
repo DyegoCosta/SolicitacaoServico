@@ -4,5 +4,6 @@ public enum Perfil {
 
     Analista,
     Tecnico,
-    Atendente
+    Atendente,
+    Administrador
 }
