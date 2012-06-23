@@ -18,7 +18,7 @@ public class OrdemServicoRepository extends BaseRepository<OrdemServico> impleme
         texto = adicionarSinalPorcentagem(texto);
         Criteria criterio = session.createCriteria(OrdemServico.class) //TODO: melhorar para pesquisar nos relacionamentos.
                                    .add(Restrictions.disjunction()
-                                                    .add(Restrictions.ilike("objetivo", texto)));
+                                   .add(Restrictions.ilike("objetivo", texto)));
         return criterio.list();
     }
 }

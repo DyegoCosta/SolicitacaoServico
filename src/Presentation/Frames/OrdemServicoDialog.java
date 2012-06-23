@@ -57,13 +57,11 @@ public final class OrdemServicoDialog extends BaseJDialog {
         _ordemServicoRepository = ordemServicoRepository;
         _apontamentoRepository = apontamentoRepository;
 
-        _ordemServico = ordemServico;        
+        _ordemServico = ordemServico;
 
         preencheComboBoxes();
-        
-        preencheApontamentosPelaOrdemServico();
-        preencheApontamentoTableModel();
-        tblListaApontamentos.setModel(_modelApontamentos);
+
+        preencheApontamentos();
 
         habilitaBotoes();
 
@@ -72,7 +70,7 @@ public final class OrdemServicoDialog extends BaseJDialog {
         } else {
             this.habilitaCampos();
         }
-        
+
         this.setLocationRelativeTo(null);
     }
 
@@ -279,12 +277,19 @@ public final class OrdemServicoDialog extends BaseJDialog {
                 {null, null, null, null}
             },
             new String [] {
-                "Codigo", "Cliente", "Contato", "Telefone"
+                "Usuario", "Data de início", "Data de término", "Detalhes"
             }
         ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false
             };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -294,6 +299,7 @@ public final class OrdemServicoDialog extends BaseJDialog {
         jScrollPane3.setViewportView(tblListaApontamentos);
 
         btnAdicionarApontamento.setText("Adicionar");
+        btnAdicionarApontamento.setEnabled(false);
         btnAdicionarApontamento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAdicionarApontamentoActionPerformed(evt);
@@ -401,7 +407,7 @@ public final class OrdemServicoDialog extends BaseJDialog {
     private void btnAdicionarApontamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarApontamentoActionPerformed
         ApontamentoDialog dialog = new ApontamentoDialog(null, true, _apontamentoRepository, _ordemServico);
         dialog.setVisible(true);
-        
+
         pesquisar();
     }//GEN-LAST:event_btnAdicionarApontamentoActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -525,7 +531,7 @@ public final class OrdemServicoDialog extends BaseJDialog {
         _unitOfWork.commit();
 
         JOptionPane.showMessageDialog(this, "OS salva com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-        
+
         dispose();
     }
 
@@ -550,9 +556,7 @@ public final class OrdemServicoDialog extends BaseJDialog {
 
         _ordemServico.setObjetivo(txtObjetivo.getText());
 
-        _ordemServico.setDataAbertura(LocalDateTime.fromDateFields(txtDataAbertura.getDate()));
-
-        _ordemServico.setStatus(StatusOrdemServico.Nova);
+        _ordemServico.setDataAbertura(LocalDateTime.fromDateFields(txtDataAbertura.getDate()));        
     }
 
     private boolean exclusaoConfirmada() {
@@ -566,31 +570,40 @@ public final class OrdemServicoDialog extends BaseJDialog {
         _unitOfWork.commit();
 
         JOptionPane.showMessageDialog(this, "OS excluída com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-        
-        if(!estaModoEdicao())
+
+        if (!estaModoEdicao()) {
             dispose();
+        }
     }
 
     private void preencheApontamentosPelaOrdemServico() {
-        if (estaModoEdicao()) {            
+        if (estaModoEdicao()) {
             _apontamentos = _ordemServico.getApontamentos();
         }
     }
 
     private void preencheApontamentosBuscandoNoBanco() {
-        if (estaModoEdicao()) {            
-            _apontamentos = _apontamentoRepository.obterPorOrdemServico(_ordemServico.getOrdemServicoId());
-        }
+        _apontamentos = _apontamentoRepository.obterPorOrdemServico(_ordemServico.getOrdemServicoId());
     }
-    
+
     private void preencheApontamentoTableModel() {
-        _modelApontamentos = new TableModelApontamento(_apontamentos);        
+        _modelApontamentos = new TableModelApontamento(_apontamentos);
     }
 
     private void pesquisar() {
         preencheApontamentosBuscandoNoBanco();
         preencheApontamentoTableModel();
-        
+
         tblListaApontamentos.setModel(_modelApontamentos);
+    }
+
+    private void preencheApontamentos() {
+        if(estaModoEdicao()){
+            preencheApontamentosPelaOrdemServico();
+            preencheApontamentoTableModel();
+            tblListaApontamentos.setModel(_modelApontamentos);
+            
+            btnAdicionarApontamento.setEnabled(true);
+        }
     }
 }

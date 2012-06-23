@@ -39,9 +39,7 @@ public class OrdensServico extends BaseJInternalFrame {
         _clienteRepository = new ClienteRepository(super.getDatabaseFactory());
         _apontamentoRepository = new ApontamentoRepository(super.getDatabaseFactory());
         
-        _listaOrdensServicos = _ordemServicoRepository.obterTodos();
-        _modelOrdensServico = obterOrdemServicoTableModel();
-        tblListaOrdensServico.setModel(_modelOrdensServico);
+        pesquisar();        
 
         UIHelper.criarGroupBox(panelPesquisa, "Pesquisar");
     }
@@ -62,11 +60,6 @@ public class OrdensServico extends BaseJInternalFrame {
         setClosable(true);
         setTitle("Ordens de Serviços");
         setPreferredSize(new java.awt.Dimension(795, 590));
-        addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                formFocusGained(evt);
-            }
-        });
 
         panelPesquisa.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -193,13 +186,16 @@ private void txtPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         OrdemServicoDialog dialog = new OrdemServicoDialog(null, _ordemServicoRepository, _usuarioRepository, _clienteRepository, _apontamentoRepository);
         dialog.setVisible(true);
+        pesquisar();
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnVisualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisualizarActionPerformed
         if (existeOrdemServicoSelecionada()) {
             OrdemServico ordemServicoSelecionada = _listaOrdensServicos.get(tblListaOrdensServico.getSelectedRow());
+            
             OrdemServicoDialog dialog = new OrdemServicoDialog(null, _ordemServicoRepository, _usuarioRepository, _clienteRepository, _apontamentoRepository, ordemServicoSelecionada);
             dialog.setVisible(true);
+            
             pesquisar(); //na Dialog, pode-se excluir ou modificar registro, então faz pesquisa novamente.
         }
     }//GEN-LAST:event_btnVisualizarActionPerformed
@@ -217,10 +213,6 @@ private void txtPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         pesquisar();
     }//GEN-LAST:event_btnPesquisarActionPerformed
-
-    private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
-        pesquisar();
-    }//GEN-LAST:event_formFocusGained
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExcluir;
@@ -261,7 +253,7 @@ private void txtPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
             _listaOrdensServicos = _ordemServicoRepository.listarPorCriterio(pesquisa);
         }
 
-        _modelOrdensServico.clear();
-        _modelOrdensServico.addRows(_listaOrdensServicos);
+        _modelOrdensServico = obterOrdemServicoTableModel();
+        tblListaOrdensServico.setModel(_modelOrdensServico);
     }
 }
