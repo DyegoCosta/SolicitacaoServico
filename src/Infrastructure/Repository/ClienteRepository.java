@@ -1,13 +1,9 @@
 package Infrastructure.Repository;
 
-<<<<<<< HEAD
-import Domain.Application.EmailValidator;
-import Domain.Application.IEmailValidator;
-=======
 import Domain.Application.IValidator;
->>>>>>> 3f1c7bdd4867eb4d4b4e12fbe0e40e8ca9b97f6c
 import Domain.Application.StringHelper;
 import Domain.Application.ValidacaoException;
+import Domain.Application.Validator;
 import Domain.Data.IDatabaseFactory;
 import Domain.Models.Cliente;
 import Domain.Repository.IClienteRepository;
@@ -15,26 +11,16 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
-public class ClienteRepository extends BaseRepository<Cliente> implements IClienteRepository {
-<<<<<<< HEAD
-    
-    private IEmailValidator _emailValidator;
+public class ClienteRepository extends BaseRepository<Cliente> implements IClienteRepository {       
+    private IValidator _validator;
     
     public ClienteRepository(IDatabaseFactory databaseFactory){
-        this(databaseFactory, new EmailValidator());
+        this(databaseFactory, new Validator());
     }
     
-    public ClienteRepository(IDatabaseFactory databaseFactory, IEmailValidator emailValidator){
+    public ClienteRepository(IDatabaseFactory databaseFactory, IValidator validator){
          super(databaseFactory);
-         _emailValidator = emailValidator;
-=======
-
-    private IValidator _validator;
-
-    public ClienteRepository(IDatabaseFactory databaseFactory, IValidator validator) {
-        super(databaseFactory);
-        _validator = validator;
->>>>>>> 3f1c7bdd4867eb4d4b4e12fbe0e40e8ca9b97f6c
+         _validator = validator;             
     }
 
     @Override

@@ -58,6 +58,11 @@ public class OrdensServico extends BaseJInternalFrame {
         setClosable(true);
         setTitle("Ordens de Serviços");
         setPreferredSize(new java.awt.Dimension(795, 590));
+        addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                formFocusGained(evt);
+            }
+        });
 
         panelPesquisa.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -208,6 +213,11 @@ private void txtPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         pesquisar();
     }//GEN-LAST:event_btnPesquisarActionPerformed
+
+    private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
+        pesquisar();
+    }//GEN-LAST:event_formFocusGained
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnNovo;
@@ -228,15 +238,15 @@ private void txtPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     }
 
     private void excluir() throws ValidacaoException {
-        OrdemServico clienteSelecionado = _listaOrdensServicos.get(tblListaOrdensServico.getSelectedRow());
+        OrdemServico ordemServicoSelecionada = _listaOrdensServicos.get(tblListaOrdensServico.getSelectedRow());
         IUnitOfWork unitOfWork = super.obterUnitOfWork();
 
-        _ordemServicoRepository.deletar(clienteSelecionado);
+        _ordemServicoRepository.deletar(ordemServicoSelecionada);
         unitOfWork.commit();
 
         pesquisar();
 
-        JOptionPane.showMessageDialog(this, "Cliente excluído com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "OS excluída com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void pesquisar() {

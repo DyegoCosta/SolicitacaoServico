@@ -252,8 +252,7 @@ public class ClienteDialog extends BaseJDialog {
     }//GEN-LAST:event_btnCancelarActionPerformed
     
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        if (estaModoEdicao() && exclusaoConfirmada()) {
-            
+        if (estaModoEdicao() && exclusaoConfirmada()) {            
             try {
                 excluir();
             } catch (ValidacaoException ex) {

@@ -1,5 +1,6 @@
 package IntegrationTests;
 
+import Domain.Application.ValidacaoException;
 import Domain.Data.DatabaseFactory;
 import Domain.Data.IDatabaseFactory;
 import Domain.Data.IUnitOfWork;
@@ -44,7 +45,7 @@ public class ApontamentoTeste {
     }
     
     @Test
-    public void salvarApontamentoComAsDatasCorretas() {
+    public void salvarApontamentoComAsDatasCorretas() throws ValidacaoException {
         
         // Arrange
         IUnitOfWork unitOfWork = new UnitOfWork(databaseFactory);

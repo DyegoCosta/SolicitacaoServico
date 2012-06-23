@@ -21,41 +21,41 @@ import javax.swing.JOptionPane;
 import org.joda.time.LocalDateTime;
 
 public final class OrdemServicoDialog extends BaseJDialog {
-    
-    private IUnitOfWork unitOfWork;
+
+    private IUnitOfWork _unitOfWork;
     private IOrdemServicoRepository _ordemServicoRepository;
-    private IUsuarioRepository _usuarioRepository;    
+    private IUsuarioRepository _usuarioRepository;
     private IClienteRepository _clienteRepository;
-    
-    private OrdemServico _ordemServico;    
-    
+    private OrdemServico _ordemServico;
+
     public OrdemServicoDialog(java.awt.Frame parent, IOrdemServicoRepository ordemServicoRepository, IUsuarioRepository usuarioRepository, IClienteRepository clienteRepository) {
-        this(parent, ordemServicoRepository, usuarioRepository, clienteRepository, null);        
+        this(parent, ordemServicoRepository, usuarioRepository, clienteRepository, null);
     }
 
     public OrdemServicoDialog(java.awt.Frame parent, IOrdemServicoRepository ordemServicoRepository, IUsuarioRepository usuarioRepository, IClienteRepository clienteRepository, OrdemServico ordemServico) {
         super(parent, true);
         initComponents();
-        
+
         UIHelper.criarGroupBox(panelAtendimento, "Atendimento");
         UIHelper.criarGroupBox(panelInformacoesRequerimento, "Requerimento");
         UIHelper.criarGroupBox(panelApontamentos, "Apontamentos");
-        
+
         _clienteRepository = clienteRepository;
         _usuarioRepository = usuarioRepository;
         _ordemServicoRepository = ordemServicoRepository;
         _ordemServico = ordemServico;
-        
+
         this.setLocationRelativeTo(null);
-        
+
         preencheComboBoxes();
-        
+
         habilitaBotoes();
-                
-        if (estaModoEdicao())
+
+        if (estaModoEdicao()) {
             preencheFormulario();
-        else
+        } else {
             this.habilitaCampos();
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -89,7 +89,7 @@ public final class OrdemServicoDialog extends BaseJDialog {
         btnAdicionarApontamento = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(666, 580));
+        setMinimumSize(new java.awt.Dimension(656, 580));
 
         panelInformacoesRequerimento.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -236,10 +236,20 @@ public final class OrdemServicoDialog extends BaseJDialog {
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Editar.png"))); // NOI18N
         btnEditar.setText("Editar");
         btnEditar.setEnabled(false);
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Excluir.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.setEnabled(false);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         panelApontamentos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -266,6 +276,11 @@ public final class OrdemServicoDialog extends BaseJDialog {
         jScrollPane3.setViewportView(tblListaOrdensServico);
 
         btnAdicionarApontamento.setText("Adicionar");
+        btnAdicionarApontamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdicionarApontamentoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelApontamentosLayout = new javax.swing.GroupLayout(panelApontamentos);
         panelApontamentos.setLayout(panelApontamentosLayout);
@@ -339,13 +354,37 @@ public final class OrdemServicoDialog extends BaseJDialog {
         if (dadosValidos()) {
             try {
                 salvar();
+                btnSalvar.setEnabled(false);
             } catch (ValidacaoException ex) {
-                unitOfWork.rollback();
-                JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);                
+                _unitOfWork.rollback();
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        if (estaModoEdicao() && exclusaoConfirmada()) {
+            try {
+                excluir();
+            } catch (ValidacaoException ex) {
+                _unitOfWork.rollback();
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        habilitaCampos();
+        txtNumero.setEditable(false);
+        btnSalvar.setEnabled(true);
+        txtObjetivo.requestFocus();
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnAdicionarApontamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarApontamentoActionPerformed
+        ApontamentoJDialog dialog = new ApontamentoJDialog(null, true);
+
+        dialog.setVisible(true);
+    }//GEN-LAST:event_btnAdicionarApontamentoActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdicionarApontamento;
     private javax.swing.JButton btnCancelar;
@@ -355,42 +394,39 @@ public final class OrdemServicoDialog extends BaseJDialog {
     private javax.swing.JComboBox cbxAtendente;
     private javax.swing.JComboBox cbxClientes;
     private javax.swing.JComboBox cbxPrioridade;
-    private javax.swing.JComboBox cbxPrioridade1;
     private javax.swing.JComboBox cbxTecnico;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lblAtendente;
     private javax.swing.JLabel lblCliente;
     private javax.swing.JLabel lblDataAbertura;
     private javax.swing.JLabel lblNumero;
     private javax.swing.JLabel lblObjetivo;
-    private javax.swing.JLabel lblObjetivo1;
     private javax.swing.JLabel lblPrioridade;
-    private javax.swing.JLabel lblPrioridade1;
     private javax.swing.JLabel lblTecnico;
     private javax.swing.JPanel panelApontamentos;
     private javax.swing.JPanel panelAtendimento;
     private javax.swing.JPanel panelInformacoesRequerimento;
-    private javax.swing.JPanel panelInformacoesRequerimento1;
     private javax.swing.JTable tblListaOrdensServico;
     private com.toedter.calendar.JDateChooser txtDataAbertura;
     private javax.swing.JTextField txtNumero;
     private javax.swing.JTextArea txtObjetivo;
-    private javax.swing.JTextArea txtObjetivo1;
     // End of variables declaration//GEN-END:variables
 
     private IUnitOfWork obterUnitOfWork() {
         return new UnitOfWork(_ordemServicoRepository.getDatabaseFactory());
     }
-    
+
     private void habilitaBotoes() {
         btnCancelar.setEnabled(true);
         btnEditar.setEnabled(estaModoEdicao());
         btnExcluir.setEnabled(estaModoEdicao());
-        btnSalvar.setEnabled(true);
-    }    
-    
+
+        if (!estaModoEdicao()) {
+            btnSalvar.setEnabled(true);
+        }
+    }
+
     private String gerarCodigoPadraoOrdemServico() {
         Calendar dataAtual = Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00"));
         int ano = dataAtual.get(Calendar.YEAR);
@@ -400,7 +436,7 @@ public final class OrdemServicoDialog extends BaseJDialog {
         int minuto = dataAtual.get(Calendar.MINUTE);
 
         return String.format("OS%s%s%s%s%s", ano, mes, dia, hora, minuto);
-    }    
+    }
 
     private void preencherComboBoxPrioridades(JComboBox cbxPrioridade) {
         cbxPrioridade.addItem(new KeyValue("Alta", "0"));
@@ -411,21 +447,21 @@ public final class OrdemServicoDialog extends BaseJDialog {
     private void preencheComboBoxes() {
         List<Usuario> usuarios = _usuarioRepository.obterTodos();
         List<Cliente> clientes = _clienteRepository.obterTodos();
-        
+
         preencherComboBoxUsuarios(cbxTecnico, usuarios);
         preencherComboBoxUsuarios(cbxAtendente, usuarios);
         preencherComboBoxClientes(clientes);
-        
+
         preencherComboBoxPrioridades(cbxPrioridade);
     }
-    
+
     private void preencherComboBoxUsuarios(JComboBox comboBox, List<Usuario> usuarios) {
         for (Usuario u : usuarios) {
             comboBox.addItem(new KeyValue(u.getNome(), String.valueOf(u.getUsuarioId())));
         }
     }
-    
-    private void preencherComboBoxClientes(List<Cliente> clientes){
+
+    private void preencherComboBoxClientes(List<Cliente> clientes) {
         for (Cliente c : clientes) {
             cbxClientes.addItem(new KeyValue(c.getRazaoSocial(), String.valueOf(c.getClienteId())));
         }
@@ -433,23 +469,23 @@ public final class OrdemServicoDialog extends BaseJDialog {
 
     private boolean estaModoEdicao() {
         return _ordemServico != null;
-    }        
+    }
 
     private void preencheFormulario() {
         txtNumero.setText(_ordemServico.getOrdemServicoCodigo());
         txtObjetivo.setText(_ordemServico.getObjetivo());
         txtDataAbertura.setDate(_ordemServico.getDataAbertura().toDate());
     }
-    
+
     @Override
-    protected void habilitaCampos(){
-        txtNumero.setText(gerarCodigoPadraoOrdemServico());        
+    protected void habilitaCampos() {
+        txtNumero.setText(gerarCodigoPadraoOrdemServico());
         txtDataAbertura.setDate(Calendar.getInstance(TimeZone.getTimeZone("GMT-3:00")).getTime());
-        
+
         txtNumero.setEnabled(true);
-        txtDataAbertura.setEnabled(true);        
+        txtDataAbertura.setEnabled(true);
         txtObjetivo.setEnabled(true);
-        
+
         super.habilitaCampos();
     }
 
@@ -459,43 +495,58 @@ public final class OrdemServicoDialog extends BaseJDialog {
                 && !StringHelper.estaNulaOuVazia(txtDataAbertura.toString());
     }
 
-    private void salvar() throws ValidacaoException{
+    private void salvar() throws ValidacaoException {
         preencheOrdemServico();
-        
-        unitOfWork = obterUnitOfWork();
-        unitOfWork.beginTransaction();
-        
+
+        _unitOfWork = obterUnitOfWork();
+        _unitOfWork.beginTransaction();
+
         _ordemServicoRepository.salvar(_ordemServico);
-        
-        unitOfWork.commit();
-        
+
+        _unitOfWork.commit();
+
         JOptionPane.showMessageDialog(this, "OS salva com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
         dispose();
     }
 
     private void preencheOrdemServico() {
-        if (!estaModoEdicao())
+        if (!estaModoEdicao()) {
             _ordemServico = new OrdemServico();
-        
-        _ordemServico.setOrdemServicoCodigo(txtNumero.getText());               
-        
-        KeyValue atendente = (KeyValue)cbxAtendente.getModel().getSelectedItem();
+        }
+
+        _ordemServico.setOrdemServicoCodigo(txtNumero.getText());
+
+        KeyValue atendente = (KeyValue) cbxAtendente.getModel().getSelectedItem();
         _ordemServico.setAtendenteId(Integer.valueOf(atendente.getValue()));
-        
-        KeyValue tecnico = (KeyValue)cbxTecnico.getModel().getSelectedItem();
+
+        KeyValue tecnico = (KeyValue) cbxTecnico.getModel().getSelectedItem();
         _ordemServico.setTecnicoId(Integer.valueOf(tecnico.getValue()));
-        
-        KeyValue cliente = (KeyValue)cbxClientes.getModel().getSelectedItem();
+
+        KeyValue cliente = (KeyValue) cbxClientes.getModel().getSelectedItem();
         _ordemServico.setClienteId(Integer.valueOf(cliente.getValue()));
-        
-        KeyValue prioridade = (KeyValue)cbxPrioridade.getModel().getSelectedItem();
+
+        KeyValue prioridade = (KeyValue) cbxPrioridade.getModel().getSelectedItem();
         _ordemServico.setPrioridade(Integer.valueOf(prioridade.getValue()));
-        
-        
+
+
         _ordemServico.setObjetivo(txtObjetivo.getText());
-        
+
         _ordemServico.setDataAbertura(LocalDateTime.fromDateFields(txtDataAbertura.getDate()));
-                
+
         _ordemServico.setStatus(StatusOrdemServico.Nova);
+    }
+
+    private boolean exclusaoConfirmada() {
+        return JOptionPane.showConfirmDialog(this, "Deseja mesmo excluir?", "", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == 0;
+    }
+
+    private void excluir() throws ValidacaoException {
+        _unitOfWork = obterUnitOfWork();
+        _unitOfWork.beginTransaction();
+        _ordemServicoRepository.deletar(_ordemServico);
+        _unitOfWork.commit();
+
+        JOptionPane.showMessageDialog(this, "OS excluída com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        dispose();
     }
 }
