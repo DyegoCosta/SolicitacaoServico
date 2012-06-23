@@ -1,31 +1,43 @@
 package Presentation.Frames;
 
+import Domain.Application.StringHelper;
+import Domain.Application.ValidacaoException;
 import Domain.Data.IUnitOfWork;
+import Domain.Data.UnitOfWork;
+import Domain.Models.Perfil;
 import Domain.Models.Usuario;
 import Domain.Repository.IUsuarioRepository;
 import Presentation.Util.UIHelper;
+import javax.swing.JOptionPane;
 
-public class UsuarioDialog extends javax.swing.JDialog {
-    
+public class UsuarioDialog extends BaseJDialog {
+
     private IUnitOfWork _unitOfWork;
     private IUsuarioRepository _usuarioRepository;
     private Usuario _usuario;
-    
+
     public UsuarioDialog(java.awt.Frame parent, IUsuarioRepository usuarioRepository) {
         this(parent, usuarioRepository, null);
     }
-    
+
     public UsuarioDialog(java.awt.Frame parent, IUsuarioRepository usuarioRepository, Usuario usuario) {
         super(parent, true);
         initComponents();
-        
+
         _usuarioRepository = usuarioRepository;
         _usuario = usuario;
-        
+
         this.setLocationRelativeTo(null);
-        
-        UIHelper.criarGroupBox(panelInfomacoesPessoais, "Informações pessoais");        
+
+        UIHelper.criarGroupBox(panelInfomacoesPessoais, "Informações pessoais");
         UIHelper.criarGroupBox(panelInformacoesAcesso, "Informações de acesso");
+
+        habilitaBotoes();
+
+        if (estaModoEdicao())
+            preencheFormulario();
+        else
+            super.habilitaCampos();
     }
 
     @SuppressWarnings("unchecked")
@@ -48,8 +60,8 @@ public class UsuarioDialog extends javax.swing.JDialog {
         lblConfirmarSenha = new javax.swing.JLabel();
         btnEditar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
-        btnSalvar1 = new javax.swing.JButton();
-        btnCancelar1 = new javax.swing.JButton();
+        btnSalvar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -175,13 +187,13 @@ public class UsuarioDialog extends javax.swing.JDialog {
         btnExcluir.setText("Excluir");
         btnExcluir.setEnabled(false);
 
-        btnSalvar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Salvar.png"))); // NOI18N
-        btnSalvar1.setText("Salvar");
-        btnSalvar1.setEnabled(false);
+        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Salvar.png"))); // NOI18N
+        btnSalvar.setText("Salvar");
+        btnSalvar.setEnabled(false);
 
-        btnCancelar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Cancelar.png"))); // NOI18N
-        btnCancelar1.setText("Cancelar");
-        btnCancelar1.setEnabled(false);
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentation/Icons/Cancelar.png"))); // NOI18N
+        btnCancelar.setText("Cancelar");
+        btnCancelar.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -198,9 +210,9 @@ public class UsuarioDialog extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnExcluir)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSalvar1)
+                        .addComponent(btnSalvar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCancelar1)))
+                        .addComponent(btnCancelar)))
                 .addContainerGap(159, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -212,21 +224,20 @@ public class UsuarioDialog extends javax.swing.JDialog {
                 .addComponent(panelInformacoesAcesso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSalvar1)
+                    .addComponent(btnSalvar)
                     .addComponent(btnExcluir)
                     .addComponent(btnEditar)
-                    .addComponent(btnCancelar1))
+                    .addComponent(btnCancelar))
                 .addContainerGap(64, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCancelar1;
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnExcluir;
-    private javax.swing.JButton btnSalvar1;
+    private javax.swing.JButton btnSalvar;
     private javax.swing.JLabel lblConfirmarSenha;
     private javax.swing.JLabel lblCpf;
     private javax.swing.JLabel lblLogin;
@@ -242,4 +253,78 @@ public class UsuarioDialog extends javax.swing.JDialog {
     private javax.swing.JPasswordField txtSenha;
     private javax.swing.JTextField txtSobrenome;
     // End of variables declaration//GEN-END:variables
+
+    private IUnitOfWork obterUnitOfWork() {
+        return new UnitOfWork(_usuarioRepository.getDatabaseFactory());
+    }
+
+    private void salvar() throws ValidacaoException {
+        preencheUsuario();
+        _unitOfWork = obterUnitOfWork();
+        _unitOfWork.beginTransaction();
+        _usuarioRepository.salvar(_usuario);
+        _unitOfWork.commit();
+
+        JOptionPane.showMessageDialog(this, "Usuário salvo com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        dispose();
+    }
+
+    private void excluir() throws ValidacaoException {
+        _unitOfWork = obterUnitOfWork();
+        _unitOfWork.beginTransaction();
+        _usuarioRepository.deletar(_usuario);
+        _unitOfWork.commit();
+
+        JOptionPane.showMessageDialog(this, "Usuário excluído com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        dispose();
+    }
+
+    private boolean exclusaoConfirmada() {
+        return JOptionPane.showConfirmDialog(this, "Deseja mesmo excluir?", "", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == 0;
+    }
+
+    private boolean estaModoEdicao() {
+        return _usuario != null;
+    }
+
+    private void habilitaBotoes() {
+        btnCancelar.setEnabled(true);
+        btnEditar.setEnabled(estaModoEdicao());
+        btnExcluir.setEnabled(estaModoEdicao());
+        btnSalvar.setEnabled(true);
+    }
+
+    private void preencheFormulario() {
+        txtConfirmarSenha.setText(_usuario.getSenha());
+        txtCpf.setText(_usuario.getCpf());
+        txtLogin.setText(_usuario.getLogin());
+        txtNome.setText(_usuario.getNome());
+        txtSenha.setText(_usuario.getSenha());
+        txtSobrenome.setText(_usuario.getSobrenome());
+    }
+
+    private void preencheUsuario() {
+        if (!estaModoEdicao())
+            _usuario = new Usuario();
+
+        _usuario.setCpf(txtCpf.getText());
+        _usuario.setLogin(txtLogin.getText());
+        _usuario.setNome(txtNome.getText());
+        _usuario.setPerfil(Perfil.Tecnico);
+        _usuario.setSenha(txtSenha.getText());
+        _usuario.setSobrenome(txtSobrenome.getText());
+    }
+
+    private boolean dadosValidos() {
+        return !StringHelper.estaNulaOuVazia(txtCpf.getText())
+                && !StringHelper.estaNulaOuVazia(txtLogin.getText())
+                && !StringHelper.estaNulaOuVazia(txtNome.getText())
+                && !StringHelper.estaNulaOuVazia(txtSenha.getText())
+                && !StringHelper.estaNulaOuVazia(txtConfirmarSenha.getText())
+                && !StringHelper.estaNulaOuVazia(txtSobrenome.getText());
+    }
+
+    private boolean senhasValidas() {
+        return txtSenha.getText().equals(txtConfirmarSenha.getText());
+    }
 }
