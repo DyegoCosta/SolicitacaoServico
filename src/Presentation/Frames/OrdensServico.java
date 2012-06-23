@@ -5,9 +5,11 @@ import Domain.Application.ValidacaoException;
 import Domain.Data.IDatabaseFactory;
 import Domain.Data.IUnitOfWork;
 import Domain.Models.OrdemServico;
+import Domain.Repository.IApontamentoRepository;
 import Domain.Repository.IClienteRepository;
 import Domain.Repository.IOrdemServicoRepository;
 import Domain.Repository.IUsuarioRepository;
+import Infrastructure.Repository.ApontamentoRepository;
 import Infrastructure.Repository.ClienteRepository;
 import Infrastructure.Repository.OrdemServicoRepository;
 import Infrastructure.Repository.UsuarioRepository;
@@ -22,6 +24,7 @@ public class OrdensServico extends BaseJInternalFrame {
     private IOrdemServicoRepository _ordemServicoRepository;
     private IUsuarioRepository _usuarioRepository;
     private IClienteRepository _clienteRepository;
+    private IApontamentoRepository _apontamentoRepository;
     
     private ITableModel _modelOrdensServico;
     private List<OrdemServico> _listaOrdensServicos;
@@ -34,6 +37,7 @@ public class OrdensServico extends BaseJInternalFrame {
         _ordemServicoRepository = new OrdemServicoRepository(super.getDatabaseFactory());
         _usuarioRepository = new UsuarioRepository(super.getDatabaseFactory());
         _clienteRepository = new ClienteRepository(super.getDatabaseFactory());
+        _apontamentoRepository = new ApontamentoRepository(super.getDatabaseFactory());
         
         _listaOrdensServicos = _ordemServicoRepository.obterTodos();
         _modelOrdensServico = obterOrdemServicoTableModel();
@@ -187,14 +191,14 @@ private void txtPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
 }//GEN-LAST:event_txtPesquisarActionPerformed
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-        OrdemServicoDialog dialog = new OrdemServicoDialog(null, _ordemServicoRepository, _usuarioRepository, _clienteRepository);
+        OrdemServicoDialog dialog = new OrdemServicoDialog(null, _ordemServicoRepository, _usuarioRepository, _clienteRepository, _apontamentoRepository);
         dialog.setVisible(true);
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnVisualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisualizarActionPerformed
         if (existeOrdemServicoSelecionada()) {
             OrdemServico ordemServicoSelecionada = _listaOrdensServicos.get(tblListaOrdensServico.getSelectedRow());
-            OrdemServicoDialog dialog = new OrdemServicoDialog(null, _ordemServicoRepository, _usuarioRepository, _clienteRepository, ordemServicoSelecionada);
+            OrdemServicoDialog dialog = new OrdemServicoDialog(null, _ordemServicoRepository, _usuarioRepository, _clienteRepository, _apontamentoRepository, ordemServicoSelecionada);
             dialog.setVisible(true);
             pesquisar(); //na Dialog, pode-se excluir ou modificar registro, então faz pesquisa novamente.
         }

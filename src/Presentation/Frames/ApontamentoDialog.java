@@ -1,11 +1,13 @@
 package Presentation.Frames;
 
-public class ApontamentoJDialog extends BaseJDialog {
+public class ApontamentoDialog extends BaseJDialog {
 
-    public ApontamentoJDialog(java.awt.Frame parent, boolean modal) {
+    public ApontamentoDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         
         initComponents();
+        
+        this.setLocationRelativeTo(null);
     }
 
     @SuppressWarnings("unchecked")

@@ -4,14 +4,14 @@ import Domain.Application.StringHelper;
 import Domain.Application.ValidacaoException;
 import Domain.Data.IUnitOfWork;
 import Domain.Data.UnitOfWork;
-import Domain.Models.Cliente;
-import Domain.Models.OrdemServico;
-import Domain.Models.StatusOrdemServico;
-import Domain.Models.Usuario;
+import Domain.Models.*;
+import Domain.Repository.IApontamentoRepository;
 import Domain.Repository.IClienteRepository;
 import Domain.Repository.IOrdemServicoRepository;
 import Domain.Repository.IUsuarioRepository;
+import Presentation.Util.ITableModel;
 import Presentation.Util.KeyValue;
+import Presentation.Util.TableModelApontamento;
 import Presentation.Util.UIHelper;
 import java.util.Calendar;
 import java.util.List;
@@ -26,13 +26,25 @@ public final class OrdemServicoDialog extends BaseJDialog {
     private IOrdemServicoRepository _ordemServicoRepository;
     private IUsuarioRepository _usuarioRepository;
     private IClienteRepository _clienteRepository;
+    private IApontamentoRepository _apontamentoRepository;
     private OrdemServico _ordemServico;
+    private ITableModel _modelApontamentos;
+    private List<Apontamento> _apontamentos;
 
-    public OrdemServicoDialog(java.awt.Frame parent, IOrdemServicoRepository ordemServicoRepository, IUsuarioRepository usuarioRepository, IClienteRepository clienteRepository) {
-        this(parent, ordemServicoRepository, usuarioRepository, clienteRepository, null);
+    public OrdemServicoDialog(java.awt.Frame parent,
+            IOrdemServicoRepository ordemServicoRepository,
+            IUsuarioRepository usuarioRepository,
+            IClienteRepository clienteRepository,
+            IApontamentoRepository apontamentoRepository) {
+        this(parent, ordemServicoRepository, usuarioRepository, clienteRepository, apontamentoRepository, null);
     }
 
-    public OrdemServicoDialog(java.awt.Frame parent, IOrdemServicoRepository ordemServicoRepository, IUsuarioRepository usuarioRepository, IClienteRepository clienteRepository, OrdemServico ordemServico) {
+    public OrdemServicoDialog(java.awt.Frame parent,
+            IOrdemServicoRepository ordemServicoRepository,
+            IUsuarioRepository usuarioRepository,
+            IClienteRepository clienteRepository,
+            IApontamentoRepository apontamentoRepository,
+            OrdemServico ordemServico) {
         super(parent, true);
         initComponents();
 
@@ -43,11 +55,15 @@ public final class OrdemServicoDialog extends BaseJDialog {
         _clienteRepository = clienteRepository;
         _usuarioRepository = usuarioRepository;
         _ordemServicoRepository = ordemServicoRepository;
-        _ordemServico = ordemServico;
+        _apontamentoRepository = apontamentoRepository;
 
-        this.setLocationRelativeTo(null);
+        _ordemServico = ordemServico;        
 
         preencheComboBoxes();
+        
+        preencheApontamentosPelaOrdemServico();
+        preencheApontamentoTableModel();
+        tblListaApontamentos.setModel(_modelApontamentos);
 
         habilitaBotoes();
 
@@ -56,6 +72,8 @@ public final class OrdemServicoDialog extends BaseJDialog {
         } else {
             this.habilitaCampos();
         }
+        
+        this.setLocationRelativeTo(null);
     }
 
     @SuppressWarnings("unchecked")
@@ -85,7 +103,7 @@ public final class OrdemServicoDialog extends BaseJDialog {
         btnExcluir = new javax.swing.JButton();
         panelApontamentos = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tblListaOrdensServico = new javax.swing.JTable();
+        tblListaApontamentos = new javax.swing.JTable();
         btnAdicionarApontamento = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -253,7 +271,7 @@ public final class OrdemServicoDialog extends BaseJDialog {
 
         panelApontamentos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        tblListaOrdensServico.setModel(new javax.swing.table.DefaultTableModel(
+        tblListaApontamentos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -272,8 +290,8 @@ public final class OrdemServicoDialog extends BaseJDialog {
                 return canEdit [columnIndex];
             }
         });
-        tblListaOrdensServico.setAutoscrolls(false);
-        jScrollPane3.setViewportView(tblListaOrdensServico);
+        tblListaApontamentos.setAutoscrolls(false);
+        jScrollPane3.setViewportView(tblListaApontamentos);
 
         btnAdicionarApontamento.setText("Adicionar");
         btnAdicionarApontamento.addActionListener(new java.awt.event.ActionListener() {
@@ -381,7 +399,7 @@ public final class OrdemServicoDialog extends BaseJDialog {
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnAdicionarApontamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarApontamentoActionPerformed
-        ApontamentoJDialog dialog = new ApontamentoJDialog(null, true);
+        ApontamentoDialog dialog = new ApontamentoDialog(null, true);
 
         dialog.setVisible(true);
     }//GEN-LAST:event_btnAdicionarApontamentoActionPerformed
@@ -407,7 +425,7 @@ public final class OrdemServicoDialog extends BaseJDialog {
     private javax.swing.JPanel panelApontamentos;
     private javax.swing.JPanel panelAtendimento;
     private javax.swing.JPanel panelInformacoesRequerimento;
-    private javax.swing.JTable tblListaOrdensServico;
+    private javax.swing.JTable tblListaApontamentos;
     private com.toedter.calendar.JDateChooser txtDataAbertura;
     private javax.swing.JTextField txtNumero;
     private javax.swing.JTextArea txtObjetivo;
@@ -528,7 +546,6 @@ public final class OrdemServicoDialog extends BaseJDialog {
         KeyValue prioridade = (KeyValue) cbxPrioridade.getModel().getSelectedItem();
         _ordemServico.setPrioridade(Integer.valueOf(prioridade.getValue()));
 
-
         _ordemServico.setObjetivo(txtObjetivo.getText());
 
         _ordemServico.setDataAbertura(LocalDateTime.fromDateFields(txtDataAbertura.getDate()));
@@ -547,6 +564,23 @@ public final class OrdemServicoDialog extends BaseJDialog {
         _unitOfWork.commit();
 
         JOptionPane.showMessageDialog(this, "OS excluída com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        
         dispose();
+    }
+
+    private void preencheApontamentosPelaOrdemServico() {
+        if (estaModoEdicao()) {            
+            _apontamentos = _ordemServico.getApontamentos();
+        }
+    }
+
+    private void preencheApontamentosBuscandoNoBanco() {
+        if (estaModoEdicao()) {            
+            _apontamentos = _apontamentoRepository.obterPorOrdemServico(_ordemServico.getOrdemServicoId());
+        }
+    }
+    
+    private void preencheApontamentoTableModel() {
+        _modelApontamentos = new TableModelApontamento(_apontamentos);        
     }
 }
