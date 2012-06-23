@@ -1,6 +1,9 @@
 package Presentation.Frames;
 
+import Domain.Application.Authentication;
 import Domain.Data.IDatabaseFactory;
+import Domain.Models.Perfil;
+import Domain.Models.Usuario;
 
 public class Principal extends javax.swing.JFrame {
 
@@ -8,10 +11,11 @@ public class Principal extends javax.swing.JFrame {
 
     public Principal(IDatabaseFactory databaseFactory) {
         _databaseFactory = databaseFactory;
-        
+
         initComponents();
-        
+
         this.setLocationRelativeTo(null);
+        mostrarMenuUsuarioSeAdministrador();
     }
 
     @SuppressWarnings("unchecked")
@@ -75,9 +79,9 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 private void ServicosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ServicosActionPerformed
-    OrdensServico janelas = new OrdensServico(_databaseFactory);    
+    OrdensServico janelas = new OrdensServico(_databaseFactory);
     this.add(janelas);
-    
+
     janelas.setVisible(true);
 }//GEN-LAST:event_ServicosActionPerformed
 
@@ -93,7 +97,6 @@ private void UsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         this.add(clienteInternalFrame);
         clienteInternalFrame.setVisible(true);
 }//GEN-LAST:event_ClientesActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Cadastro;
     private javax.swing.JMenuItem Clientes;
@@ -101,4 +104,9 @@ private void UsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JMenuItem Usuarios;
     private javax.swing.JMenuBar jMenuBar1;
     // End of variables declaration//GEN-END:variables
+
+    private void mostrarMenuUsuarioSeAdministrador() {
+        Usuario usuarioLogado = Authentication.getInstance().obterUsuarioAutenticado();
+        Usuarios.setVisible(usuarioLogado.getPerfil() == Perfil.Administrador);
+    }
 }
