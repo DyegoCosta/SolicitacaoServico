@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 
 public class ClienteDialog extends BaseJDialog {
     
-    private IUnitOfWork unitOfWork;
+    private IUnitOfWork _unitOfWork;
     private IClienteRepository _clienteRepository;
     private Cliente _cliente;
     
@@ -67,26 +67,32 @@ public class ClienteDialog extends BaseJDialog {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        lblCodigo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblCodigo.setText("Código");
 
         txtCodigo.setEditable(false);
 
+        lblRazaosocial.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblRazaosocial.setText("Razão Social");
 
         txtRazaosocial.setEditable(false);
 
+        lblCnpj.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblCnpj.setText("CNPJ");
 
         txtCnpj.setEditable(false);
 
+        lblNomeresponsavel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNomeresponsavel.setText("Nome responsável");
 
         txtNomeresponsavel.setEditable(false);
 
+        lblTelefone.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblTelefone.setText("Telefone");
 
         txtTelefone.setEditable(false);
 
+        lblEndereco.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblEndereco.setText("Endereço");
 
         txtEndereco.setEditable(false);
@@ -251,7 +257,7 @@ public class ClienteDialog extends BaseJDialog {
             try {
                 excluir();
             } catch (ValidacaoException ex) {
-                unitOfWork.rollback();
+                _unitOfWork.rollback();
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -268,11 +274,12 @@ public class ClienteDialog extends BaseJDialog {
             try {
                 salvar();
             } catch (ValidacaoException ex) {
-                unitOfWork.rollback();
+                _unitOfWork.rollback();
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-                
             }
         }
+        else
+            JOptionPane.showMessageDialog(this, "Preencha todos os campos obrigatórios", "Erro", JOptionPane.WARNING_MESSAGE);
     }//GEN-LAST:event_btnSalvarActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
@@ -302,20 +309,20 @@ public class ClienteDialog extends BaseJDialog {
     
     private void salvar() throws ValidacaoException {
         preencheCliente();
-        unitOfWork = obterUnitOfWork();
-        unitOfWork.beginTransaction();
+        _unitOfWork = obterUnitOfWork();
+        _unitOfWork.beginTransaction();
         _clienteRepository.salvar(_cliente);
-        unitOfWork.commit();
+        _unitOfWork.commit();
         
         JOptionPane.showMessageDialog(this, "Cliente salvo com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
         dispose();
     }
     
     private void excluir() throws ValidacaoException {
-        unitOfWork = obterUnitOfWork();
-        unitOfWork.beginTransaction();
+        _unitOfWork = obterUnitOfWork();
+        _unitOfWork.beginTransaction();
         _clienteRepository.deletar(_cliente);
-        unitOfWork.commit();
+        _unitOfWork.commit();
         
         JOptionPane.showMessageDialog(this, "Cliente excluído com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
         dispose();
