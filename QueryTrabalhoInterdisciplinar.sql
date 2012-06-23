@@ -36,7 +36,7 @@ CREATE TABLE OrdemServicos
 	Objetivo VARCHAR(300) NOT NULL,
 	DataAbertura DATETIME NOT NULL,
 	DataFechamento DATETIME,
-	[Status] VARCHAR(30) NOT NULL,
+	[Status] INT NOT NULL,
 	Prioridade INT NOT NULL
 )
 
