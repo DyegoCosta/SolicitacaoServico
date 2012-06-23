@@ -378,7 +378,9 @@ public final class OrdemServicoDialog extends BaseJDialog {
         if (dadosValidos()) {
             try {
                 salvar();
+                
                 btnSalvar.setEnabled(false);
+                btnEditar.setEnabled(true);
             } catch (ValidacaoException ex) {
                 _unitOfWork.rollback();
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
@@ -401,6 +403,7 @@ public final class OrdemServicoDialog extends BaseJDialog {
         habilitaCampos();
         txtNumero.setEditable(false);
         btnSalvar.setEnabled(true);
+        btnEditar.setEnabled(false);
         txtObjetivo.requestFocus();
     }//GEN-LAST:event_btnEditarActionPerformed
 
@@ -476,8 +479,11 @@ public final class OrdemServicoDialog extends BaseJDialog {
         preencherComboBoxUsuarios(cbxTecnico, usuarios);
         preencherComboBoxUsuarios(cbxAtendente, usuarios);
         preencherComboBoxClientes(clientes);
-
         preencherComboBoxPrioridades(cbxPrioridade);
+
+        if (estaModoEdicao()) {
+            selecionarOsValoresDasComboBoxes();
+        }
     }
 
     private void preencherComboBoxUsuarios(JComboBox comboBox, List<Usuario> usuarios) {
@@ -556,7 +562,7 @@ public final class OrdemServicoDialog extends BaseJDialog {
 
         _ordemServico.setObjetivo(txtObjetivo.getText());
 
-        _ordemServico.setDataAbertura(LocalDateTime.fromDateFields(txtDataAbertura.getDate()));        
+        _ordemServico.setDataAbertura(LocalDateTime.fromDateFields(txtDataAbertura.getDate()));
     }
 
     private boolean exclusaoConfirmada() {
@@ -598,12 +604,31 @@ public final class OrdemServicoDialog extends BaseJDialog {
     }
 
     private void preencheApontamentos() {
-        if(estaModoEdicao()){
+        if (estaModoEdicao()) {
             preencheApontamentosPelaOrdemServico();
             preencheApontamentoTableModel();
             tblListaApontamentos.setModel(_modelApontamentos);
-            
+
             btnAdicionarApontamento.setEnabled(true);
         }
+    }    
+    
+    private void selecionarOsValoresDasComboBoxes() {
+        cbxTecnico.setSelectedItem(getTecnicoDaOrdemServico());
+        cbxClientes.setSelectedItem(getClienteDaOrdemServico());
+        cbxAtendente.setSelectedItem(getAtendenteDaOrdemServico());
+        cbxPrioridade.setSelectedIndex(_ordemServico.getPrioridade());        
+    }
+    
+    private KeyValue getTecnicoDaOrdemServico() {
+        return new KeyValue(_ordemServico.getTecnico().getNome(), String.valueOf(_ordemServico.getTecnicoId()));
+    }
+
+    private KeyValue getClienteDaOrdemServico() {
+        return new KeyValue(_ordemServico.getCliente().getRazaoSocial(), String.valueOf(_ordemServico.getClienteId()));
+    }
+
+    private KeyValue getAtendenteDaOrdemServico() {
+        return new KeyValue(_ordemServico.getAtendente().getNome(), String.valueOf(_ordemServico.getAtendenteId()));
     }
 }
